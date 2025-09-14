@@ -1,12 +1,14 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+// TODO: Import model from @angular/core
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  imports: [FormsModule],
+  template: ``,
+  styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('Angular-Store');
+
 }
