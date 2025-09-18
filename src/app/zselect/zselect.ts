@@ -1,0 +1,69 @@
+import { Component, Input, Output, EventEmitter, signal, computed, WritableSignal, input, model, output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+export interface DropdownItem {
+  id: number | string;
+  name: string;
+  [key: string]: any;
+}
+
+@Component({
+  selector: 'app-zselect',
+  imports: [CommonModule, FormsModule],
+  templateUrl: './zselect.html',
+  styleUrl: './zselect.css'
+})
+export class Zselect {
+  // Input signals (required)
+  items = input.required<DropdownItem[]>();
+
+  // Input signals (optional with default values)
+  placeholder = input('Select an option...');
+  searchPlaceholder = input('Search...');
+  noResultsText = input('No results found');
+  showClearButton = input(true);
+
+  // Model for two-way binding
+  selectedItem = model<DropdownItem | null>(null);
+
+  // Output signals
+  itemSelected = output<DropdownItem>();
+  selectionCleared = output<void>();
+  
+  // Local signals
+  isOpen = signal(false);
+  searchQuery = signal('');
+
+  // Computed signals
+  filteredItems = computed(() => {
+    if (!this.searchQuery()) return this.items();
+    
+    return this.items().filter(item => 
+      item.name.toLowerCase().includes(this.searchQuery().toLowerCase())
+    );
+  });
+  
+  // Methods
+  toggleDropdown() {
+    this.isOpen.set(!this.isOpen());
+    if (this.isOpen()) {
+      this.searchQuery.set('');
+    }
+  }
+  
+  selectItem(item: DropdownItem) {
+    this.selectedItem.set(item);
+    this.isOpen.set(false);
+    this.searchQuery.set('');
+  }
+  
+  clearSelection() {
+    this.selectedItem.set(null);
+    this.selectionCleared.emit();
+  }
+  
+  trackByFn(index: number, item: DropdownItem) {
+    return item.id;
+  }
+}

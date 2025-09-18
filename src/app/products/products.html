@@ -1,69 +1,244 @@
-<div class="p-4">
+<div class="p-4 bg-gray-50 min-h-screen">
   <!-- Error Message -->
   @if (productService.error()) {
-    <div class="mb-4 p-3 rounded-lg bg-red-100 text-red-700 border border-red-300">
-      {{ productService.error() }}
+    <div class="mb-6 p-4 rounded-xl bg-red-50 text-red-800 border border-red-200 shadow-sm flex items-center">
+      <i class="fas fa-exclamation-circle mr-3"></i>
+      <span>{{ productService.error() }}</span>
     </div>
   }
 
   <!-- Loading -->
-  @if (productService.loading()) {
-    <div class="flex justify-center items-center py-10">
-      <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600"></div>
+  <!-- @if (productService.loading()) {
+    <div class="flex flex-col justify-center items-center py-16">
+      <div class="animate-spin rounded-full h-14 w-14 border-t-2 border-b-2 border-blue-500 mb-4"></div>
+      <p class="text-gray-600">Loading products...</p>
     </div>
-  }
+  } -->
 
-  <!-- Product Grid -->
-  @if (!productService.loading() && !productService.error()) {
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <!-- ---- Filters Section ---- -->
+  @if (!productService.error()) {
+    <div class="mb-6 p-4 bg-white rounded-xl shadow flex flex-wrap gap-4 items-start">
+      <!-- Category Filter -->
+      <div>
+        <label class="block text-xs font-semibold mb-1">Category</label>
+        <app-zselect
+          [items]="categoryService.categories()"
+          (selectedItemChange)="filters.category.set($event?.id)"
+          placeholder="Select a category..."
+          searchPlaceholder="Search categories...">
+        </app-zselect>
+      </div>
+
+      <!-- Brand Filter -->
+      <div>
+        <label class="block text-xs font-semibold mb-1">Brand</label>
+        <app-zselect
+          [items]="brandService.brands()"
+          (selectedItemChange)="filters.brand.set($event?.id)"
+          placeholder="Select a brand..."
+          searchPlaceholder="Search brands...">
+        </app-zselect>
+      </div>
+
+      <!-- Price Range -->
+      <div>
+        <label class="block text-xs font-semibold mb-1">Price Min</label>
+        <input type="number" [(ngModel)]="filters.min_price" (change)="applyFilters()"
+               class="border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="0">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold mb-1">Price Max</label>
+        <input type="number" [(ngModel)]="filters.max_price" (change)="applyFilters()"
+               class="border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="1000">
+      </div>
+
+      <!-- Stock Filter -->
+      <div>
+        <label class="block text-xs font-semibold mb-1">Stock</label>
+        <select [(ngModel)]="filters.stock" (change)="applyFilters()"
+                class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          <option value="">All</option>
+          <option value="in">In Stock</option>
+          <option value="out">Out of Stock</option>
+        </select>
+      </div>
+
+      <!-- Ordering -->
+      <div>
+        <label class="block text-xs font-semibold mb-1">Order By</label>
+        <select [(ngModel)]="filters.ordering" (change)="applyFilters()"
+                class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          <option value="">Default</option>
+          <option value="price">Price Low → High</option>
+          <option value="-price">Price High → Low</option>
+          <option value="created_at">Newest</option>
+          <option value="-created_at">Oldest</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       @for (product of productService.products(); track product.id) {
-        <div class="bg-white rounded-2xl shadow p-4 flex flex-col">
+        <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col h-full transform hover:-translate-y-1">
           
-          <!-- Image -->
-          <img [src]="configService.apiUrl + product.image" alt="{{ product.name }}" 
-              class="w-full h-48 object-cover rounded-xl mb-4">
-
-          <!-- Name + Brand -->
-          <h3 class="text-lg font-semibold text-gray-800">{{ product.name }}</h3>
-          <p class="text-sm text-gray-500 mb-2">Brand #{{ product.brand.name }}</p>
-
-          <!-- Description -->
-          <p class="text-sm text-gray-600 line-clamp-4 mb-3">
-            {{ product.description }}
-          </p>
-
-          <!-- Rating -->
-          <div class="flex items-center mb-3">
-            <span class="text-yellow-400">★</span>
-            <span class="ml-1 text-sm text-gray-700">{{ product.average_rating }}/5</span>
-          </div>
-
-          <!-- Price -->
-          <div class="flex items-center gap-2 mb-3">
-            <span class="text-xl font-bold text-green-600">
-                ${{ product.price_after_discount }}
-            </span>
-
+          <!-- Image Container -->
+          <div class="relative overflow-hidden">
+            <img [src]="configService.apiUrl + product.image" alt="{{ product.name }}" 
+                class="w-full h-56 object-cover transition-transform duration-500 hover:scale-105">
+            
+            <!-- Discount Badge -->
             @if (product.discount_percentage > 0) {
-                <span class="text-sm line-through text-gray-400">
-                ${{ product.price }}
-                </span>
-                <span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full">
+              <div class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow animate-pulse">
                 -{{ product.discount_percentage }}%
-                </span>
+              </div>
+            }
+            
+            <!-- Stock Status -->
+            @if (product.stock > 0) {
+              <div class="absolute top-3 right-3 bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full border border-green-200">
+                <i class="fas fa-check-circle mr-1"></i> {{ product.stock }} in stock
+              </div>
+            } @else {
+              <div class="absolute top-3 right-3 bg-red-100 text-red-800 text-xs font-medium px-2 py-1 rounded-full border border-red-200">
+                <i class="fas fa-times-circle mr-1"></i> Out of stock
+              </div>
             }
           </div>
 
-          <!-- Stock -->
-          <p class="text-sm text-gray-500 mb-4">In stock: {{ product.stock }}</p>
+          <!-- Content -->
+          <div class="p-5 flex flex-col flex-grow">
+            <!-- Brand -->
+            <div class="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-1">
+              {{ product.brand.name }}
+            </div>
+            
+            <!-- Name -->
+            <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2">{{ product.name }}</h3>
 
-          <!-- Button -->
-          <button class="mt-auto cursor-pointer bg-blue-600 text-white py-2 px-4 rounded-xl hover:bg-blue-700 transition">
-            Add to Cart
-          </button>
+            <!-- Description -->
+            <p class="text-sm text-gray-600 line-clamp-3 mb-4 flex-grow">
+              {{ product.description }}
+            </p>
+
+            <!-- Rating -->
+            <div class="flex items-center mb-4">
+              <div class="flex text-amber-400">
+                @for (star of [1,2,3,4,5]; track star) {
+                  <i class="fas fa-star text-sm" [ngClass]="{'text-amber-400': star <= product.average_rating, 'text-gray-300': star > product.average_rating}"></i>
+                }
+              </div>
+              <span class="ml-2 text-sm text-gray-600">{{ product.average_rating }}/5</span>
+            </div>
+
+            <!-- Price -->
+            <div class="flex items-center mb-5">
+              <span class="text-xl font-bold text-gray-900">
+                ${{ product.price_after_discount }}
+              </span>
+
+              @if (product.discount_percentage > 0) {
+                <span class="ml-2 text-sm line-through text-gray-400">
+                  ${{ product.price }}
+                </span>
+              }
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-3 mt-auto">
+              <!-- View Details Button -->
+              <button class="flex-1 cursor-pointer flex items-center justify-center gap-2 bg-gray-100 text-gray-700 py-2.5 px-4 rounded-lg hover:bg-gray-200 transition-colors font-medium">
+                <i class="fas fa-eye text-gray-600"></i>
+                Details
+              </button>
+
+              <!-- Add to Cart Button -->
+              <button class="flex-1 group cursor-pointer flex items-center justify-center gap-2 bg-blue-600 text-white py-2.5 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                <i class="fas fa-shopping-cart transition-transform duration-300 group-hover:scale-110"></i>
+                Add to Cart
+              </button>
+            </div>
+          </div>
         </div>
       }
     </div>
-  }
 
+    <!-- Pagination -->
+    <div class="flex justify-center items-center mt-12 gap-1">
+      <!-- First Page Button -->
+      @if (productService.currentPage() > 3) {
+        <button 
+          class="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 cursor-pointer hover:bg-blue-100 transition-all duration-200"
+          (click)="goToPage(1)"
+          title="First page">
+          <i class="fas fa-angle-double-left text-gray-600 text-sm"></i>
+        </button>
+      }
+
+      <!-- Previous Button -->
+      <button 
+        class="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 cursor-pointer hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+        (click)="prevPage()" 
+        [disabled]="productService.currentPage() === 1"
+        title="Previous page">
+        <i class="fas fa-chevron-left text-gray-600"></i>
+      </button>
+
+      <!-- First Page -->
+      @if (productService.currentPage() > 3) {
+        <button 
+          (click)="goToPage(1)" 
+          class="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 cursor-pointer hover:bg-blue-100 transition-all duration-200 font-medium">
+          1
+        </button>
+        @if (productService.currentPage() > 4) {
+          <span class="flex items-center justify-center w-10 h-10 text-gray-400">...</span>
+        }
+      }
+
+      <!-- Page Numbers (current page + 2 before + 2 after) -->
+      @for (page of getVisiblePages(); track page) {
+        <button 
+          (click)="goToPage(page)" 
+          [class.bg-blue-600]="page === productService.currentPage()"
+          [class.text-white]="page === productService.currentPage()"
+          [class.border-blue-600]="page === productService.currentPage()"
+          [class.hover:bg-blue-700]="page === productService.currentPage()"
+          class="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 cursor-pointer hover:bg-blue-100 transition-all duration-200 font-medium">
+          {{ page }}
+        </button>
+      }
+
+      <!-- Last Page -->
+      @if (productService.currentPage() < productService.totalPages() - 2) {
+        @if (productService.currentPage() < productService.totalPages() - 3) {
+          <span class="flex items-center justify-center w-10 h-10 text-gray-400">...</span>
+        }
+        <button 
+          (click)="goToPage(productService.totalPages())" 
+          class="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 cursor-pointer hover:bg-blue-100 transition-all duration-200 font-medium">
+          {{ productService.totalPages() }}
+        </button>
+      }
+
+      <!-- Next Button -->
+      <button 
+        class="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 cursor-pointer hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+        (click)="nextPage()" 
+        [disabled]="productService.currentPage() === productService.totalPages()"
+        title="Next page">
+        <i class="fas fa-chevron-right text-gray-600"></i>
+      </button>
+
+      <!-- Last Page Button -->
+      @if (productService.currentPage() < productService.totalPages() - 2) {
+        <button 
+          class="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 cursor-pointer hover:bg-blue-100 transition-all duration-200"
+          (click)="goToPage(productService.totalPages())"
+          title="Last page">
+          <i class="fas fa-angle-double-right text-gray-600 text-sm"></i>
+        </button>
+      }
+    </div>
+  }
 </div>
