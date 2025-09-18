@@ -30,7 +30,7 @@ export class Product {
         console.log(data)
         this.products.set(data.results);
 
-        const pageSize = data.results.length;
+        const pageSize = 10;
         this.totalPages.set(Math.ceil(data.count / pageSize));
 
         const nextPage = this.getPageNumber(data.next);

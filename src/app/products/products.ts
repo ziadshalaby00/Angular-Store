@@ -38,11 +38,16 @@ export class Products {
         this.filters.min_price(),
         this.filters.max_price(),
         this.filters.stock(),
-        this.filters.ordering()
+        this.filters.ordering(),
       ];
-
-      this.applyFilters();
+      
+      this.filters.page.set(1)
     });
+
+    effect(() => {
+      const _ = this.filters.page()
+      this.applyFilters();
+    })
   }
 
   ngOnInit() {
@@ -51,7 +56,6 @@ export class Products {
   }
 
   applyFilters() { 
-    console.log(this.filters.brand()) 
     this.productService.loadProducts(this.filters); 
   }
 
@@ -70,15 +74,8 @@ export class Products {
       this.filters.page.set(page);
     }
   }
-  getVisiblePages(): number[] {
-    const visiblePages = [];
-    const startPage = Math.max(1, this.productService.currentPage() - 2);
-    const endPage = Math.min(this.productService.totalPages(), this.productService.currentPage() + 2);
-    
-    for (let i = startPage; i <= endPage; i++) {
-      visiblePages.push(i);
-    }
-    
-    return visiblePages;
+
+  get pages(): number[] {
+    return Array.from({ length: this.productService.totalPages() }, (_, i) => i + 1);
   }
 }
