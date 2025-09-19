@@ -1,4 +1,4 @@
-<div class="p-4 bg-gray-50 min-h-screen">
+<div class="p-4 bg-gray-50 min-h-screen pb-8">
   <!-- Error Message -->
   @if (productService.error()) {
     <div class="mb-6 p-4 rounded-xl bg-red-50 text-red-800 border border-red-200 shadow-sm flex items-center">
@@ -43,19 +43,19 @@
       <!-- Price Range -->
       <div>
         <label class="block text-xs font-semibold mb-1">Price Min</label>
-        <input type="number" [(ngModel)]="filters.min_price" (change)="applyFilters()"
+        <input type="number" [(ngModel)]="filters.min_price"
                class="border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="0">
       </div>
       <div>
         <label class="block text-xs font-semibold mb-1">Price Max</label>
-        <input type="number" [(ngModel)]="filters.max_price" (change)="applyFilters()"
+        <input type="number" [(ngModel)]="filters.max_price"
                class="border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="1000">
       </div>
 
       <!-- Stock Filter -->
       <div>
         <label class="block text-xs font-semibold mb-1">Stock</label>
-        <select [(ngModel)]="filters.stock" (change)="applyFilters()"
+        <select [(ngModel)]="filters.stock"
                 class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
           <option value="">All</option>
           <option value="in">In Stock</option>
@@ -66,7 +66,7 @@
       <!-- Ordering -->
       <div>
         <label class="block text-xs font-semibold mb-1">Order By</label>
-        <select [(ngModel)]="filters.ordering" (change)="applyFilters()"
+        <select [(ngModel)]="filters.ordering"
                 class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
           <option value="">Default</option>
           <option value="price">Price Low → High</option>
@@ -164,32 +164,11 @@
     </div>
 
     <!-- Pagination -->
-    <div class="flex justify-center items-center mt-12 gap-1">
-      <!-- Previous Button -->
-      <button
-        class="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 cursor-pointer hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-        (click)="prevPage()" 
-        [disabled]="productService.currentPage() === 1"
-        title="Previous page">
-        <i class="fas fa-chevron-left text-gray-600"></i>
-      </button>
-
-      @for(page of pages; track page) {
-        <button (click)="goToPage(page)"
-          class="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 cursor-pointer hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-          [class]="page === productService.currentPage()? 'bg-blue-500' : ''">
-          {{ page }}
-        </button>
-      }
-
-      <!-- Next Button -->
-      <button 
-        class="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 cursor-pointer hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-        (click)="nextPage()" 
-        [disabled]="productService.currentPage() === productService.totalPages()"
-        title="Next page">
-        <i class="fas fa-chevron-right text-gray-600"></i>
-      </button>
-    </div>
+    <app-zpagination 
+      [totalItems]="productService.totalItems()"
+      [totalPages]="productService.totalPages()"
+      [currentPage]="productService.currentPage()"
+      (pageChange)="filters.page.set($event)">
+    </app-zpagination>
   }
 </div>

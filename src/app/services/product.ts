@@ -13,7 +13,9 @@ export class Product {
   error = signal<string | null>(null);
 
   currentPage = signal(1);
+  pageSize = signal(10);
   totalPages = signal(1);
+  totalItems = signal(1)
 
   loadProducts(filters: any) {
     this.error.set(null);
@@ -30,8 +32,8 @@ export class Product {
         console.log(data)
         this.products.set(data.results);
 
-        const pageSize = 10;
-        this.totalPages.set(Math.ceil(data.count / pageSize));
+        this.totalItems.set(data.count);
+        this.totalPages.set(Math.ceil(data.count / this.pageSize()));
 
         const nextPage = this.getPageNumber(data.next);
         const prevPage = this.getPageNumber(data.previous);

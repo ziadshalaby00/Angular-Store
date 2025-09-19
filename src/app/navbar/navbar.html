@@ -1,1 +1,13 @@
-<p>navbar works!</p>
+<app-znavbar
+  [logoUrl]="logoUrl"
+  [siteName]="'Ziadera'"
+  [showAuthButtons]="true"
+  [showSearchBar]="true"
+  [navItems]="navItems"
+  [isLoggedIn]="isLoggedIn()"
+  [userProfile]="userProfile"
+  [userMenuItems]="userMenuItems"
+  (loginClicked)="onLogin()"
+  (signupClicked)="onSignup()"
+  (searchSubmitted)="onSearch($event)"
+></app-znavbar>

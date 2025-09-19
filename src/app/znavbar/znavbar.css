@@ -1,0 +1,36 @@
+/* navbar.component.css */
+:host {
+  display: block;
+}
+
+/* تحسينات للعرض على الشاشات الصغيرة */
+@media (max-width: 768px) {
+  .rtl\:space-x-reverse {
+    margin-right: 0;
+    margin-left: 0.75rem;
+  }
+}
+
+/* تحسينات للخطوط العربية */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* تحسينات للظلال والتأثيرات */
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* تحسينات للزرائر والروابط */
+a, button {
+  transition: all 0.2s ease-in-out;
+}
+
+/* تحسينات للصور الدائرية */
+img {
+  object-fit: cover;
+}
+
+a, button {
+    cursor: pointer;
+}

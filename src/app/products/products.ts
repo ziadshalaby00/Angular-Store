@@ -6,10 +6,11 @@ import { CommonModule } from '@angular/common';
 import { Category } from '../services/category';
 import { Brand } from '../services/brand';
 import { Zselect } from '../zselect/zselect';
+import { Zpagination } from '../zpagination/zpagination';
 
 @Component({
   selector: 'app-products',
-  imports: [FormsModule, CommonModule, Zselect],
+  imports: [FormsModule, CommonModule, Zselect, Zpagination],
   templateUrl: './products.html',
   styleUrl: './products.css'
 })
@@ -29,7 +30,6 @@ export class Products {
     page: signal<number>(1)
   };
 
-
   constructor() {
     effect(() => {
       const _ = [
@@ -40,7 +40,8 @@ export class Products {
         this.filters.stock(),
         this.filters.ordering(),
       ];
-      
+
+
       this.filters.page.set(1)
     });
 
@@ -59,23 +60,12 @@ export class Products {
     this.productService.loadProducts(this.filters); 
   }
 
-  prevPage() {
-    if (this.filters.page() > 1) {
-      this.filters.page.update(p => p - 1);
-    }
-  }
-  nextPage() {
-    if (this.filters.page() < this.productService.totalPages()) {
-      this.filters.page.update(p => p + 1);
-    }
-  }
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.productService.totalPages()) {
-      this.filters.page.set(page);
-    }
-  }
-
-  get pages(): number[] {
-    return Array.from({ length: this.productService.totalPages() }, (_, i) => i + 1);
+  clearAll() {
+    this.filters.brand.set('')
+    this.filters.category.set('')
+    this.filters.min_price.set('')
+    this.filters.max_price.set('')
+    this.filters.stock.set('')
+    this.filters.ordering.set('')
   }
 }

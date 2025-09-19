@@ -1,0 +1,33 @@
+<!-- Total items -->
+<div class="text-center text-sm text-gray-500 mb-2 mt-6">
+  Total items: {{ totalItems() }}
+</div>
+
+<div class="flex flex-wrap justify-center items-center gap-1">
+  <!-- Previous Button -->
+  <button
+    class="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-gray-300 cursor-pointer hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+    (click)="prevPage()" 
+    [disabled]="currentPage() === 1"
+    title="Previous page">
+    <i class="fas fa-chevron-left text-gray-600"></i>
+  </button>
+
+  @for (page of pages(); track page) {
+    <button 
+      (click)="goToPage(page)"
+      class="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-gray-300 cursor-pointer hover:bg-blue-100 transition-all duration-200"
+      [ngClass]="{ 'bg-blue-500 text-white': page === currentPage() }">
+      {{ page }}
+    </button>
+  }
+
+  <!-- Next Button -->
+  <button 
+    class="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-gray-300 cursor-pointer hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+    (click)="nextPage()" 
+    [disabled]="currentPage() === totalPages()"
+    title="Next page">
+    <i class="fas fa-chevron-right text-gray-600"></i>
+  </button>
+</div>
