@@ -28,7 +28,6 @@ export class Zselect {
   selectedItem = model<DropdownItem | null>(null);
 
   // Output signals
-  itemSelected = output<DropdownItem>();
   selectionCleared = output<void>();
   
   // Local signals

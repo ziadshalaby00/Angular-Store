@@ -15,23 +15,25 @@
     </div>
   } -->
 
-  <!-- ---- Categories Carousel ---- -->
-  <div class="my-8">
-    <div class="flex justify-evenly gap-4 overflow-x-auto pb-2">
-      @for (cat of categoryService.categories(); track cat.id) {
-        <div class="flex-shrink-0 cursor-pointer flex flex-col text-center justify-center items-center group">
-          <!-- Image -->
-          <img [src]="configService.apiUrl + cat.image" 
-              alt="{{cat.name}}" 
-              class="w-20 h-20 object-cover rounded-full border-2 border-gray-200 mb-2 transition-transform duration-300 group-hover:scale-110">
 
-          <!-- Name -->
-          <p class="text-sm font-medium text-gray-700 group-hover:text-blue-600">
-            {{ cat.name }}
-          </p>
-        </div>
-      }
-    </div>
+  <!-- In your template -->
+  <div class="p-6">
+    <app-zcarousel
+      [items]="categories"
+      [maxItemsPerBox]="5"
+
+      [itemMinWidth]="256"
+
+      [duration]="3500"
+
+      [arrows]="true"
+      [arrowColorClass]="'text-blue-700'"
+
+      [itemShape]="'circle'"
+      [itemShapeSize]="256"
+
+      (itemClick)="updateCategory($event)"
+    ></app-zcarousel>
   </div>
 
   <!-- ---- Filters Section ---- -->
@@ -98,13 +100,15 @@
 
     <!-- Product Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      @for (product of productService.products(); track product.id) {
+      @for(product of productService.products(); track product.id) {
         <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col h-full transform hover:-translate-y-1">
           
           <!-- Image Container -->
           <div class="relative overflow-hidden">
-            <img [src]="configService.apiUrl + product.image" alt="{{ product.name }}" 
-                class="w-full h-56 object-cover transition-transform duration-500 hover:scale-105">
+            <img [src]="configService.apiUrl + product.image" 
+                alt="{{ product.name }}" 
+                loading="lazy"
+                class="w-full h-56 object-cover transition-transform duration-500 hover:scale-105 transform-gpu will-change-transform">
             
             <!-- Discount Badge -->
             @if (product.discount_percentage > 0) {
@@ -181,6 +185,13 @@
         </div>
       }
     </div>
+
+    @if(productService.products().length === 0) {
+      <div class="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-xl text-gray-500 border border-gray-200">
+        <i class="fas fa-box-open text-4xl mb-4"></i>
+        <p class="text-lg font-medium">No products available</p>
+      </div>
+    }
 
     <!-- Pagination -->
     <app-zpagination 

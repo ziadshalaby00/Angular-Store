@@ -7,10 +7,11 @@ import { Category } from '../services/category';
 import { Brand } from '../services/brand';
 import { Zselect } from '../zselect/zselect';
 import { Zpagination } from '../zpagination/zpagination';
+import { Zcarousel } from '../zcarousel/zcarousel';
 
 @Component({
   selector: 'app-products',
-  imports: [FormsModule, CommonModule, Zselect, Zpagination],
+  imports: [FormsModule, CommonModule, Zselect, Zpagination, Zcarousel],
   templateUrl: './products.html',
   styleUrl: './products.css'
 })
@@ -60,12 +61,18 @@ export class Products {
     this.productService.loadProducts(this.filters); 
   }
 
-  clearAll() {
-    this.filters.brand.set('')
-    this.filters.category.set('')
-    this.filters.min_price.set('')
-    this.filters.max_price.set('')
-    this.filters.stock.set('')
-    this.filters.ordering.set('')
+  onCategoryClick(param: any) {
+    console.log(param)
+  }
+
+  get categories() {
+    return this.categoryService.categories().map(cat => ({
+      ...cat,
+      image: cat.image ? this.configService.apiUrl +  cat.image : 'public/placeholder.png'
+    }));
+  }
+
+  updateCategory(param: any) {
+    
   }
 }
