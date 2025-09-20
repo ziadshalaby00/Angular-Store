@@ -1,15 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output, signal, WritableSignal } from '@angular/core';
+import { Component, computed, input, output, signal, WritableSignal } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { ZnavItems, NavbarItem } from '../znav-items/znav-items';
 
-export interface NavbarItem {
-  label: string;
-  routerLink?: string;
-  action?: () => void;
-  children?: NavbarItem[];
-  textColor?: string,
-  icon?: string
-}
 export interface UserProfile {
   name: string;
   imageUrl?: string;
@@ -18,7 +11,7 @@ export interface UserProfile {
 
 @Component({
   selector: 'app-znavbar',
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, ZnavItems],
   templateUrl: './znavbar.html',
   styleUrl: './znavbar.css'
 })
@@ -84,22 +77,26 @@ export class Znavbar {
 
   // ====================================================================
 
-  toggleChildren: Map<number, WritableSignal<boolean>> = new Map();
-  
-  toggleChild(index: number) {
-    if (!this.toggleChildren.has(index)) {
-      this.toggleChildren.set(index, signal(true));
-    } else {
-      const childSignal = this.toggleChildren.get(index)!;
-      childSignal.set(!childSignal());
-    }
+  openIndex = signal<number | null | undefined>(null);
+
+  visibleNavItems = computed(() => this.navItems().slice(0, 2));
+  moreNavItems = computed(() => this.navItems().slice(2));
+  isMoreOpen = signal(false)
+
+  // ====================================================================
+
+  private resizeObserver!: ResizeObserver;
+
+  ngOnInit() {
+    this.resizeObserver = new ResizeObserver(() => {
+      if (window.innerWidth >= 1024) {
+        this.isMobileMenuOpen.set(false);
+      }
+    });
+    this.resizeObserver.observe(document.body);
   }
 
-  // دالة للحصول على حالة عنصر
-  isChildOpen(index: number) {
-    if (!this.toggleChildren.has(index)) {
-      this.toggleChildren.set(index, signal(false));
-    }
-    return this.toggleChildren.get(index)!();
+  ngOnDestroy() {
+    this.resizeObserver.disconnect();
   }
 }

@@ -1,7 +1,7 @@
 <!-- navbar.component.html -->
 <nav class="bg-white shadow-lg fixed top-0 left-0 right-0 z-9995"> 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between h-16">
+    <div class="flex justify-between h-16 gap-4">
       <!-- Left side: Logo and site name -->
       <div class="flex items-center">
         @if (logoUrl() || siteName()) {
@@ -26,46 +26,37 @@
       </div>
 
       <!-- Center: Navigation items (for large screens) -->
-      <div class="hidden md:flex items-center space-x-4">
-        @for (item of navItems(); track $index) {
-          @if (item.children && item.children.length > 0) {
-            <div class="relative">
-              <button (click)="toggleChild($index)"
-                class="text-gray-600  hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-              >
-                {{ item.label }}
-                <i class="fas fa-chevron-down ml-1 text-xs"></i>
-              </button>
-              <div [ngClass]="isChildOpen($index) ? 'block' : 'hidden'"
-                class="absolute bg-white shadow-lg rounded-md mt-1 py-1 w-48 z-999">
-                @for (child of item.children; track $index) {
-                  <a 
-                    [routerLink]="child.routerLink" 
-                    [ngClass]="child.textColor ? item.textColor : 'text-gray-700'"
-                    class="px-4 gap-2 flex justify-start items-center py-2 text-sm hover:bg-gray-100"
-                    (click)="child.action && child.action()"
-                  >
-                    @if (child.icon) {
-                        <i [className]="item.icon"></i>
-                    }
-                    <span>{{ child.label }}</span>
-                  </a>
-                }
-              </div>
+      <div class="hidden lg:flex items-center space-x-4">
+        @for (item of visibleNavItems(); track $index) {
+          <app-znav-items
+            [forMobile] = 'false'
+            [item]="item"
+            [index]="$index"
+            [openIndex]="openIndex()"
+            (openIndexChange)="openIndex.set($event)"
+          >
+          </app-znav-items>
+        }
+
+        @if (moreNavItems().length > 0) {
+          <div class="relative">
+            <button (click)="isMoreOpen.set(!isMoreOpen())" class="px-3 text-blue-600 py-2 text-sm font-bold hover:text-blue-700">
+              More <i class="fas fa-chevron-down ml-1 text-xs"></i>
+            </button>
+            <div [ngClass]="isMoreOpen() ? 'block' : 'hidden'" 
+              class="absolute bg-blue-50 shadow-lg rounded-md mt-1 py-1 w-48 z-999">
+              @for(item of moreNavItems(); track $index) {
+                <app-znav-items
+                  [forMobile] = 'false'
+                  [item]="item"
+                  [index]="$index"
+                  [openIndex]="openIndex()" 
+                  (openIndexChange)="openIndex.set($event)"
+                >
+                </app-znav-items>
+              }
             </div>
-          } @else {
-            <a 
-              [routerLink]="item.routerLink" 
-              [ngClass]="item.textColor ? item.textColor : 'text-gray-600'"
-              class="hover:text-gray-900 px-3 py-2 gap-2 flex justify-start items-center rounded-md text-sm font-medium"
-              (click)="item.action && item.action()"
-            >
-                @if (item.icon) {
-                    <i [className]="item.icon"></i>
-                }
-                <span>{{ item.label }}</span>
-            </a>
-          }
+          </div>
         }
       </div>
 
@@ -73,7 +64,7 @@
       <div class="flex items-center space-x-3">
         <!-- Search bar (if enabled) -->
         @if (showSearchBar()) {
-            <div class="hidden md:block">
+            <div class="hidden lg:block">
                 <div class="relative">
                     <!-- Search Input -->
                     <input 
@@ -81,8 +72,8 @@
                     [value]="searchValue()" 
                     (input)="searchValue.set($any($event.target).value)"
                     (keyup.enter)="onSearchSubmit()"
-                    placeholder="Search..." 
-                    class="bg-gray-100 text-gray-800 rounded-full py-2 px-4 w-44 lg:w-64 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white shadow-sm hover:shadow-md"
+                    placeholder="Search..."
+                    class="bg-gray-100 text-gray-800 rounded-full py-2 px-4 w-64 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white shadow-sm hover:shadow-md"
                     >
 
                     <!-- Search Button -->
@@ -143,7 +134,7 @@
             </div>
           } @else {
             <!-- Login and Signup buttons -->
-            <div class="hidden md:flex items-center space-x-3">
+            <div class="hidden lg:flex items-center space-x-3">
                 <!-- Login Button -->
                 <button 
                     (click)="onLogin()"
@@ -155,7 +146,7 @@
                 <!-- Sign Up Button -->
                 <button 
                     (click)="onSignup()"
-                    class="px-5 py-2  rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 shadow-md transition-all duration-200 transform hover:-translate-y-0.5 hover:scale-105"
+                    class="px-5 py-2 whitespace-nowrap rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 shadow-md transition-all duration-200 transform hover:-translate-y-0.5 hover:scale-105"
                 >
                     Sign Up
                 </button>
@@ -164,7 +155,7 @@
         }
 
         <!-- Mobile menu button -->
-        <div class="md:hidden">
+        <div class="lg:hidden">
           <button 
             (click)="toggleMobileMenu()"
             class="text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white p-2 rounded-md"
@@ -178,47 +169,20 @@
 
   <!-- Mobile menu (for small screens) -->
   @if (isMobileMenuOpen()) {
-    <div class="md:hidden bg-white shadow-lg">
+    <div class="lg:hidden bg-white shadow-lg">
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
         <!-- Navigation items -->
-        @for (item of navItems(); track $index) {
-          @if (item.children && item.children.length > 0) {
-            <div class="relative">
-              <button (click)="toggleChild($index)"
-                class="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium w-full text-left"
-              >
-                {{ item.label }}
-                <i class="fas fa-chevron-down ml-1 text-xs"></i>
-              </button>
-              <div [ngClass]="isChildOpen($index) ? '' : 'hidden'"
-              class="pl-4 mt-1 max-h-48 overflow-auto">
-                @for (child of item.children; track $index) {
-                  <a 
-                    [routerLink]="child.routerLink" 
-                    class="gap-2 flex justify-start items-center px-3 py-2 text-gray-600 hover:text-gray-900 rounded-md text-base font-medium"
-                    (click)="child.action && child.action(); isMobileMenuOpen.set(false)"
-                  >
-                    @if (child.icon) {
-                        <i [className]="item.icon"></i>
-                    }
-                    <span>{{ child.label }}</span>
-                  </a>
-                }
-              </div>
-            </div>
-          } @else {
-            <a 
-              [routerLink]="item.routerLink" 
-              class="text-gray-600 gap-2 flex justify-start items-center hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium"
-              (click)="item.action && item.action(); isMobileMenuOpen.set(false)"
-            >
-                @if (item.icon) {
-                    <i [className]="item.icon"></i>
-                }
-                <span>{{ item.label }}</span>
-            </a>
-          }
-        }
+         <div class="max-h-96 overflow-y-auto">
+           @for (item of navItems(); track $index) {
+              <app-znav-items
+                [forMobile] = 'true'
+                [item]="item"
+                [index]="$index"
+                [openIndex]="openIndex()"
+                (openIndexChange)="openIndex.set($event)"
+              ></app-znav-items>
+           }
+         </div>
 
         <!-- Search bar (for mobile) -->
         @if (showSearchBar()) {
@@ -276,7 +240,7 @@
 <!-- Overlay for clicking outside menus -->
 @if (isMobileMenuOpen()) {
   <div 
-    class="fixed inset-0 bg-black bg-opacity-25 z-9994 md:bg-opacity-0"
+    class="fixed inset-0 bg-black bg-opacity-25 z-9994 lg:bg-opacity-0"
     (click)="closeAllMenus()"
   ></div>
 }

@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
-import { Znavbar, NavbarItem, UserProfile } from '../znavbar/znavbar';
+import { Znavbar, UserProfile } from '../znavbar/znavbar';
+import { NavbarItem } from '../znav-items/znav-items';
 
 @Component({
   selector: 'app-navbar',
@@ -14,20 +15,15 @@ export class Navbar {
   navItems: NavbarItem[] = [
     { label: 'Products', routerLink: '/products' },
     { label: 'Cart', routerLink: '/cart', icon: 'fas fa-shopping-cart text-blue-700 text-lg' },
+    { label: 'About Us', routerLink: '/about'},
+    { label: 'Contact Us', routerLink: '/contact'},
     {
-      label: 'More',
+      label: 'Legal Pages',
       children: [
-        { label: 'About Us', routerLink: '/about'},
-        { label: 'Contact Us', routerLink: '/contact'},
+        { label: 'Privacy Policy', routerLink: '/privacyPolicy'},
+        { label: 'Terms & Conditions', routerLink: '/termsConditions'},
       ]
     },
-    {
-      label: 'More 2',
-      children: [
-        { label: 'About Us', routerLink: '/about'},
-        { label: 'Contact Us', routerLink: '/contact'},
-      ]
-    }
   ];
 
   userProfile: UserProfile = {

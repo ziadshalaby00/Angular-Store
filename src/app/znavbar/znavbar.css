@@ -30,7 +30,3 @@ a, button {
 img {
   object-fit: cover;
 }
-
-a, button {
-    cursor: pointer;
-}

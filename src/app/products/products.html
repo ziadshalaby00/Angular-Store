@@ -15,6 +15,25 @@
     </div>
   } -->
 
+  <!-- ---- Categories Carousel ---- -->
+  <div class="my-8">
+    <div class="flex justify-evenly gap-4 overflow-x-auto pb-2">
+      @for (cat of categoryService.categories(); track cat.id) {
+        <div class="flex-shrink-0 cursor-pointer flex flex-col text-center justify-center items-center group">
+          <!-- Image -->
+          <img [src]="configService.apiUrl + cat.image" 
+              alt="{{cat.name}}" 
+              class="w-20 h-20 object-cover rounded-full border-2 border-gray-200 mb-2 transition-transform duration-300 group-hover:scale-110">
+
+          <!-- Name -->
+          <p class="text-sm font-medium text-gray-700 group-hover:text-blue-600">
+            {{ cat.name }}
+          </p>
+        </div>
+      }
+    </div>
+  </div>
+
   <!-- ---- Filters Section ---- -->
   @if (!productService.error()) {
     <div class="mb-6 p-4 bg-white rounded-xl shadow flex flex-wrap gap-4 items-start">
@@ -147,13 +166,13 @@
             <!-- Buttons -->
             <div class="flex gap-3 mt-auto">
               <!-- View Details Button -->
-              <button class="flex-1 cursor-pointer flex items-center justify-center gap-2 bg-gray-100 text-gray-700 py-2.5 px-4 rounded-lg hover:bg-gray-200 transition-colors font-medium">
+              <button class="flex-1  flex items-center justify-center gap-2 bg-gray-100 text-gray-700 py-2.5 px-4 rounded-lg hover:bg-gray-200 transition-colors font-medium">
                 <i class="fas fa-eye text-gray-600"></i>
                 Details
               </button>
 
               <!-- Add to Cart Button -->
-              <button class="flex-1 group cursor-pointer flex items-center justify-center gap-2 bg-blue-600 text-white py-2.5 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+              <button class="flex-1 group  flex items-center justify-center gap-2 bg-blue-600 text-white py-2.5 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium">
                 <i class="fas fa-shopping-cart transition-transform duration-300 group-hover:scale-110"></i>
                 Add to Cart
               </button>
