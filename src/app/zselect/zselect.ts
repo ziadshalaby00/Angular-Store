@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, signal, computed, WritableSignal, input, model, output } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, computed, WritableSignal, input, model, output, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -26,6 +26,23 @@ export class Zselect {
 
   // Model for two-way binding
   selectedItem = model<DropdownItem | null>(null);
+
+  // select item from paranet
+  selectItemIdfromParent = input<number | null>(null)
+
+    constructor() {
+      effect(() => {
+        const id = this.selectItemIdfromParent();
+        const item = this.items().find(item => item.id === id);
+
+        if (item) {
+          this.selectItem(item);
+        } else if (id === null) {
+          this.clearSelection();
+        }
+      });
+    }
+
 
   // Output signals
   selectionCleared = output<void>();

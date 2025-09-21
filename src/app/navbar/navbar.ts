@@ -10,10 +10,10 @@ import { NavbarItem } from '../znav-items/znav-items';
 })
 export class Navbar {
   logoUrl = 'https://i.postimg.cc/rsCB0PfM/android-chrome-512x512.png';
-  isLoggedIn = signal(false);
+  isLoggedIn = signal(true);
 
   navItems: NavbarItem[] = [
-    { label: 'Products', routerLink: '/products' },
+    { label: 'Products', routerLink: '/products', icon: 'fas fa-tag text-lg' },
     { label: 'Cart', routerLink: '/cart', icon: 'fas fa-shopping-cart text-blue-700 text-lg' },
     { label: 'About Us', routerLink: '/about'},
     { label: 'Contact Us', routerLink: '/contact'},
@@ -32,16 +32,27 @@ export class Navbar {
   };
 
   userMenuItems: NavbarItem[] = [
-    { label: 'Profile', routerLink: '/profile' },
-    { label: 'Cart', routerLink: '/cart' },
-    { label: 'Orders', routerLink: '/orders' },
-    { label: 'Addresses', routerLink: '/addresses' },
-    { label: 'Reviews', routerLink: '/reviews' },
+    { label: 'Profile', routerLink: '/profile', icon: 'fa-solid fa-user text-lg' },
+    { 
+      label: 'Cart', 
+      routerLink: '/cart', 
+      icon: 'fas fa-shopping-cart text-lg text-blue-700', 
+    },
+    { 
+      label: 'Dashboard', 
+      icon: 'fa-solid fa-gear',
+      children: [
+        { label: 'Orders', routerLink: '/orders', icon: 'fas fa-box text-lg' },
+        { label: 'Addresses', routerLink: '/addresses', icon: 'fa-solid fa-location-dot text-lg' },
+        { label: 'Reviews', routerLink: '/reviews', icon: 'fa-solid fa-star text-lg' },
+      ]
+    },
     { 
       label: 'Logout', 
       action: () => this.logout(),
       textColor: 'text-red-700',
-      icon: 'fas fa-sign-out-alt text-red-700 text-lg'
+      icon: 'fas fa-sign-out-alt text-lg',
+      hoverColor: 'hover:text-red-500'
     }
   ];
 

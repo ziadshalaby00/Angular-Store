@@ -71,8 +71,4 @@ export class Products {
       image: cat.image ? this.configService.apiUrl +  cat.image : 'public/placeholder.png'
     }));
   }
-
-  updateCategory(param: any) {
-    
-  }
 }

@@ -15,12 +15,11 @@
     </div>
   } -->
 
-
   <!-- In your template -->
   <div class="p-6">
     <app-zcarousel
       [items]="categories"
-      [maxItemsPerBox]="5"
+      [maxItemsPerBox]="4"
 
       [itemMinWidth]="256"
 
@@ -32,7 +31,7 @@
       [itemShape]="'circle'"
       [itemShapeSize]="256"
 
-      (itemClick)="updateCategory($event)"
+      (itemClick)="filters.category.set($event.id)"
     ></app-zcarousel>
   </div>
 
@@ -44,6 +43,7 @@
         <label class="block text-xs font-semibold mb-1">Category</label>
         <app-zselect
           [items]="categoryService.categories()"
+          [selectItemIdfromParent]="filters.category()"
           (selectedItemChange)="filters.category.set($event?.id)"
           placeholder="Select a category..."
           searchPlaceholder="Search categories...">

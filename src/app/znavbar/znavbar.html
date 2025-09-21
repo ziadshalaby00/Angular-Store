@@ -29,7 +29,7 @@
       <div class="hidden lg:flex items-center space-x-4">
         @for (item of visibleNavItems(); track $index) {
           <app-znav-items
-            [forMobile] = 'false'
+            [openWindow] = 'true'
             [item]="item"
             [index]="$index"
             [openIndex]="openIndex()"
@@ -47,7 +47,7 @@
               class="absolute bg-blue-50 shadow-lg rounded-md mt-1 py-1 w-48 z-999">
               @for(item of moreNavItems(); track $index) {
                 <app-znav-items
-                  [forMobile] = 'false'
+                  [openWindow] = 'true'
                   [item]="item"
                   [index]="$index"
                   [openIndex]="openIndex()" 
@@ -117,7 +117,15 @@
                   (click)="$event.stopPropagation()"
                 >
                   @for (item of userMenuItems(); track $index) {
-                    <a 
+                    <app-znav-items
+                      [openWindow]="false"
+                      [item]="item"
+                      [index]="$index"
+                      [openIndex]="openIndexUser()"
+                      (openIndexChange)="openIndexUser.set($event)"
+                    >
+                    </app-znav-items>
+                    <!-- <a 
                       [routerLink]="item.routerLink" 
                       [ngClass]="item.textColor ? item.textColor : 'text-gray-700'"
                       class="gap-2 flex justify-start items-center px-4 py-2 text-sm hover:bg-gray-100"
@@ -127,7 +135,7 @@
                             <i [className]="item.icon"></i>
                         }
                         <span>{{ item.label }}</span>
-                    </a>
+                    </a> -->
                   }
                 </div>
               }
@@ -175,7 +183,7 @@
          <div class="max-h-96 overflow-y-auto">
            @for (item of navItems(); track $index) {
               <app-znav-items
-                [forMobile] = 'true'
+                [openWindow] = 'false'
                 [item]="item"
                 [index]="$index"
                 [openIndex]="openIndex()"

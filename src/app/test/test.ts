@@ -1,6 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { Category } from '../services/category';
-import { Config } from '../services/config';
+import { Component, inject, signal } from '@angular/core';
 
 @Component({
   selector: 'app-test',
@@ -9,10 +7,5 @@ import { Config } from '../services/config';
   styleUrl: './test.css'
 })
 export class Test {
-  categoryService = inject(Category);
-  configService = inject(Config);
-  
-  ngOnInit() {
-    this.categoryService.loadCategories();
-  }
+
 }

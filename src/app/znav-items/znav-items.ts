@@ -9,6 +9,7 @@ export interface NavbarItem {
   children?: NavbarItem[];
   textColor?: string;
   icon?: string;
+  hoverColor?: string;
 }
 
 @Component({
@@ -18,11 +19,11 @@ export interface NavbarItem {
   styleUrl: './znav-items.css'
 })
 export class ZnavItems {
-  forMobile = input.required<boolean>();
+  openWindow = input.required<boolean>();
   item = input.required<NavbarItem>();
-  index = input<number>();
+  index = input.required<number>();
 
-  openIndex = input<number | null | undefined>(null);
+  openIndex = input.required<number | null | undefined>();
   openIndexChange = output<number | null | undefined>();
 
   toggle() {
@@ -43,5 +44,12 @@ export class ZnavItems {
 
   onChildClick(child: NavbarItem) {
     child.action?.();
+  }
+
+  getItemClasses(item: NavbarItem) {
+    return {
+      [item.textColor || 'text-gray-600']: true,
+      [item.hoverColor || 'hover:text-gray-900']: true,
+    };
   }
 }

@@ -122,10 +122,22 @@ export class Zcarousel {
   }
 
   updateIndex(newIndex: number) {
+    const trackEl = this.carouselTrack();
+    const containerEl = this.carouselContainer();
+    if (!trackEl || !containerEl) return;
+
     this.currentIndex.set(newIndex);
     this.indexChange.emit(newIndex);
+
+    // اربط translate بالـ index الجديد
+    const containerWidth = containerEl.nativeElement.offsetWidth;
+    this.currentTranslate = -newIndex * containerWidth;
+    trackEl.nativeElement.style.transition = 'transform 0.3s ease-out';
+    trackEl.nativeElement.style.transform = `translateX(${this.currentTranslate}px)`;
+
     this.restartAutoPlay();
   }
+
 
   next() {
     if (this.currentIndex() < this.totalBoxes() - 1) {
@@ -191,17 +203,17 @@ export class Zcarousel {
   private prevTranslate = 0;
 
   onDragStart(event: PointerEvent) {
-  event.preventDefault();
-  const trackEl = this.carouselTrack();
-  const containerEl = this.carouselContainer();
-  if (!trackEl || !containerEl) return;
+    event.preventDefault();
+    const trackEl = this.carouselTrack();
+    const containerEl = this.carouselContainer();
+    if (!trackEl || !containerEl) return;
 
-  this.dragging = true;
-  this.startX = event.clientX;
-  this.prevTranslate = -this.currentIndex() * containerEl.nativeElement.offsetWidth;
+    this.dragging = true;
+    this.startX = event.clientX;
+    this.prevTranslate = -this.currentIndex() * containerEl.nativeElement.offsetWidth;
 
-  // إزالة transition أثناء السحب
-  trackEl.nativeElement.style.transition = 'none';
+    // إزالة transition أثناء السحب
+    trackEl.nativeElement.style.transition = 'none';
     this.stopAutoPlay();
   }
 

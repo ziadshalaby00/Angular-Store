@@ -78,9 +78,16 @@ export class Znavbar {
   // ====================================================================
 
   openIndex = signal<number | null | undefined>(null);
+  openIndexUser = signal<number | null | undefined>(null);
 
-  visibleNavItems = computed(() => this.navItems().slice(0, 2));
-  moreNavItems = computed(() => this.navItems().slice(2));
+  visibleNavItems = computed(() => {
+    if(this.showSearchBar()) return this.navItems().slice(0, 2)
+    return this.navItems().slice(0, 5)
+  });
+  moreNavItems = computed(() => {
+    if(this.showSearchBar()) return this.navItems().slice(2)
+    return this.navItems().slice(5)
+  });
   isMoreOpen = signal(false)
 
   // ====================================================================
