@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Znavbar, UserProfile } from '../ZiadShalaby/zui-comp/znavbar/znavbar';
 import { NavbarItem } from '../ZiadShalaby/zui-comp/znav-items/znav-items';
+import { ZalertService } from '../ZiadShalaby/zui-comp/zalertService/zalert-service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,6 +10,8 @@ import { NavbarItem } from '../ZiadShalaby/zui-comp/znav-items/znav-items';
   styleUrl: './navbar.css'
 })
 export class Navbar {
+  alertService = inject(ZalertService)
+
   logoUrl = 'https://i.postimg.cc/rsCB0PfM/android-chrome-512x512.png';
   isLoggedIn = signal(true);
 
@@ -65,6 +68,11 @@ export class Navbar {
   onLogin() {
     console.log('Login clicked');
     this.isLoggedIn.set(true);
+
+    this.alertService.addAlert({
+      message: 'Logged in successfully',
+      type: 'success'
+    })
   }
 
   onSignup() {
@@ -78,5 +86,10 @@ export class Navbar {
   logout() {
     this.isLoggedIn.set(false);
     console.log('Logged out');
+
+    this.alertService.addAlert({
+      message: 'Logged out successfully',
+      type: 'danger'
+    })
   }
 }
