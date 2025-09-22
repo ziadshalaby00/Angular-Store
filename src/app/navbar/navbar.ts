@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
-import { Znavbar, UserProfile } from '../znavbar/znavbar';
-import { NavbarItem } from '../znav-items/znav-items';
+import { Znavbar, UserProfile } from '../ZiadShalaby/zui-comp/znavbar/znavbar';
+import { NavbarItem } from '../ZiadShalaby/zui-comp/znav-items/znav-items';
 
 @Component({
   selector: 'app-navbar',

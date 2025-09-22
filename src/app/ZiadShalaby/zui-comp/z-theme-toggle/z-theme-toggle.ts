@@ -1,4 +1,4 @@
-import { Component, signal, HostListener, effect, output } from '@angular/core';
+import { Component, signal, HostListener, effect, output, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,10 +8,16 @@ import { CommonModule } from '@angular/common';
   styleUrl: './z-theme-toggle.css'
 })
 export class ZThemeToggle {
+  // Theme state
   currentTheme = signal<'light' | 'dark'>('light');
   isOpen = signal(false);
 
+  // Output event
   themeChange = output<'light' | 'dark'>();
+
+  // ✅ Input signals for body classes
+  bodyBgClass = input('bg-white dark:bg-gray-900');
+  bodyTextClass = input('text-gray-900 dark:text-gray-100');
 
   constructor() {
     // Initialize theme from localStorage or prefer-color-scheme
@@ -19,6 +25,9 @@ export class ZThemeToggle {
       const theme = this.currentTheme();
       document.documentElement.classList.toggle('dark', theme === 'dark');
       localStorage.setItem('theme', theme);
+
+      // ✅ Apply classes to body
+      document.body.className = `${this.bodyBgClass()} ${this.bodyTextClass()}`;
     });
 
     // Initialize theme

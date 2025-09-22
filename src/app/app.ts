@@ -3,8 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from "./navbar/navbar";
-import { ZThemeToggle } from './z-theme-toggle/z-theme-toggle';
-
+import { ZThemeToggle } from './ZiadShalaby/zui-comp/z-theme-toggle/z-theme-toggle';
 
 @Component({
   selector: 'app-root',

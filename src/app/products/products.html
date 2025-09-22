@@ -79,25 +79,21 @@
       <!-- Stock Filter -->
       <div>
         <label class="block text-xs font-semibold mb-1">Stock</label>
-        <select [(ngModel)]="filters.stock"
-                class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
-          <option value="">All</option>
-          <option value="in">In Stock</option>
-          <option value="out">Out of Stock</option>
-        </select>
+        <app-zselect
+          [items]="stockFilters"
+          (selectedItemChange)="filters.stock.set($event?.id)"
+          [showSearch]="false">
+        </app-zselect>
       </div>
 
       <!-- Ordering -->
       <div>
         <label class="block text-xs font-semibold mb-1">Order By</label>
-        <select [(ngModel)]="filters.ordering"
-                class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
-          <option value="">Default</option>
-          <option value="price">Price Low → High</option>
-          <option value="-price">Price High → Low</option>
-          <option value="created_at">Newest</option>
-          <option value="-created_at">Oldest</option>
-        </select>
+        <app-zselect
+          [items]="orderingFilters"
+          (selectedItemChange)="filters.ordering.set($event?.id)"
+          [showSearch]="false">
+        </app-zselect>
       </div>
     </div>
 

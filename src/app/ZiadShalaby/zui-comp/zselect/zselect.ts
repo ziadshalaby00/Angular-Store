@@ -18,6 +18,9 @@ export class Zselect {
   // Input signals (required)
   items = input.required<DropdownItem[]>();
 
+  // Show Search Input
+  showSearch = input(true)
+
   // Input signals (optional with default values)
   placeholder = input('Select an option...');
   searchPlaceholder = input('Search...');

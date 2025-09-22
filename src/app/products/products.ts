@@ -5,9 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Category } from '../services/category';
 import { Brand } from '../services/brand';
-import { Zselect } from '../zselect/zselect';
-import { Zpagination } from '../zpagination/zpagination';
-import { Zcarousel } from '../zcarousel/zcarousel';
+import { Zselect } from '../ZiadShalaby/zui-comp/zselect/zselect';
+import { Zpagination } from '../ZiadShalaby/zui-comp/zpagination/zpagination';
+import { Zcarousel } from '../ZiadShalaby/zui-comp/zcarousel/zcarousel';
 
 @Component({
   selector: 'app-products',
@@ -42,7 +42,6 @@ export class Products {
         this.filters.ordering(),
       ];
 
-
       this.filters.page.set(1)
     });
 
@@ -71,4 +70,33 @@ export class Products {
       image: cat.image ? this.configService.apiUrl +  cat.image : 'public/placeholder.png'
     }));
   }
+
+  stockFilters = [
+    {
+      id: 'in',
+      name: 'In Stock'
+    },
+    {
+      id: 'out',
+      name: 'Out of Stock'
+    },
+  ]
+  orderingFilters = [
+    {
+      id: 'price',
+      name: 'Price Low → High'
+    },
+    {
+      id: '-price',
+      name: 'Price High → Low'
+    },
+    {
+      id: 'created_at',
+      name: 'Newest'
+    },
+    {
+      id: '-created_at',
+      name: 'Oldest'
+    },
+  ]
 }

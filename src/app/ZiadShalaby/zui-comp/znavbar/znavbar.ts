@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, input, output, signal, WritableSignal } from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ZnavItems, NavbarItem } from '../znav-items/znav-items';
 
