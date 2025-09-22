@@ -1,31 +1,38 @@
 <div class="relative w-full">
   <!-- Toggle button -->
   <div 
-    class="flex items-center justify-between w-full min-w-48 px-3 py-2 border border-gray-300 rounded-lg bg-white  shadow-sm hover:border-gray-400 transition-colors"
+    class="flex items-center justify-between w-full min-w-48 px-3 py-2 border rounded-lg shadow-sm transition-colors
+           bg-white border-gray-300 text-gray-900 hover:border-gray-400
+           dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:hover:border-gray-600"
     (click)="toggleDropdown()">
     @if (selectedItem()) {
-      <span class="text-gray-900 truncate">{{ selectedItem()?.name }}</span>
+      <span class="truncate">{{ selectedItem()?.name }}</span>
     } @else {
-      <span class="text-gray-500">{{ placeholder() }}</span>
+      <span class="text-gray-500 dark:text-gray-400">{{ placeholder() }}</span>
     }
-    <i class="fas text-gray-500 ml-2" 
+    <i class="fas ml-2 text-gray-500 dark:text-gray-400" 
        [class.fa-chevron-down]="!isOpen()" 
        [class.fa-chevron-up]="isOpen()"></i>
   </div>
 
   <!-- Dropdown menu -->
   @if (isOpen()) {
-    <div class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden">
+    <div class="absolute z-50 w-full mt-1 rounded-lg shadow-lg overflow-hidden
+            bg-white border border-gray-300
+            dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
+
       <!-- Search input -->
-      <div class="relative p-2 border-b border-gray-200">
-        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+      <div class="relative p-2 border-b border-gray-200 dark:border-gray-700">
+        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
         <input 
           type="text" 
           [placeholder]="searchPlaceholder()"
           [value]="searchQuery()"
           (input)="searchQuery.set($any($event.target).value)"
           (click)="$event.stopPropagation()"
-          class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          class="w-full pl-9 pr-3 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+          border-gray-300 bg-white text-gray-900
+          dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400"
           autofocus />
       </div>
 
@@ -33,17 +40,22 @@
       <div class="max-h-60 overflow-y-auto">
         @for (item of filteredItems(); track trackByFn($index, item)) {
           <div 
-            class="px-4 py-2 cursor-pointer flex items-center justify-between hover:bg-gray-50 transition-colors"
+            class="px-4 py-2 cursor-pointer flex items-center justify-between transition-colors
+                  hover:bg-gray-50 dark:hover:bg-gray-600
+                  text-gray-900 dark:text-gray-100"
             [class.bg-blue-50]="selectedItem()?.id === item.id"
+            [class.dark:bg-blue-900]="selectedItem()?.id === item.id"
             (click)="selectItem(item); $event.stopPropagation()">
             <span class="truncate">{{ item.name }}</span>
             @if (selectedItem()?.id === item.id) {
-              <i class="fas fa-check text-blue-600 ml-2"></i>
+              <i class="fas fa-check text-blue-600 dark:text-blue-400 ml-2"></i>
             }
           </div>
         }
         @if (filteredItems().length === 0) {
-          <div class="px-4 py-3 text-gray-500 text-center">{{ noResultsText() }}</div>
+          <div class="px-4 py-3 text-center text-gray-500 dark:text-gray-400">
+            {{ noResultsText() }}
+          </div>
         }
       </div>
     </div>
@@ -52,7 +64,9 @@
   <!-- Clear selection button -->
   @if (selectedItem() && showClearButton()) {
     <button 
-      class="mt-2 text-sm text-blue-600 hover:text-blue-800 flex items-center transition-colors"
+      class="mt-2 text-sm flex items-center transition-colors
+             text-blue-600 hover:text-blue-800
+             dark:text-blue-400 dark:hover:text-blue-300"
       (click)="clearSelection()">
       <i class="fas fa-times mr-1"></i> Clear selection
     </button>

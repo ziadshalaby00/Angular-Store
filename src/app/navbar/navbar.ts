@@ -13,6 +13,7 @@ export class Navbar {
   isLoggedIn = signal(true);
 
   navItems: NavbarItem[] = [
+    { label: 'Test', routerLink: '/test', icon: 'fa-solid fa-vial text-lg', textColor: "text-green-700", hoverColor: 'hover:text-green-800 dark:hover:text-green-600' },
     { label: 'Products', routerLink: '/products', icon: 'fas fa-tag text-lg' },
     { label: 'Cart', routerLink: '/cart', icon: 'fas fa-shopping-cart text-blue-700 text-lg' },
     { label: 'About Us', routerLink: '/about'},
@@ -42,7 +43,12 @@ export class Navbar {
       label: 'Dashboard', 
       icon: 'fa-solid fa-gear',
       children: [
-        { label: 'Orders', routerLink: '/orders', icon: 'fas fa-box text-lg' },
+        { 
+          label: 'Orders', 
+          routerLink: '/orders', 
+          icon: 'fas fa-box text-lg text-indigo-500',
+          textColor: '',
+        },
         { label: 'Addresses', routerLink: '/addresses', icon: 'fa-solid fa-location-dot text-lg' },
         { label: 'Reviews', routerLink: '/reviews', icon: 'fa-solid fa-star text-lg' },
       ]

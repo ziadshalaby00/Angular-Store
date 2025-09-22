@@ -26,6 +26,8 @@ export class ZnavItems {
   openIndex = input.required<number | null | undefined>();
   openIndexChange = output<number | null | undefined>();
 
+  anyItemClicked = output<string>()
+
   toggle() {
     if (this.openIndex() === this.index()) {
       this.openIndexChange.emit(null);   // يقفل الكل
@@ -40,16 +42,21 @@ export class ZnavItems {
 
   onItemClick() {
     this.item().action?.();
+    this.anyItemClicked.emit(this.item().label)
   }
 
   onChildClick(child: NavbarItem) {
     child.action?.();
+    this.anyItemClicked.emit(child.label)
   }
 
   getItemClasses(item: NavbarItem) {
     return {
-      [item.textColor || 'text-gray-600']: true,
-      [item.hoverColor || 'hover:text-gray-900']: true,
+      // لون النص العادي
+      [item.textColor || 'text-gray-600 dark:text-gray-300']: true,
+
+      // لون النص عند التحويم
+      [item.hoverColor || 'hover:text-gray-900 dark:hover:text-gray-100']: true,
     };
   }
 }

@@ -1,0 +1,50 @@
+<div class="fixed left-0 top-1/6 z-50 transform -translate-y-1/2 transition-all duration-300"
+        [class.-translate-x-[96px]]="!isOpen()">
+    
+    <!-- Container for both buttons -->
+    <div class="flex items-center">
+        <!-- Light/Dark selection buttons -->
+        <div class="flex overflow-hidden transition-all duration-300">
+            <!-- Light button -->
+            <button 
+            (click)="setTheme('light')"
+            class="px-3 py-2 rounded-l-none border-l-0 border-y transition-colors flex-shrink-0
+                    bg-white text-gray-900 border-gray-300
+                    dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600
+                    hover:bg-gray-100 dark:hover:bg-gray-700 w-12">
+                <i class="fas fa-sun text-yellow-500"></i>
+            </button>
+            
+            <!-- Dark button -->
+            <button 
+            (click)="setTheme('dark')"
+            class="px-3 py-2 rounded-r-lg border-y border-r transition-colors flex-shrink-0
+                    bg-white text-gray-900 border-gray-300
+                    dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600
+                    hover:bg-gray-100 dark:hover:bg-gray-700 w-12">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+
+        <!-- Toggle button with connecting line -->
+        <div class="relative" [class.hidden]="isOpen()">
+            <!-- Connecting line -->
+            <div class="absolute top-1/2 right-0 h-0.5 w-3 transform -translate-y-1/2
+                        bg-gray-300 dark:bg-gray-600"></div>
+            
+            <!-- Toggle button -->
+            <button 
+            (click)="toggleOpen()"
+            class="relative z-10 w-12 h-12 rounded-full rounded-l-none border-l-0 border-2 transition-all duration-300 flex items-center justify-center
+                    bg-white text-gray-900 border-gray-300
+                    dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600
+                    hover:bg-gray-100 dark:hover:bg-gray-700">
+                @if (currentTheme() === 'dark') {
+                    <i class="fas fa-moon"></i>
+                } @else {
+                    <i class="fas fa-sun text-yellow-500"></i>
+                }
+            </button>
+        </div>
+    </div>
+</div>

@@ -23,18 +23,18 @@
       <div [ngClass]="{
                 'block': isOpen(),
                 'hidden': !isOpen(),
-                'absolute left-6 bg-white shadow-lg rounded-md mt-1 py-1 w-48 z-50': openWindow(),
+                'absolute left-6 bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-400/30 rounded-md mt-1 py-1 w-48 z-50': openWindow(),
                 'px-4 mt-1': !openWindow()
             }"
       >
         @for (child of item().children; track $index) {
           <a
             [routerLink]="child.routerLink"
-            [ngClass]="child.textColor ? child.textColor : 'text-gray-700'"
+            [ngClass]="child.textColor ? child.textColor : 'text-gray-700 dark:text-gray-200'"
             class="gap-2 flex justify-start items-center 
                   px-3 md:px-4 py-2 
                   text-sm md:text-base 
-                  hover:bg-gray-100 rounded-md"
+                  hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
             (click)="onChildClick(child)"
           >
             @if (child.icon) {

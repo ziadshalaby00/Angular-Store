@@ -44,6 +44,8 @@ export class Znavbar {
   // قيمة البحث
   searchValue = signal('');
 
+  searchPlaceholder = input('Search...')
+
   // دالة للبحث
   onSearchSubmit() {
     this.searchSubmitted.emit(this.searchValue());
@@ -105,5 +107,13 @@ export class Znavbar {
 
   ngOnDestroy() {
     this.resizeObserver.disconnect();
+  }
+
+  // ==================================================================== 
+
+  itemClicked(event: string) {
+    this.closeAllMenus()
+    this.openIndex.set(null)
+    this.openIndexUser.set(null)
   }
 }

@@ -1,5 +1,7 @@
 <!-- navbar.component.html -->
-<nav class="bg-white shadow-lg fixed top-0 left-0 right-0 z-9995"> 
+<nav class="bg-white dark:bg-gray-800
+fixed top-0 left-0 right-0 z-9995 shadow-md dark:shadow-gray-400/30">
+  
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16 gap-4">
       <!-- Left side: Logo and site name -->
@@ -17,7 +19,7 @@
               >
             }
             @if (siteName()) {
-              <span class="font-bold text-xl text-gray-800">
+              <span class="font-bold text-xl text-gray-800 dark:text-gray-100">
                 {{ siteName() }}
               </span>
             }
@@ -34,17 +36,21 @@
             [index]="$index"
             [openIndex]="openIndex()"
             (openIndexChange)="openIndex.set($event)"
+            (anyItemClicked)="itemClicked($event)"
           >
           </app-znav-items>
         }
 
         @if (moreNavItems().length > 0) {
           <div class="relative">
-            <button (click)="isMoreOpen.set(!isMoreOpen())" class="px-3 text-blue-600 py-2 text-sm font-bold hover:text-blue-700">
-              More <i class="fas fa-chevron-down ml-1 text-xs"></i>
+            <button 
+              (click)="isMoreOpen.set(!isMoreOpen())" 
+              class="px-3 text-blue-600 dark:text-blue-400 py-2 text-sm font-bold hover:text-blue-700 dark:hover:text-blue-300">
+              More <i class="fas fa-chevron-down ml-1 text-xs text-gray-500 dark:text-gray-400"></i>
             </button>
             <div [ngClass]="isMoreOpen() ? 'block' : 'hidden'" 
-              class="absolute bg-blue-50 shadow-lg rounded-md mt-1 py-1 w-48 z-999">
+              class="absolute bg-blue-50 dark:bg-blue-950 shadow-md dark:shadow-gray-400/30 
+              rounded-md mt-1 py-1 w-48 z-999">
               @for(item of moreNavItems(); track $index) {
                 <app-znav-items
                   [openWindow] = 'true'
@@ -52,6 +58,7 @@
                   [index]="$index"
                   [openIndex]="openIndex()" 
                   (openIndexChange)="openIndex.set($event)"
+                  (anyItemClicked)="itemClicked($event)"
                 >
                 </app-znav-items>
               }
@@ -64,27 +71,37 @@
       <div class="flex items-center space-x-3">
         <!-- Search bar (if enabled) -->
         @if (showSearchBar()) {
-            <div class="hidden lg:block">
-                <div class="relative">
-                    <!-- Search Input -->
-                    <input 
-                    type="text" 
-                    [value]="searchValue()" 
-                    (input)="searchValue.set($any($event.target).value)"
-                    (keyup.enter)="onSearchSubmit()"
-                    placeholder="Search..."
-                    class="bg-gray-100 text-gray-800 rounded-full py-2 px-4 w-64 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white shadow-sm hover:shadow-md"
-                    >
+          <div class="hidden lg:block">
+            <div class="relative">
+              <!-- Search Input -->
+              <input 
+                type="text" 
+                [value]="searchValue()" 
+                (input)="searchValue.set($any($event.target).value)"
+                (keyup.enter)="onSearchSubmit()"
+                [placeholder]="searchPlaceholder()"
+                class="bg-gray-100 dark:bg-gray-700 
+                      text-gray-800 dark:text-gray-200 
+                      rounded-full py-2 px-4 w-64 
+                      transition-all duration-200 
+                      focus:outline-none focus:ring-2 focus:ring-blue-500 
+                      focus:bg-white dark:focus:bg-gray-600 
+                      shadow-sm dark:shadow-gray-500/40 
+                      hover:shadow-md dark:hover:shadow-gray-500/50"
+              >
 
-                    <!-- Search Button -->
-                    <button 
-                    (click)="onSearchSubmit()"
-                    class="absolute  right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors duration-200"
-                    >
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
+              <!-- Search Button -->
+              <button 
+                (click)="onSearchSubmit()"
+                class="absolute right-3 top-1/2 transform -translate-y-1/2 
+                      text-gray-500 dark:text-gray-400 
+                      hover:text-gray-700 dark:hover:text-gray-300 
+                      transition-colors duration-200"
+              >
+                <i class="fas fa-search"></i>
+              </button>
             </div>
+          </div>
         }
 
         <!-- Login/Signup buttons or user profile -->
@@ -94,7 +111,7 @@
             <div class="relative">
               <button 
                 (click)="toggleUserMenu()"
-                class="flex  items-center space-x-2 focus:outline-none"
+                class="flex items-center space-x-2 focus:outline-none"
               >
                 @if (userProfile()?.imageUrl) {
                   <img 
@@ -107,13 +124,19 @@
                     {{ userProfile()?.name?.charAt(0) || 'U' }}
                   </div>
                 }
-                <i class="fas fa-chevron-down text-xs"></i>
+                <i class="fas fa-chevron-down text-xs 
+                text-gray-600 dark:text-gray-400
+                hover:text-gray-700 dark:hover:text-gray-300
+                "></i>
               </button>
 
               <!-- User dropdown menu -->
               @if (isUserMenuOpen()) {
                 <div 
-                  class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-9991"
+                  class="absolute right-0 mt-2 w-48 
+                        bg-white dark:bg-gray-800 
+                        rounded-md shadow-md dark:shadow-gray-400/30 
+                        py-1 z-50"
                   (click)="$event.stopPropagation()"
                 >
                   @for (item of userMenuItems(); track $index) {
@@ -123,19 +146,9 @@
                       [index]="$index"
                       [openIndex]="openIndexUser()"
                       (openIndexChange)="openIndexUser.set($event)"
+                      (anyItemClicked)="itemClicked($event)"
                     >
                     </app-znav-items>
-                    <!-- <a 
-                      [routerLink]="item.routerLink" 
-                      [ngClass]="item.textColor ? item.textColor : 'text-gray-700'"
-                      class="gap-2 flex justify-start items-center px-4 py-2 text-sm hover:bg-gray-100"
-                      (click)="item.action && item.action(); isUserMenuOpen.set(false)"
-                    >
-                        @if (item.icon) {
-                            <i [className]="item.icon"></i>
-                        }
-                        <span>{{ item.label }}</span>
-                    </a> -->
                   }
                 </div>
               }
@@ -143,21 +156,31 @@
           } @else {
             <!-- Login and Signup buttons -->
             <div class="hidden lg:flex items-center space-x-3">
-                <!-- Login Button -->
-                <button 
-                    (click)="onLogin()"
-                    class="px-4 py-2  rounded-lg text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition-colors duration-200 shadow-sm"
-                >
-                    Login
-                </button>
+              <!-- Login Button -->
+              <button 
+                (click)="onLogin()"
+                class="px-4 py-2 rounded-lg text-sm font-medium 
+                      text-gray-700 dark:text-gray-200 
+                      hover:text-gray-900 dark:hover:text-white 
+                      hover:bg-gray-100 dark:hover:bg-gray-700 
+                      transition-colors duration-200 
+                      shadow-md dark:shadow-gray-400/60"
+              >
+                Login
+              </button>
 
-                <!-- Sign Up Button -->
-                <button 
-                    (click)="onSignup()"
-                    class="px-5 py-2 whitespace-nowrap rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 shadow-md transition-all duration-200 transform hover:-translate-y-0.5 hover:scale-105"
-                >
-                    Sign Up
-                </button>
+              <!-- Sign Up Button -->
+              <button 
+                (click)="onSignup()"
+                class="px-5 py-2 whitespace-nowrap rounded-lg text-sm font-medium 
+                      text-white 
+                      bg-blue-600 hover:bg-blue-700 
+                      shadow-md dark:shadow-blue-400/30 
+                      transition-all duration-200 
+                      transform hover:-translate-y-0.5 hover:scale-105"
+              >
+                Sign Up
+              </button>
             </div>
           }
         }
@@ -166,7 +189,11 @@
         <div class="lg:hidden">
           <button 
             (click)="toggleMobileMenu()"
-            class="text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white p-2 rounded-md"
+            class="text-gray-600 dark:text-gray-300 
+                  hover:text-gray-900 dark:hover:text-gray-100 
+                  focus:outline-none 
+                  focus:ring-2 focus:ring-inset focus:ring-gray-200 dark:focus:ring-gray-700 
+                  p-2 rounded-md"
           >
             <i class="fas fa-bars h-6 w-6"></i>
           </button>
@@ -177,7 +204,8 @@
 
   <!-- Mobile menu (for small screens) -->
   @if (isMobileMenuOpen()) {
-    <div class="lg:hidden bg-white shadow-lg">
+    <div class="lg:hidden bg-white dark:bg-gray-800 shadow-bottom-only">
+      
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
         <!-- Navigation items -->
          <div class="max-h-96 overflow-y-auto">
@@ -188,42 +216,53 @@
                 [index]="$index"
                 [openIndex]="openIndex()"
                 (openIndexChange)="openIndex.set($event)"
+                (anyItemClicked)="itemClicked($event)"
               ></app-znav-items>
            }
          </div>
 
         <!-- Search bar (for mobile) -->
         @if (showSearchBar()) {
-            <div class="px-3 py-2">
-                <div class="relative">
-                    <!-- Search Input -->
-                    <input 
-                    type="text" 
-                    [value]="searchValue()" 
-                    (input)="searchValue.set($any($event.target).value)"
-                    (keyup.enter)="onSearchSubmit()"
-                    placeholder="Search..." 
-                    class="bg-gray-100 text-gray-800 rounded-full py-2 px-4 w-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white shadow-sm hover:shadow-md"
-                    >
+          <div class="px-3 py-2">
+              <div class="relative">
+                  <!-- Search Input -->
+                  <input 
+                  type="text" 
+                  [value]="searchValue()" 
+                  (input)="searchValue.set($any($event.target).value)"
+                  (keyup.enter)="onSearchSubmit()"
+                  [placeholder]="searchPlaceholder()" 
+                  class="bg-gray-100 text-gray-800 rounded-full py-2 px-4 w-full 
+                  transition-all duration-200 focus:outline-none focus:ring-2 
+                  focus:ring-blue-500 focus:bg-white shadow-sm hover:shadow-md
+                  dark:bg-gray-700 dark:focus:bg-gray-600 dark:shadow-gray-500/40
+                  dark:hover:shadow-gray-500/50 dark:text-gray-200 "
+                  >
 
-                    <!-- Search Button -->
-                    <button 
-                    (click)="onSearchSubmit()"
-                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors duration-200"
-                    >
-                    <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
+                  <!-- Search Button -->
+                  <button 
+                  (click)="onSearchSubmit()"
+                  class="absolute right-3 top-1/2 transform -translate-y-1/2 dark:text-gray-400
+                   text-gray-500 hover:text-gray-700 dark:hover:text-gray-300
+                   transition-colors duration-200"
+                  >
+                  <i class="fas fa-search"></i>
+                  </button>
+              </div>
+          </div>
         }
 
         <!-- Login/Signup buttons (for mobile) -->
         @if (showAuthButtons() && !isLoggedIn()) {
-          <div class="pt-3 pb-4 border-t border-gray-200 space-y-2">
+          <div class="pt-3 pb-4 border-t border-gray-300 dark:border-gray-500 space-y-2">
             <!-- Login Button -->
             <button 
                 (click)="onLogin(); isMobileMenuOpen.set(false)" 
-                class="shadow-sm block text-center w-26 px-4 py-2 text-gray-700 rounded-lg text-base font-medium hover:text-gray-900 hover:bg-gray-100 transition-colors duration-200"
+                class="shadow-md dark:shadow-gray-400/60 
+                block text-center w-26 px-4 py-2 text-gray-700 rounded-lg 
+                text-base font-medium hover:text-gray-900 dark:hover:text-white 
+                dark:hover:bg-gray-700 dark:text-gray-200 
+                hover:bg-gray-100 transition-colors duration-200"
             >
                 Login
             </button>
@@ -231,7 +270,10 @@
             <!-- Sign Up Button -->
             <button 
                 (click)="onSignup(); isMobileMenuOpen.set(false)"
-                class="block px-4 text-center w-26 py-2 text-white bg-blue-600 rounded-lg text-base font-medium hover:bg-blue-700 shadow-md transition-all duration-200 transform hover:-translate-y-0.5 hover:scale-105"
+                class="block px-4 text-center w-26 py-2 text-white bg-blue-600 
+                rounded-lg text-base font-medium hover:bg-blue-700 transition-all 
+                shadow-md dark:shadow-blue-400/30 
+                duration-200 transform hover:-translate-y-0.5 hover:scale-105"
             >
                 Sign Up
             </button>

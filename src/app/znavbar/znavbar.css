@@ -30,3 +30,7 @@ a, button {
 img {
   object-fit: cover;
 }
+
+.shadow-bottom-only {
+  box-shadow: 0 4px 0 0 black;
+}
