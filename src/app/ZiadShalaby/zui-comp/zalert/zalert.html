@@ -1,27 +1,38 @@
-<div class="fixed ml-4 break-all z-50 flex flex-col overflow-y-auto custom-scrollbar p-2 space-y-3"
+<div class="fixed ml-4 break-all z-60 flex flex-col overflow-y-auto custom-scrollbar p-2 space-y-3"
 [ngStyle]="maxHeightStyle" [ngClass]="position()">
   @for (alert of alertConfig(); track alert.id) {
     <div
-      class="pointer-events-auto max-w-sm rounded-lg border p-4 shadow-lg transition-all duration-300 ease-in-out animate-fade-in"
+      class="pointer-events-auto max-w-sm min-h-14 rounded-lg border p-4 shadow-lg 
+            transition-all duration-300 ease-in-out animate-fade-in relative overflow-hidden"
       [class]="alert.bgColor + ' ' + alert.textColor + ' ' + alert.borderColor"
     >
       <div class="flex items-start">
         <i [class]="alert.icon + ' mt-0.5 me-3'"></i>
         <div class="flex-1 text-sm font-medium">{{ alert.message }}</div>
         @if (showCloseButton()) {
-            <button
-                type="button"
-                class="ms-2 inline-flex h-6 w-6 items-center justify-center rounded-full 
-                        text-gray-500 dark:text-gray-300 
-                        hover:bg-gray-200 dark:hover:bg-gray-700 
-                        hover:text-gray-700 dark:hover:text-gray-100 
-                        focus:outline-none"
-                (click)="closeAlert(alert.id!)"
-                >
-                <i class="fas fa-times text-xs"></i>
-            </button>
+          <button
+            type="button"
+            class="ms-2 inline-flex h-6 w-6 items-center justify-center rounded-full 
+                    text-gray-500 dark:text-gray-300 
+                    hover:bg-gray-200 dark:hover:bg-gray-700 
+                    hover:text-gray-700 dark:hover:text-gray-100 
+                    focus:outline-none"
+            (click)="closeAlert(alert.id!)"
+          >
+            <i class="fas fa-times text-xs"></i>
+          </button>
         }
       </div>
+
+      @if(autoClose()) {
+        <!-- Progress bar -->
+        <div class="absolute bottom-0 left-0 h-1 bg-gray-300 dark:bg-gray-700 w-full">
+          <div
+            class="h-1 bg-current transition-[width] duration-100"
+            [style.width.%]="alert.progress ?? 100"
+          ></div>
+        </div>
+      }
     </div>
   }
 </div>

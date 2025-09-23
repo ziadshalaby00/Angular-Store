@@ -1,6 +1,6 @@
 <!-- navbar.component.html -->
 <nav class="bg-white dark:bg-gray-800
-fixed top-0 left-0 right-0 z-9995 shadow-md dark:shadow-gray-400/30">
+fixed top-0 left-0 right-0 z-80 shadow-md dark:shadow-gray-400/30">
   
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16 gap-4">
@@ -50,7 +50,7 @@ fixed top-0 left-0 right-0 z-9995 shadow-md dark:shadow-gray-400/30">
             </button>
             <div [ngClass]="isMoreOpen() ? 'block' : 'hidden'" 
               class="absolute bg-blue-50 dark:bg-blue-950 shadow-md dark:shadow-gray-400/30 
-              rounded-md mt-1 py-1 w-48 z-999">
+              rounded-md mt-1 py-1 w-48 z-80">
               @for(item of moreNavItems(); track $index) {
                 <app-znav-items
                   [openWindow] = 'true'
@@ -136,7 +136,7 @@ fixed top-0 left-0 right-0 z-9995 shadow-md dark:shadow-gray-400/30">
                   class="absolute right-0 mt-2 w-48 
                         bg-white dark:bg-gray-800 
                         rounded-md shadow-md dark:shadow-gray-400/30 
-                        py-1 z-50"
+                        py-1 z-90"
                   (click)="$event.stopPropagation()"
                 >
                   @for (item of userMenuItems(); track $index) {
@@ -290,7 +290,7 @@ fixed top-0 left-0 right-0 z-9995 shadow-md dark:shadow-gray-400/30">
 <!-- Overlay for clicking outside menus -->
 @if (isMobileMenuOpen()) {
   <div 
-    class="fixed inset-0 bg-black bg-opacity-25 z-9994 lg:bg-opacity-0"
+    class="fixed inset-0 bg-black bg-opacity-25 z-70 lg:bg-opacity-0"
     (click)="closeAllMenus()"
   ></div>
 }

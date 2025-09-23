@@ -8,10 +8,11 @@ import { Brand } from '../services/brand';
 import { Zselect } from '../ZiadShalaby/zui-comp/zselect/zselect';
 import { Zpagination } from '../ZiadShalaby/zui-comp/zpagination/zpagination';
 import { Zcarousel } from '../ZiadShalaby/zui-comp/zcarousel/zcarousel';
+import { Zspinner } from '../ZiadShalaby/zui-comp/zspinner/zspinner';
 
 @Component({
   selector: 'app-products',
-  imports: [FormsModule, CommonModule, Zselect, Zpagination, Zcarousel],
+  imports: [FormsModule, CommonModule, Zselect, Zpagination, Zcarousel, Zspinner],
   templateUrl: './products.html',
   styleUrl: './products.css'
 })

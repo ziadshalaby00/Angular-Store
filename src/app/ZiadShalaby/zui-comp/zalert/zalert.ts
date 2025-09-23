@@ -6,6 +6,7 @@ export interface Alert {
   id: number | string; // نستخدمه للتتبع والإغلاق
   message: string;
   type: 'success' | 'danger' | 'warning' | 'info';
+  progress?: number;
 }
 
 @Component({
@@ -96,14 +97,26 @@ export class Zalert {
 
       alerts.forEach(alert => {
         if (!this.oldAlerts().has(alert.id)) {
-          // إضافة التنبيه الجديد
           const set = new Set(this.oldAlerts());
           set.add(alert.id);
           this.oldAlerts.set(set);
 
-          // مؤقت الإغلاق التلقائي
           if (this.autoClose()) {
-            setTimeout(() => this.closeAlert(alert.id), this.duration());
+            const start = Date.now();
+            const interval = setInterval(() => {
+              const elapsed = Date.now() - start;
+              const progress = Math.max(0, 100 - (elapsed / this.duration()) * 100);
+
+              // تحديث progress
+              this.zalertService.alerts.update(all => {
+                return all.map(a => a.id === alert.id ? { ...a, progress } : a);
+              });
+
+              if (elapsed >= this.duration()) {
+                clearInterval(interval);
+                this.closeAlert(alert.id);
+              }
+            }, 100);
           }
         }
       });

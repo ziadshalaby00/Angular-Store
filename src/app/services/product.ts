@@ -11,14 +11,16 @@ export class Product {
 
   products = signal<any[]>([]);
   error = signal<string | null>(null);
+  loading = signal<boolean>(false)
 
-  currentPage = signal(1);
+  currentPage = signal(0);
   pageSize = signal(10);
-  totalPages = signal(1);
-  totalItems = signal(1)
+  totalPages = signal(0);
+  totalItems = signal(0)
 
   loadProducts(filters: any) {
     this.error.set(null);
+    this.loading.set(true)
 
     let params = new HttpParams();
     Object.keys(filters).forEach(key => {
@@ -26,7 +28,7 @@ export class Product {
         params = params.set(key, filters[key]());
       }
     });
-    
+
     this.http.get(`${this.config.apiUrl}/api/products/get-products/`, { params }).subscribe({
       next: (data: any) => {
         console.log(data)
@@ -45,10 +47,13 @@ export class Product {
         } else {
           this.currentPage.set(prevPage + 1);
         }
+
+        this.loading.set(false)
       },
       error: (err) => {
         console.log(err)
         this.error.set('Failed to load products');
+        this.loading.set(false)
       }
     });
   }
