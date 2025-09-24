@@ -31,11 +31,8 @@ fixed top-0 left-0 right-0 z-80 shadow-md dark:shadow-gray-400/30">
       <div class="hidden lg:flex items-center space-x-4">
         @for (item of visibleNavItems(); track $index) {
           <app-znav-items
-            [openWindow] = 'true'
             [item]="item"
-            [index]="$index"
-            [openIndex]="openIndex()"
-            (openIndexChange)="openIndex.set($event)"
+            [collectionName]="'navItems'"
             (anyItemClicked)="itemClicked($event)"
           >
           </app-znav-items>
@@ -50,14 +47,11 @@ fixed top-0 left-0 right-0 z-80 shadow-md dark:shadow-gray-400/30">
             </button>
             <div [ngClass]="isMoreOpen() ? 'block' : 'hidden'" 
               class="absolute bg-blue-50 dark:bg-blue-950 shadow-md dark:shadow-gray-400/30 
-              rounded-md mt-1 py-1 w-48 z-80">
+              rounded-md mt-1 py-1 min-w-48 z-80">
               @for(item of moreNavItems(); track $index) {
                 <app-znav-items
-                  [openWindow] = 'true'
                   [item]="item"
-                  [index]="$index"
-                  [openIndex]="openIndex()" 
-                  (openIndexChange)="openIndex.set($event)"
+                  [collectionName]="'navItems'"
                   (anyItemClicked)="itemClicked($event)"
                 >
                 </app-znav-items>
@@ -139,13 +133,10 @@ fixed top-0 left-0 right-0 z-80 shadow-md dark:shadow-gray-400/30">
                         py-1 z-90"
                   (click)="$event.stopPropagation()"
                 >
-                  @for (item of userMenuItems(); track $index) {
+                  @for (item of getUserMenuItems(); track $index) {
                     <app-znav-items
-                      [openWindow]="false"
                       [item]="item"
-                      [index]="$index"
-                      [openIndex]="openIndexUser()"
-                      (openIndexChange)="openIndexUser.set($event)"
+                      [collectionName]="'MenuItems'"
                       (anyItemClicked)="itemClicked($event)"
                     >
                     </app-znav-items>
@@ -209,14 +200,11 @@ fixed top-0 left-0 right-0 z-80 shadow-md dark:shadow-gray-400/30">
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
         <!-- Navigation items -->
          <div class="max-h-96 overflow-y-auto">
-           @for (item of navItems(); track $index) {
+           @for (item of mobileNavItems(); track $index) {
               <app-znav-items
-                [openWindow] = 'false'
                 [item]="item"
-                [index]="$index"
-                [openIndex]="openIndex()"
-                (openIndexChange)="openIndex.set($event)"
                 (anyItemClicked)="itemClicked($event)"
+                [collectionName]="'navItems'"
               ></app-znav-items>
            }
          </div>

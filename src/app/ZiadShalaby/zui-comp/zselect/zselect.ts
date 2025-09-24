@@ -19,13 +19,13 @@ export class Zselect {
   items = input.required<DropdownItem[]>();
 
   // Show Search Input
-  showSearch = input(true)
+  showSearch = input<boolean>(true)
 
   // Input signals (optional with default values)
-  placeholder = input('Select an option...');
-  searchPlaceholder = input('Search...');
-  noResultsText = input('No results found');
-  showClearButton = input(true);
+  placeholder = input<string>('Select an option...');
+  searchPlaceholder = input<string>('Search...');
+  noResultsText = input<string>('No results found');
+  showClearButton = input<boolean>(true);
 
   // Model for two-way binding
   selectedItem = model<DropdownItem | null>(null);
@@ -51,8 +51,8 @@ export class Zselect {
   selectionCleared = output<void>();
   
   // Local signals
-  isOpen = signal(false);
-  searchQuery = signal('');
+  isOpen = signal<boolean>(false);
+  searchQuery = signal<string>('');
 
   // Computed signals
   filteredItems = computed(() => {

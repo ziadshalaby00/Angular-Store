@@ -1,15 +1,18 @@
-import { Component, input, output, signal, WritableSignal } from '@angular/core';
+import { Component, computed, effect, inject, input, output, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ZnavItemsService } from '../znavItemsService/znav-items-service';
 
 export interface NavbarItem {
   label: string;
   routerLink?: string;
   action?: () => void;
   children?: NavbarItem[];
-  textColor?: string;
-  icon?: string;
-  hoverColor?: string;
+  iconClass?: string;
+  textColorClass?: string;
+  hoverType?: 'text' | 'bg';
+  hoverTextColorClass?: string;
+  childrenOpenWindow?: boolean;
 }
 
 @Component({
@@ -19,44 +22,51 @@ export interface NavbarItem {
   styleUrl: './znav-items.css'
 })
 export class ZnavItems {
-  openWindow = input.required<boolean>();
+  private znavItemsService: ZnavItemsService = inject(ZnavItemsService);
+
   item = input.required<NavbarItem>();
-  index = input.required<number>();
+  collectionName = input.required<string>();
+  anyItemClicked = output<NavbarItem>();
 
-  openIndex = input.required<number | null | undefined>();
-  openIndexChange = output<number | null | undefined>();
+  // index ثابت لكل instance (مش computed متغير)
+  index = signal<string>(crypto.randomUUID());
 
-  anyItemClicked = output<string>()
+  constructor() {
+    effect((): void => {
+      const col: string = this.collectionName();
+      if (col) this.znavItemsService.addItemInCollection(col, this.index());
+    });
+  }
 
-  toggle() {
-    if (this.openIndex() === this.index()) {
-      this.openIndexChange.emit(null);   // يقفل الكل
+  toggle(): void {
+    const currentOpen: string = this.znavItemsService.openIndex(this.collectionName());
+    // لازم نستدعي this.index() عشان نحصل على القيمة النصية
+    if (currentOpen === this.index()) {
+      this.znavItemsService.onOpenIndexChange(this.collectionName(), '');
     } else {
-      this.openIndexChange.emit(this.index()); // يفتح ده ويقفل الباقي
+      this.znavItemsService.onOpenIndexChange(this.collectionName(), this.index());
     }
   }
 
-  isOpen() {
-    return this.openIndex() === this.index();
-  }
+  isOpen = computed<boolean>((): boolean => 
+    this.znavItemsService.openIndex(this.collectionName()) === this.index()
+  );
 
-  onItemClick() {
+  onItemClick(): void {
     this.item().action?.();
-    this.anyItemClicked.emit(this.item().label)
+    this.anyItemClicked.emit(this.item());
   }
 
-  onChildClick(child: NavbarItem) {
-    child.action?.();
-    this.anyItemClicked.emit(child.label)
-  }
+  getItemClasses = (item: NavbarItem): string => {
+    const textColor: string = item.textColorClass || 'text-gray-600 dark:text-gray-300';
 
-  getItemClasses(item: NavbarItem) {
-    return {
-      // لون النص العادي
-      [item.textColor || 'text-gray-600 dark:text-gray-300']: true,
+    let hover: string = '';
+    if (item.hoverType === 'text') {
+      hover = item.hoverTextColorClass || 'hover:text-gray-900 dark:hover:text-gray-100';
+    } else {
+      hover = 'hover:bg-gray-100 dark:hover:bg-gray-700';
+    }
 
-      // لون النص عند التحويم
-      [item.hoverColor || 'hover:text-gray-900 dark:hover:text-gray-100']: true,
-    };
+    return `${textColor} ${hover}`;
   }
 }

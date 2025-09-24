@@ -1,6 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { Znavbar, UserProfile } from '../ZiadShalaby/zui-comp/znavbar/znavbar';
-import { NavbarItem } from '../ZiadShalaby/zui-comp/znav-items/znav-items';
+import { Znavbar, NavbarItemExport , UserProfile } from '../ZiadShalaby/zui-comp/znavbar/znavbar';
 import { ZalertService } from '../ZiadShalaby/zui-comp/zalertService/zalert-service';
 
 @Component({
@@ -10,22 +9,30 @@ import { ZalertService } from '../ZiadShalaby/zui-comp/zalertService/zalert-serv
   styleUrl: './navbar.css'
 })
 export class Navbar {
-  alertService = inject(ZalertService)
+  alertService: ZalertService = inject(ZalertService)
 
-  logoUrl = 'https://i.postimg.cc/rsCB0PfM/android-chrome-512x512.png';
-  isLoggedIn = signal(true);
+  logoUrl: string = 'https://i.postimg.cc/rsCB0PfM/android-chrome-512x512.png';
+  isLoggedIn = signal<boolean>(true);
 
-  navItems: NavbarItem[] = [
-    { label: 'Test', routerLink: '/test', icon: 'fa-solid fa-vial text-lg', textColor: "text-green-700", hoverColor: 'hover:text-green-800 dark:hover:text-green-600' },
-    { label: 'Products', routerLink: '/products', icon: 'fas fa-tag text-lg' },
-    { label: 'Cart', routerLink: '/cart', icon: 'fas fa-shopping-cart text-blue-700 text-lg' },
-    { label: 'About Us', routerLink: '/about'},
-    { label: 'Contact Us', routerLink: '/contact'},
+  navItems: NavbarItemExport[] = [
+    { 
+      label: 'Test', 
+      routerLink: '/test', 
+      iconClass: 'fa-solid fa-vial text-lg', 
+      textColorClass: "text-green-700", 
+      hoverType: 'text',
+      hoverTextColorClass: 'hover:text-green-800 dark:hover:text-green-600' 
+    },
+    { label: 'Products', routerLink: '/products', iconClass: 'fas fa-tag text-lg', hoverType: 'text' },
+    { label: 'Cart', routerLink: '/cart', iconClass: 'fas fa-shopping-cart text-blue-700 text-lg', hoverType: 'text' },
+    { label: 'About Us', routerLink: '/about', hoverType: 'text'},
+    { label: 'Contact Us', routerLink: '/contact', hoverType: 'text'},
     {
       label: 'Legal Pages',
+      hoverType: 'text',
       children: [
-        { label: 'Privacy Policy', routerLink: '/privacyPolicy'},
-        { label: 'Terms & Conditions', routerLink: '/termsConditions'},
+        { label: 'Privacy Policy', routerLink: '/privacyPolicy', hoverType: 'bg'},
+        { label: 'Terms & Conditions', routerLink: '/termsConditions', hoverType: 'bg'},
       ]
     },
   ];
@@ -35,33 +42,36 @@ export class Navbar {
     email: 'ahmed@example.com',
   };
 
-  userMenuItems: NavbarItem[] = [
-    { label: 'Profile', routerLink: '/profile', icon: 'fa-solid fa-user text-lg' },
+  userMenuItems: NavbarItemExport[] = [
+    { label: 'Profile', routerLink: '/profile', iconClass: 'fa-solid fa-user text-lg', hoverType: 'text' },
     { 
       label: 'Cart', 
       routerLink: '/cart', 
-      icon: 'fas fa-shopping-cart text-lg text-blue-700', 
+      iconClass: 'fas fa-shopping-cart text-lg text-blue-700', 
+      hoverType: 'text'
     },
     { 
       label: 'Dashboard', 
-      icon: 'fa-solid fa-gear',
+      iconClass: 'fa-solid fa-gear',
+      hoverType: 'text',
       children: [
         { 
           label: 'Orders', 
           routerLink: '/orders', 
-          icon: 'fas fa-box text-lg text-indigo-500',
-          textColor: '',
+          iconClass: 'fas fa-box text-lg text-indigo-500',
+          hoverType: 'bg'
         },
-        { label: 'Addresses', routerLink: '/addresses', icon: 'fa-solid fa-location-dot text-lg' },
-        { label: 'Reviews', routerLink: '/reviews', icon: 'fa-solid fa-star text-lg' },
+        { label: 'Addresses', routerLink: '/addresses', iconClass: 'fa-solid fa-location-dot text-lg', hoverType: 'bg' },
+        { label: 'Reviews', routerLink: '/reviews', iconClass: 'fa-solid fa-star text-lg', hoverType: 'bg' },
       ]
     },
     { 
       label: 'Logout', 
       action: () => this.logout(),
-      textColor: 'text-red-700',
-      icon: 'fas fa-sign-out-alt text-lg',
-      hoverColor: 'hover:text-red-500'
+      textColorClass: 'text-red-700',
+      iconClass: 'fas fa-sign-out-alt text-lg',
+      hoverType: 'text',
+      hoverTextColorClass: 'hover:text-red-800 dark:hover:text-red-600'
     }
   ];
 

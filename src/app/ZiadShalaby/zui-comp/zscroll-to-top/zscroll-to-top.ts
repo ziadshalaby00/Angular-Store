@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, input, signal } from '@angular/core';
 
+export type positionType = 'left' | 'right'
+
 @Component({
   selector: 'app-zscroll-to-top',
   imports: [CommonModule],
@@ -9,12 +11,12 @@ import { Component, computed, input, signal } from '@angular/core';
 })
 export class ZscrollToTop {
   // ✅ Input Signals (Modern Angular)
-  position = input<'left' | 'right'>('right'); // default: right
+  position = input<positionType>('right'); // default: right
   circleBgColor = input<string>('text-gray-400/80')
   arrowAprogressColor = input<string>('text-blue-600')
 
   // Internal Signals
-  scrollY = signal(0);
+  scrollY = signal<number>(0);
 
   readonly circleRadius = 22;
   readonly circleCircumference = 2 * Math.PI * this.circleRadius;

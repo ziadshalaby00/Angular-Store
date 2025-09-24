@@ -20,19 +20,19 @@ export class Zspinner {
   size = input<LoaderSize>('md');
 
   // computed classes (return strings)
-  wrapperClasses = computed(() =>
+  wrapperClasses = computed<string>(() =>
     this.isFloating()
       ? 'fixed inset-0 flex items-center justify-center z-100 bg-black/40 dark:bg-white/30'
       : 'flex items-center justify-center'
   );
 
-  boxClasses = computed(() =>
+  boxClasses = computed<string>(() =>
     this.withBox()
       ? `p-4 rounded-lg shadow-md ${this.boxColor()}`
       : ''
   );
 
-  spinnerSizeTextClass = computed(() => {
+  spinnerSizeTextClass = computed<string>(() => {
     const sizes: Record<LoaderSize, string> = {
       sm: 'text-2xl',
       md: 'text-4xl',
@@ -41,7 +41,7 @@ export class Zspinner {
     return sizes[this.size()];
   });
 
-  spinnerSizeDotsClass = computed(() => {
+  spinnerSizeDotsClass = computed<string>(() => {
     const sizes: Record<LoaderSize, string> = {
       sm: 'size-2',
       md: 'size-3',
@@ -50,7 +50,7 @@ export class Zspinner {
     return sizes[this.size()];
   });
 
-  spinnerSizeBarsClass = (num: number) => {
+  spinnerSizeBarsClass = (num: number): string => {
     const sizes: Record<LoaderSize, string[]> = {
       sm: ['w-0.5 h-1.5', 'w-0.5 h-2.5', 'w-0.5 h-3.5'],
       md: ['w-1 h-3', 'w-1 h-4', 'w-1 h-5'],
@@ -59,7 +59,7 @@ export class Zspinner {
     return sizes[this.size()][num - 1];
   };
 
-  spinnerSizeProClass = computed(() => {
+  spinnerSizeProClass = computed<string>(() => {
      const sizes: Record<LoaderSize, string> = {
       sm: 'border-t-2 border-b-2 h-6 w-6',
       md: 'border-t-4 border-b-4 h-10 w-10',
@@ -68,7 +68,7 @@ export class Zspinner {
     return sizes[this.size()];
   })
 
-  spinnerSizePulseClass = computed(() => {
+  spinnerSizePulseClass = computed<string>(() => {
      const sizes: Record<LoaderSize, string> = {
       sm: 'border-2 h-6 w-6',
       md: 'border-4 h-10 w-10',
@@ -77,7 +77,7 @@ export class Zspinner {
     return sizes[this.size()];
   })
 
-  spinnerSizeDoubleClass = (num: 1 | 2) => {
+  spinnerSizeDoubleClass = (num: 1 | 2): string => {
      const sizes: Record<LoaderSize, {1: string, 2: string}> = {
       sm: {
         1: 'border-2 size-6',
@@ -95,15 +95,15 @@ export class Zspinner {
     return sizes[this.size()][num];
   }
 
-  bgColor = computed(() => {
+  bgColor = computed<string>(() => {
     return `bg-${this.color()}`
   })
 
-  borderColor = computed(() => {
+  borderColor = computed<string>(() => {
     return `border-${this.color()}`
   })
 
-  textColor = computed(() => {
+  textColor = computed<string>(() => {
     return `text-${this.color()}`
   })
 }

@@ -4,44 +4,36 @@
       <button 
         (click)="toggle()" 
         [ngClass]="getItemClasses(item())"
-        class="px-3 py-2 rounded-md 
-              text-sm md:text-base font-medium 
-              flex items-center w-full md:w-auto text-left"
+        class="px-3 py-2 gap-2 flex items-center 
+              rounded-md  md:text-base font-medium 
+              text-sm w-full text-left"
         aria-haspopup="true"
-        aria-expanded="{{ isOpen() }}"
+        [attr.aria-expanded]="isOpen()"
       >
         <div class="flex gap-2 items-center">
-          @if (item().icon) {
-            <i [class]="item().icon"></i>
+          @if (item().iconClass) {
+            <i [class]="item().iconClass"></i>
           }
-          {{ item().label }}
+          <span class="break-word">{{ item().label }}</span>
         </div>
-        <i class="fas fa-chevron-down ml-1 text-xs"></i>
+        <i class="fas fa-chevron-down mr-2 ml-auto text-xs"></i>
       </button>
 
       <!-- Desktop dropdown -->
       <div [ngClass]="{
                 'block': isOpen(),
                 'hidden': !isOpen(),
-                'absolute left-6 bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-400/30 rounded-md mt-1 py-1 w-48 z-90': openWindow(),
-                'px-4 mt-1': !openWindow()
+                'absolute left-6 bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-400/30 rounded-md mt-1 py-1 w-48 z-90': item().childrenOpenWindow,
+                'px-4 mt-1': !item().childrenOpenWindow
             }"
       >
         @for (child of item().children; track $index) {
-          <a
-            [routerLink]="child.routerLink"
-            [ngClass]="child.textColor ? child.textColor : 'text-gray-700 dark:text-gray-200'"
-            class="gap-2 flex justify-start items-center 
-                  px-3 md:px-4 py-2 
-                  text-sm md:text-base 
-                  hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
-            (click)="onChildClick(child)"
+          <app-znav-items
+            [item]="child"
+            [collectionName]="collectionName() + '-' + index()"
+            (anyItemClicked)="this.anyItemClicked.emit($event)"
           >
-            @if (child.icon) {
-              <i [class]="child.icon"></i>
-            }
-            <span>{{ child.label }}</span>
-          </a>
+          </app-znav-items>
         }
       </div>
     </div>
@@ -49,15 +41,15 @@
     <a
       [routerLink]="item().routerLink"
       [ngClass]="getItemClasses(item())"
-      class="px-3 py-2 gap-2 flex items-center 
-             rounded-md 
-             text-sm md:text-base font-medium"
+      class="px-3 py-2 gap-2 
+            flex items-center rounded-md 
+            text-sm md:text-base font-medium"
       (click)="onItemClick()"
     >
-      @if (item().icon) {
-        <i [class]="item().icon"></i>
+      @if (item().iconClass) {
+        <i [class]="item().iconClass"></i>
       }
-      <span>{{ item().label }}</span>
+      <span class="break-word">{{ item().label }}</span>
     </a>
   }
 }

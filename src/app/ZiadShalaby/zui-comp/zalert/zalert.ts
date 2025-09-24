@@ -9,6 +9,15 @@ export interface Alert {
   progress?: number;
 }
 
+export interface AlertFullType extends Alert {
+  icon: string;
+  bgColor: string;
+  textColor: string;
+  borderColor: string;
+}
+
+export type oldAlertsType = Set<number | string>
+
 @Component({
   selector: 'app-zalert',
   imports: [CommonModule],
@@ -16,10 +25,10 @@ export interface Alert {
   styleUrl: './zalert.css'
 })
 export class Zalert {
-  zalertService = inject(ZalertService)
+  zalertService: ZalertService = inject(ZalertService)
   
-  alerts = computed(() => this.zalertService.alerts());
-  private oldAlerts = signal<Set<number | string>>(new Set());
+  alerts = computed<Alert[]>(() => this.zalertService.alerts());
+  private oldAlerts = signal<oldAlertsType>(new Set());
 
   position = input<string>('top-4 right-4'); // e.g., "top-6 left-6", "bottom-4 right-10"
   showCloseButton = input<boolean>(true);
@@ -27,8 +36,8 @@ export class Zalert {
   autoClose = input<boolean>(true)
   duration = input<number>(5000)
 
-  get maxHeightStyle() {
-    let topValue = 0;
+  get maxHeightStyle(): {maxHeight: String} {
+    let topValue: number = 0;
 
     for (const s of this.position().split(' ')) {
       if (s.startsWith('top-')) {
@@ -37,15 +46,15 @@ export class Zalert {
       }
     }
 
-    const topRem = topValue * 0.25; // Tailwind spacing 1 = 0.25rem
+    const topRem: number = topValue * 0.25; // Tailwind spacing 1 = 0.25rem
 
     return {
       maxHeight: `calc(100vh - ${topRem}rem)`
     };
   }
 
-  alertConfig = computed(() => {
-    const alerts = this.alerts()
+  alertConfig = computed<AlertFullType[]>(() => {
+    const alerts: Alert[] = this.alerts()
 
     return alerts.map(alert => {
       const config = {
@@ -92,12 +101,12 @@ export class Zalert {
   });
 
   constructor() {
-    effect(() => {
-      const alerts = this.alerts();
+    effect((): void => {
+      const alerts: Alert[] = this.alerts();
 
-      alerts.forEach(alert => {
+      alerts.forEach((alert: Alert) => {
         if (!this.oldAlerts().has(alert.id)) {
-          const set = new Set(this.oldAlerts());
+          const set: oldAlertsType = new Set(this.oldAlerts());
           set.add(alert.id);
           this.oldAlerts.set(set);
 
@@ -124,7 +133,7 @@ export class Zalert {
   }
 
   closeAlert(id: string | number): void {
-    const set = new Set(this.oldAlerts());
+    const set: oldAlertsType = new Set(this.oldAlerts());
     set.delete(id);
     this.oldAlerts.set(set);
 

@@ -19,6 +19,8 @@ export interface CarouselItem {
   [key: string]: any; // Allow for additional properties
 }
 
+export type itemShapeType = 'rect' | 'circle'
+
 @Component({
   selector: 'app-zcarousel',
   imports: [CommonModule],
@@ -28,18 +30,18 @@ export interface CarouselItem {
 export class Zcarousel {
   // Inputs
   items = input.required<CarouselItem[]>();
-  currentIndex = model(0);
+  currentIndex = model<number>(0);
   
-  arrows = input(true);                        // show/hide arrows
-  arrowColorClass = input('text-gray-700');    // arrow color
+  arrows = input<boolean>(true);                        // show/hide arrows
+  arrowColorClass = input<string>('text-gray-700');    // arrow color
 
-  itemShape = input<'rect' | 'circle'>('rect');
+  itemShape = input<itemShapeType>('rect');
   itemShapeSize = input<number>(300);
 
-  showIndicators = input(true);
+  showIndicators = input<boolean>(true);
 
-  autoPlay = input(true);
-  duration = input(3000);
+  autoPlay = input<boolean>(true);
+  duration = input<number>(3000);
 
   maxItemsPerBox = input<number>(4); // أقصى عدد ممكن يظهر في الـ box
 
@@ -67,7 +69,7 @@ export class Zcarousel {
     10: 'w-1/10',
   };
 
-  itemsPerBoxClass = computed(() => this.WIDTH_MAP[this.itemsPerBox()] || 'w-full');
+  itemsPerBoxClass = computed<string>(() => this.WIDTH_MAP[this.itemsPerBox()] || 'w-full');
 
   get shape(): string {
     if (this.itemShape() === 'rect') {
@@ -83,14 +85,14 @@ export class Zcarousel {
     return `${this.itemsPerBoxClass()} justify-center items-center`;
   }
 
-  private autoPlayTimer: any;
+  private autoPlayTimer: number | null = null;
 
   // ========================================================
-  totalBoxes = computed(() =>
+  totalBoxes = computed<number>(() =>
     Math.ceil(this.items().length / this.itemsPerBox())
   );
 
-  indicatorBoxes = computed(() =>
+  indicatorBoxes = computed<number[]>(() =>
     Array.from({ length: this.totalBoxes() }, (_, i) => i)
   );
 
@@ -131,9 +133,9 @@ export class Zcarousel {
 
     // اربط translate بالـ index الجديد
     const containerWidth = containerEl.nativeElement.offsetWidth;
-    this.currentTranslate = -newIndex * containerWidth;
+    this.currentTranslate.set(-newIndex * containerWidth);
     trackEl.nativeElement.style.transition = 'transform 0.3s ease-out';
-    trackEl.nativeElement.style.transform = `translateX(${this.currentTranslate}px)`;
+    trackEl.nativeElement.style.transform = `translateX(${this.currentTranslate()}px)`;
 
     this.restartAutoPlay();
   }
@@ -197,10 +199,10 @@ export class Zcarousel {
 
   carouselTrack = viewChild<ElementRef<HTMLDivElement>>('carouselTrack')
 
-  private dragging = false;
-  private startX = 0;
-  private currentTranslate = 0;
-  private prevTranslate = 0;
+  private dragging = signal<boolean>(false);
+  private startX = signal<number>(0);
+  private currentTranslate = signal<number>(0);
+  private prevTranslate = signal<number>(0);
 
   onDragStart(event: PointerEvent) {
     event.preventDefault();
@@ -208,9 +210,9 @@ export class Zcarousel {
     const containerEl = this.carouselContainer();
     if (!trackEl || !containerEl) return;
 
-    this.dragging = true;
-    this.startX = event.clientX;
-    this.prevTranslate = -this.currentIndex() * containerEl.nativeElement.offsetWidth;
+    this.dragging.set(true);
+    this.startX.set(event.clientX);
+    this.prevTranslate.set(-this.currentIndex() * containerEl.nativeElement.offsetWidth);
 
     // إزالة transition أثناء السحب
     trackEl.nativeElement.style.transition = 'none';
@@ -218,32 +220,32 @@ export class Zcarousel {
   }
 
   onDragMove(event: PointerEvent) {
-    if (!this.dragging) return;
+    if (!this.dragging()) return;
     const trackEl = this.carouselTrack();
     if (!trackEl) return;
 
-    const delta = event.clientX - this.startX;
-    this.currentTranslate = this.prevTranslate + delta;
-    trackEl.nativeElement.style.transform = `translateX(${this.currentTranslate}px)`;
+    const delta = event.clientX - this.startX();
+    this.currentTranslate.set(this.prevTranslate() + delta);
+    trackEl.nativeElement.style.transform = `translateX(${this.currentTranslate()}px)`;
   }
 
   onDragEnd() {
-    if (!this.dragging) return;
-    this.dragging = false;
+    if (!this.dragging()) return;
+    this.dragging.set(false);
 
     const trackEl = this.carouselTrack();
     const containerEl = this.carouselContainer();
     if (!trackEl || !containerEl) return;
 
     const containerWidth = containerEl.nativeElement.offsetWidth;
-    const movedSlides = Math.round(-this.currentTranslate / containerWidth);
+    const movedSlides = Math.round(-this.currentTranslate() / containerWidth);
 
     const newIndex = Math.max(0, Math.min(this.totalBoxes() - 1, movedSlides));
     this.updateIndex(newIndex);
 
     trackEl.nativeElement.style.transition = 'transform 0.3s ease-out';
-    this.currentTranslate = -this.currentIndex() * containerWidth;
-    trackEl.nativeElement.style.transform = `translateX(${this.currentTranslate}px)`;
+    this.currentTranslate.set(-this.currentIndex() * containerWidth);
+    trackEl.nativeElement.style.transform = `translateX(${this.currentTranslate()}px)`;
 
     if (this.autoPlay()) this.startAutoPlay();
   }

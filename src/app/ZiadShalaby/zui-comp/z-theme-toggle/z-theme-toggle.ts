@@ -1,6 +1,8 @@
 import { Component, signal, HostListener, effect, output, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+export type themeTypes = 'light' | 'dark'
+
 @Component({
   selector: 'app-z-theme-toggle',
   imports: [CommonModule],
@@ -9,20 +11,20 @@ import { CommonModule } from '@angular/common';
 })
 export class ZThemeToggle {
   // Theme state
-  currentTheme = signal<'light' | 'dark'>('light');
-  isOpen = signal(false);
+  currentTheme = signal<themeTypes>('light');
+  isOpen = signal<boolean>(false);
 
   // Output event
-  themeChange = output<'light' | 'dark'>();
+  themeChange = output<themeTypes>();
 
   // ✅ Input signals for body classes
-  bodyBgClass = input('bg-white dark:bg-gray-900');
-  bodyTextClass = input('text-gray-900 dark:text-gray-100');
+  bodyBgClass = input<string>('bg-white dark:bg-gray-900');
+  bodyTextClass = input<string>('text-gray-900 dark:text-gray-100');
 
   constructor() {
     // Initialize theme from localStorage or prefer-color-scheme
-    effect(() => {
-      const theme = this.currentTheme();
+    effect((): void => {
+      const theme: themeTypes = this.currentTheme();
       document.documentElement.classList.toggle('dark', theme === 'dark');
       localStorage.setItem('theme', theme);
 
@@ -31,8 +33,8 @@ export class ZThemeToggle {
     });
 
     // Initialize theme
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark';
-    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const savedTheme: themeTypes = localStorage.getItem('theme') as 'light' | 'dark';
+    const systemDark: boolean = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
     if (savedTheme) {
       this.currentTheme.set(savedTheme);
@@ -48,11 +50,11 @@ export class ZThemeToggle {
     });
   }
 
-  toggleOpen() {
+  toggleOpen(): void {
     this.isOpen.set(!this.isOpen());
   }
 
-  setTheme(theme: 'light' | 'dark') {
+  setTheme(theme: 'light' | 'dark'): void {
     this.currentTheme.set(theme);
     this.isOpen.set(false);
     this.themeChange.emit(theme); // 👈 Emit to parent
@@ -60,8 +62,8 @@ export class ZThemeToggle {
 
   // Close the menu when clicking outside
   @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
+  onDocumentClick(event: MouseEvent): void {
+    const target: HTMLElement = event.target as HTMLElement;
     if (!target.closest('app-z-theme-toggle') && this.isOpen()) {
       this.isOpen.set(false);
     }

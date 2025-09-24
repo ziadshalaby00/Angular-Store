@@ -9,6 +9,8 @@ export interface UserProfile {
   email?: string;
 }
 
+export type NavbarItemExport = Omit<NavbarItem, 'childrenOpenWindow'>;
+
 @Component({
   selector: 'app-znavbar',
   imports: [RouterModule, CommonModule, ZnavItems],
@@ -23,12 +25,12 @@ export class Znavbar {
   showAuthButtons = input<boolean>(true);
   showSearchBar = input<boolean>(false);
 
-  navItems = input<NavbarItem[]>([]);
+  navItems = input<NavbarItemExport[]>([]);
 
   isLoggedIn = input<boolean>(false);
   userProfile = input<UserProfile | undefined>();
 
-  userMenuItems = input<NavbarItem[]>([]);
+  userMenuItems = input<NavbarItemExport[]>([]);
 
   // الأحداث الصادرة
   loginClicked = output<void>();
@@ -36,28 +38,28 @@ export class Znavbar {
   searchSubmitted = output<string>();
 
   // حالة القائمة المتنقلة (للشاشات الصغيرة)
-  isMobileMenuOpen = signal(false);
+  isMobileMenuOpen = signal<boolean>(false);
 
   // حالة قائمة المستخدم
-  isUserMenuOpen = signal(false);
+  isUserMenuOpen = signal<boolean>(false);
 
   // قيمة البحث
-  searchValue = signal('');
+  searchValue = signal<string>('');
 
-  searchPlaceholder = input('Search...')
+  searchPlaceholder = input<string>('Search...')
 
   // دالة للبحث
-  onSearchSubmit() {
+  onSearchSubmit(): void {
     this.searchSubmitted.emit(this.searchValue());
   }
 
   // دالة لتسجيل الدخول
-  onLogin() {
+  onLogin(): void {
     this.loginClicked.emit();
   }
 
   // دالة للتسجيل
-  onSignup() {
+  onSignup(): void {
     this.signupClicked.emit();
   }
 
@@ -75,22 +77,41 @@ export class Znavbar {
   closeAllMenus() {
     this.isMobileMenuOpen.set(false);
     this.isUserMenuOpen.set(false);
+    this.isMoreOpen.set(false)
   }
 
   // ====================================================================
 
-  openIndex = signal<number | null | undefined>(null);
-  openIndexUser = signal<number | null | undefined>(null);
+  visibleNavItems = computed<NavbarItem[]>(() => {
+    if (this.showSearchBar()) {
+      return this.navItems().slice(0, 2).map(n => this.toNavbarItem(n, true));
+    }
+    return this.navItems().slice(0, 5).map(n => this.toNavbarItem(n, true));
+  });
 
-  visibleNavItems = computed(() => {
-    if(this.showSearchBar()) return this.navItems().slice(0, 2)
-    return this.navItems().slice(0, 5)
+  moreNavItems = computed<NavbarItem[]>(() => {
+    if (this.showSearchBar()) {
+      return this.navItems().slice(2).map(n => this.toNavbarItem(n, true));
+    }
+    return this.navItems().slice(5).map(n => this.toNavbarItem(n, true));
   });
-  moreNavItems = computed(() => {
-    if(this.showSearchBar()) return this.navItems().slice(2)
-    return this.navItems().slice(5)
-  });
+
   isMoreOpen = signal(false)
+
+  mobileNavItems = computed<NavbarItem[]>(() => 
+    this.navItems().map((n: NavbarItemExport) => this.toNavbarItem(n, false))
+  );
+
+  getUserMenuItems = computed<NavbarItem[]>(() => 
+    this.userMenuItems().map((n: NavbarItemExport) => this.toNavbarItem(n, false))
+  );
+
+  private toNavbarItem(item: NavbarItemExport, childrenOpenWindow = false): NavbarItem {
+    return {
+      ...item,
+      childrenOpenWindow
+    };
+  }
 
   // ====================================================================
 
@@ -111,9 +132,7 @@ export class Znavbar {
 
   // ==================================================================== 
 
-  itemClicked(event: string) {
+  itemClicked(event: NavbarItem) {
     this.closeAllMenus()
-    this.openIndex.set(null)
-    this.openIndexUser.set(null)
   }
 }

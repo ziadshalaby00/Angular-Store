@@ -12,13 +12,13 @@ export interface NewAlert {
 export class ZalertService {
   alerts = signal<Alert[]>([])
 
-  onAlertClosed(id: string | number) {
+  onAlertClosed(id: string | number): void {
     this.alerts.update((alerts) => {
       return alerts.filter((a) => a.id !== id)
     })
   }
 
-  addAlert(newAlert: NewAlert) {
+  addAlert(newAlert: NewAlert): void {
     const alert: Alert = {
       ...newAlert,
       id: crypto.randomUUID()

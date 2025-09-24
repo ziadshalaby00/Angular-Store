@@ -16,7 +16,7 @@ export class Zpagination {
   // 🟦 Output as signal
   pageChange = output<number>();
 
-  pages = computed(() => 
+  pages = computed<number[]>(() => 
     Array.from({ length: this.totalPages() }, (_, i) => i + 1)
   );
 
