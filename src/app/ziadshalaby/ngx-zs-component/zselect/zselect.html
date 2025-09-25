@@ -43,9 +43,9 @@
         @for (item of filteredItems(); track trackByFn($index, item)) {
           <div 
             class="px-4 py-2 cursor-pointer flex items-center justify-between transition-colors
-                  hover:bg-gray-50 dark:hover:bg-gray-600
+                  hover:bg-gray-200 dark:hover:bg-gray-600
                   text-gray-900 dark:text-gray-100"
-              [class.bg-blue-50]="selectedItem()?.id === item.id"
+              [class.bg-blue-200]="selectedItem()?.id === item.id"
               [class.dark:bg-blue-900]="selectedItem()?.id === item.id"
               (click)="selectItem(item); $event.stopPropagation()">
             <span class="truncate">{{ item.name }}</span>

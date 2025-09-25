@@ -4,7 +4,7 @@ import { Component, computed, input, signal } from '@angular/core';
 export type positionType = 'left' | 'right'
 
 @Component({
-  selector: 'app-zscroll-to-top',
+  selector: 'ZS-scroll-to-top',
   imports: [CommonModule],
   templateUrl: './zscroll-to-top.html',
   styleUrl: './zscroll-to-top.css'

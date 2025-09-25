@@ -38,7 +38,7 @@ const colorMapping: Map<BaseColors, Record<ColorPrefixes, string>> = new Map([
 ]);
 
 @Component({
-  selector: 'app-zspinner',
+  selector: 'ZS-spinner',
   imports: [],
   templateUrl: './zspinner.html',
   styleUrl: './zspinner.css'

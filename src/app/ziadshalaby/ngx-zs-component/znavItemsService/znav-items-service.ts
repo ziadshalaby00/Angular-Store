@@ -1,6 +1,9 @@
 import { Injectable, signal } from '@angular/core';
 
-type CollectionEntry = [openIndex: string, indexes: string[]];
+interface CollectionEntry {
+  openIndex: string;
+  indexes: string[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +18,9 @@ export class ZnavItemsService {
       const entry: CollectionEntry | undefined = m.get(collectionName);
       if (entry) {
         // لا تغير المصفوفة مكانياً — ارجع نسخة جديدة
-        m.set(collectionName, [entry[0], [...entry[1], index]]);
+        m.set(collectionName, { ...entry, indexes: [...entry.indexes, index] });
       } else {
-        m.set(collectionName, ['', [index]]);
+        m.set(collectionName, { openIndex: '', indexes: [index] });
       }
       return m;
     });
@@ -28,9 +31,9 @@ export class ZnavItemsService {
       const m: Map<string, CollectionEntry> = new Map(prev);
       const entry: CollectionEntry | undefined = m.get(collectionName);
       if (entry) {
-        m.set(collectionName, [index, entry[1]]);
+        m.set(collectionName, { ...entry, openIndex: index });
       } else {
-        m.set(collectionName, [index, []]);
+        m.set(collectionName, { openIndex: index, indexes: [] });
       }
       return m;
     });
@@ -38,6 +41,6 @@ export class ZnavItemsService {
 
   openIndex(collectionName: string): string {
     const entry: CollectionEntry | undefined = this.collections().get(collectionName);
-    return entry ? entry[0] : '';
+    return entry ? entry.openIndex : '';
   }
 }

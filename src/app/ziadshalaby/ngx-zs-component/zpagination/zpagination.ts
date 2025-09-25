@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, input, output } from '@angular/core';
 
 @Component({
-  selector: 'app-zpagination',
+  selector: 'ZS-pagination',
   imports: [CommonModule],
   templateUrl: './zpagination.html',
   styleUrl: './zpagination.css'

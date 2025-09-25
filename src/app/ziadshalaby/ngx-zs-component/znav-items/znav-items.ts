@@ -17,7 +17,7 @@ export interface NavbarItem {
 }
 
 @Component({
-  selector: 'app-znav-items',
+  selector: 'ZS-nav-items',
   imports: [CommonModule, RouterModule],
   templateUrl: './znav-items.html',
   styleUrl: './znav-items.css'

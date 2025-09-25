@@ -28,12 +28,12 @@
             }"
       >
         @for (child of item().children; track $index) {
-          <app-znav-items
+          <ZS-nav-items
             [item]="child"
             [collectionName]="collectionName() + '-' + index()"
             (anyItemClicked)="this.anyItemClicked.emit($event)"
           >
-          </app-znav-items>
+          </ZS-nav-items>
         }
       </div>
     </div>

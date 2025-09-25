@@ -12,7 +12,7 @@ export interface UserProfile {
 export type NavbarItemExport = Omit<NavbarItem, 'childrenOpenWindow'>;
 
 @Component({
-  selector: 'app-znavbar',
+  selector: 'ZS-navbar',
   imports: [RouterModule, CommonModule, ZnavItems],
   templateUrl: './znavbar.html',
   styleUrl: './znavbar.css'

@@ -2,15 +2,11 @@
 
   <div [class]="categoryService.loading() ? 'flex items-center justify-center' : ''" class="p-6">
     @if(categoryService.loading()) {
-      <app-zspinner type="spinner"></app-zspinner>
-    }
-
-    @if(categoryService.error()) {
-      error
+      <ZS-spinner type="spinner"></ZS-spinner>
     }
 
     @if(!categoryService.loading() && !categoryService.error()) {
-      <app-zcarousel
+      <ZS-carousel
         [items]="categories"
         [maxItemsPerBox]="4"
 
@@ -26,33 +22,34 @@
         [itemShapeSize]="256"
 
         (itemClick)="filters.category.set($event.id)"
-      ></app-zcarousel>
+      ></ZS-carousel>
     }
   </div>
 
   <!-- ---- Filters Section ---- -->
-  <div class="mb-6 p-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm dark:shadow-white flex flex-wrap gap-4 items-start">
+  <div class="mb-6 p-4 bg-white border-gray-300 dark:border-gray-700 border-1
+  dark:bg-gray-900 shadow-sm rounded-xl dark:shadow-gray-400/30 flex flex-wrap gap-4 items-start">
     <!-- Category Filter -->
     <div>
       <label class="block text-xs font-semibold mb-1">Category</label>
-      <app-zselect
+      <ZS-select
         [items]="categoryService.categories()"
         [selectItemIdfromParent]="filters.category()"
         (selectedItemChange)="filters.category.set($event?.id)"
         placeholder="Select a category..."
         searchPlaceholder="Search categories...">
-      </app-zselect>
+      </ZS-select>
     </div>
 
     <!-- Brand Filter -->
     <div>
       <label class="block text-xs font-semibold mb-1">Brand</label>
-      <app-zselect
+      <ZS-select
         [items]="brandService.brands()"
         (selectedItemChange)="filters.brand.set($event?.id)"
         placeholder="Select a brand..."
         searchPlaceholder="Search brands...">
-      </app-zselect>
+      </ZS-select>
     </div>
 
     <!-- Price Range -->
@@ -74,30 +71,26 @@
     <!-- Stock Filter -->
     <div>
       <label class="block text-xs font-semibold mb-1">Stock</label>
-      <app-zselect
+      <ZS-select
         [items]="stockFilters"
         (selectedItemChange)="filters.stock.set($event?.id)"
         [showSearch]="false">
-      </app-zselect>
+      </ZS-select>
     </div>
 
     <!-- Ordering -->
     <div>
       <label class="block text-xs font-semibold mb-1">Order By</label>
-      <app-zselect
+      <ZS-select
         [items]="orderingFilters"
         (selectedItemChange)="filters.ordering.set($event?.id)"
         [showSearch]="false">
-      </app-zselect>
+      </ZS-select>
     </div>
   </div>
 
   @if(productService.loading()) {
-    <app-zspinner type="spinner"></app-zspinner>
-  }
-
-  @if(productService.error()) {
-    error
+    <ZS-spinner type="spinner"></ZS-spinner>
   }
 
   @if(!productService.loading() && !productService.error()) {
@@ -198,11 +191,11 @@
   }
 
   <!-- Pagination -->
-  <app-zpagination 
+  <ZS-pagination 
     [totalItems]="productService.totalItems()"
     [totalPages]="productService.totalPages()"
     [currentPage]="productService.currentPage()"
     (pageChange)="filters.page.set($event)">
-  </app-zpagination>
+  </ZS-pagination>
 
 </div>

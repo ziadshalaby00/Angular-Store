@@ -32,12 +32,12 @@
       <!-- Center: Navigation items (for large screens) -->
       <div class="hidden lg:flex items-center space-x-4">
         @for (item of visibleNavItems(); track $index) {
-          <app-znav-items
+          <ZS-nav-items
             [item]="item"
             [collectionName]="'navItems'"
             (anyItemClicked)="itemClicked($event)"
           >
-          </app-znav-items>
+          </ZS-nav-items>
         }
 
         @if (moreNavItems().length > 0) {
@@ -51,12 +51,12 @@
               class="absolute bg-blue-50 dark:bg-blue-950 shadow-md dark:shadow-gray-400/30 
               rounded-md mt-1 py-1 min-w-48 z-80">
               @for(item of moreNavItems(); track $index) {
-                <app-znav-items
+                <ZS-nav-items
                   [item]="item"
                   [collectionName]="'navItems'"
                   (anyItemClicked)="itemClicked($event)"
                 >
-                </app-znav-items>
+                </ZS-nav-items>
               }
             </div>
           </div>
@@ -136,12 +136,12 @@
                   (click)="$event.stopPropagation()"
                 >
                   @for (item of getUserMenuItems(); track $index) {
-                    <app-znav-items
+                    <ZS-nav-items
                       [item]="item"
                       [collectionName]="'MenuItems'"
                       (anyItemClicked)="itemClicked($event)"
                     >
-                    </app-znav-items>
+                    </ZS-nav-items>
                   }
                 </div>
               }
@@ -157,7 +157,7 @@
                       hover:text-gray-900 dark:hover:text-white 
                       hover:bg-gray-100 dark:hover:bg-gray-700 
                       transition-colors duration-200 
-                      shadow-md dark:shadow-gray-400/60"
+                      shadow-md dark:shadow-gray-400/50"
               >
                 Login
               </button>
@@ -203,11 +203,11 @@
         <!-- Navigation items -->
          <div class="max-h-96 overflow-y-auto">
            @for (item of mobileNavItems(); track $index) {
-              <app-znav-items
+              <ZS-nav-items
                 [item]="item"
                 (anyItemClicked)="itemClicked($event)"
                 [collectionName]="'navItems'"
-              ></app-znav-items>
+              ></ZS-nav-items>
            }
          </div>
 
@@ -248,7 +248,7 @@
             <!-- Login Button -->
             <button 
                 (click)="onLogin(); isMobileMenuOpen.set(false)" 
-                class="shadow-md dark:shadow-gray-400/60 
+                class="shadow-md dark:shadow-gray-400/50 
                 block text-center w-26 px-4 py-2 text-gray-700 rounded-lg 
                 text-base font-medium hover:text-gray-900 dark:hover:text-white 
                 dark:hover:bg-gray-700 dark:text-gray-200 

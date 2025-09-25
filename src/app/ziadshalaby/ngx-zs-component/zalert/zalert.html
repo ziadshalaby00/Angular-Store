@@ -9,7 +9,7 @@
       <div class="flex items-start">
         <i [class]="alert.icon + ' mt-0.5 me-3'"></i>
         <div class="flex-1 text-sm font-medium">{{ alert.message }}</div>
-        @if (showCloseButton()) {
+        @if (alert.showCloseButton ?? defultShowCloseButton()) {
           <button
             type="button"
             class="ms-2 inline-flex h-6 w-6 items-center justify-center rounded-full 
@@ -24,7 +24,7 @@
         }
       </div>
 
-      @if(autoClose()) {
+      @if(alert.autoClose ?? defultAutoClose()) {
         <!-- Progress bar -->
         <div class="absolute bottom-0 left-0 h-1 bg-gray-300 dark:bg-gray-700 w-full">
           <div

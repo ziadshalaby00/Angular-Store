@@ -22,7 +22,7 @@ export interface CarouselItem {
 export type itemShapeType = 'rect' | 'circle'
 
 @Component({
-  selector: 'app-zcarousel',
+  selector: 'ZS-carousel',
   imports: [CommonModule],
   templateUrl: './zcarousel.html',
   styleUrl: './zcarousel.css'

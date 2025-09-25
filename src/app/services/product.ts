@@ -1,13 +1,15 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Config } from './config';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { ZalertService } from '../ziadshalaby/ngx-zs-component/zalertService/zalert-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Product {
-  private http = inject(HttpClient);
-  private config = inject(Config);
+  private http: HttpClient = inject(HttpClient);
+  private config: Config = inject(Config);
+  private zalertService: ZalertService = inject(ZalertService)
 
   products = signal<any[]>([]);
   error = signal<string | null>(null);
@@ -52,7 +54,14 @@ export class Product {
       },
       error: (err) => {
         console.log(err)
+
         this.error.set('Failed to load products');
+        this.zalertService.addAlert({
+          message: 'Failed to load products',
+          type: 'danger',
+          autoClose: false,
+        })
+
         this.loading.set(false)
       }
     });

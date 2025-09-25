@@ -9,7 +9,7 @@ export interface DropdownItem {
 }
 
 @Component({
-  selector: 'app-zselect',
+  selector: 'ZS-select',
   imports: [CommonModule, FormsModule],
   templateUrl: './zselect.html',
   styleUrl: './zselect.css'

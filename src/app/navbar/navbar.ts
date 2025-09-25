@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
-import { ZalertService } from '../ziadshalaby/ngx-ze-component/zalertService/zalert-service';
-import { Znavbar, NavbarItemExport, UserProfile } from '../ziadshalaby/ngx-ze-component/znavbar/znavbar';
+import { ZalertService } from '../ziadshalaby/ngx-zs-component/zalertService/zalert-service';
+import { Znavbar, NavbarItemExport, UserProfile } from '../ziadshalaby/ngx-zs-component/znavbar/znavbar';
 
 
 @Component({
@@ -93,7 +93,7 @@ export class Navbar {
 
     this.alertService.addAlert({
       message: 'Logged out successfully',
-      type: 'danger'
+      type: 'success'
     })
   }
 }

@@ -5,10 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Category } from '../services/category';
 import { Brand } from '../services/brand';
-import { Zcarousel } from '../ziadshalaby/ngx-ze-component/zcarousel/zcarousel';
-import { Zpagination } from '../ziadshalaby/ngx-ze-component/zpagination/zpagination';
-import { Zselect } from '../ziadshalaby/ngx-ze-component/zselect/zselect';
-import { Zspinner } from '../ziadshalaby/ngx-ze-component/zspinner/zspinner';
+import { Zcarousel } from '../ziadshalaby/ngx-zs-component/zcarousel/zcarousel';
+import { Zpagination } from '../ziadshalaby/ngx-zs-component/zpagination/zpagination';
+import { Zselect } from '../ziadshalaby/ngx-zs-component/zselect/zselect';
+import { Zspinner } from '../ziadshalaby/ngx-zs-component/zspinner/zspinner';
 
 @Component({
   selector: 'app-products',
