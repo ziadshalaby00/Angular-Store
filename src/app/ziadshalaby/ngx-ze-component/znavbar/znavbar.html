@@ -1,6 +1,8 @@
 <!-- navbar.component.html -->
-<nav class="bg-white dark:bg-gray-800
-fixed top-0 left-0 right-0 z-80 shadow-md dark:shadow-gray-400/30">
+<nav class="bg-white dark:bg-[#18202F]
+  top-0 left-0 right-0 z-80 shadow-md dark:shadow-gray-400/30"
+  [class.fixed]="fixed()"
+  [class.relative]="!fixed()">
   
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16 gap-4">
@@ -273,7 +275,9 @@ fixed top-0 left-0 right-0 z-80 shadow-md dark:shadow-gray-400/30">
 </nav>
 
 <!-- Space to avoid content overlapping with fixed navbar -->
-<div class="h-16"></div>
+@if (fixed()) {
+  <div class="h-16"></div>
+}
 
 <!-- Overlay for clicking outside menus -->
 @if (isMobileMenuOpen()) {

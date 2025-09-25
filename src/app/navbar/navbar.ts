@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
-import { Znavbar, NavbarItemExport , UserProfile } from '../ziadshalaby/zui-component/znavbar/znavbar';
-import { ZalertService } from '../ziadshalaby/zui-component/zalertService/zalert-service';
+import { ZalertService } from '../ziadshalaby/ngx-ze-component/zalertService/zalert-service';
+import { Znavbar, NavbarItemExport, UserProfile } from '../ziadshalaby/ngx-ze-component/znavbar/znavbar';
+
 
 @Component({
   selector: 'app-navbar',
@@ -19,20 +20,17 @@ export class Navbar {
       label: 'Test', 
       routerLink: '/test', 
       iconClass: 'fa-solid fa-vial text-lg', 
-      textColorClass: "text-green-700", 
-      hoverType: 'text',
-      hoverTextColorClass: 'hover:text-green-800 dark:hover:text-green-600' 
+      colorClass: `text-green-700 hover:text-green-800 dark:hover:text-green-600`, 
     },
-    { label: 'Products', routerLink: '/products', iconClass: 'fas fa-tag text-lg', hoverType: 'text' },
-    { label: 'Cart', routerLink: '/cart', iconClass: 'fas fa-shopping-cart text-blue-700 dark:text-blue-500 text-lg', hoverType: 'text' },
-    { label: 'About Us', routerLink: '/about', hoverType: 'text'},
-    { label: 'Contact Us', routerLink: '/contact', hoverType: 'text'},
+    { label: 'Products', routerLink: '/products', iconClass: 'fas fa-tag text-lg'},
+    { label: 'Cart', routerLink: '/cart', iconClass: 'fas fa-shopping-cart text-blue-700 dark:text-blue-500 text-lg'},
+    { label: 'About Us', routerLink: '/about'},
+    { label: 'Contact Us', routerLink: '/contact'},
     {
       label: 'Legal Pages',
-      hoverType: 'text',
       children: [
-        { label: 'Privacy Policy', routerLink: '/privacyPolicy', hoverType: 'bg'},
-        { label: 'Terms & Conditions', routerLink: '/termsConditions', hoverType: 'bg'},
+        { label: 'Privacy Policy', routerLink: '/privacyPolicy', useDefultColorClass: 'bg'},
+        { label: 'Terms & Conditions', routerLink: '/termsConditions', useDefultColorClass: 'bg'},
       ]
     },
   ];
@@ -43,35 +41,31 @@ export class Navbar {
   };
 
   userMenuItems: NavbarItemExport[] = [
-    { label: 'Profile', routerLink: '/profile', iconClass: 'fa-solid fa-user text-lg', hoverType: 'text' },
+    { label: 'Profile', routerLink: '/profile', iconClass: 'fa-solid fa-user text-lg'},
     { 
       label: 'Cart', 
       routerLink: '/cart', 
       iconClass: 'fas fa-shopping-cart text-lg text-blue-700 dark:text-blue-500', 
-      hoverType: 'text'
     },
     { 
       label: 'Dashboard', 
       iconClass: 'fa-solid fa-gear',
-      hoverType: 'text',
       children: [
         { 
           label: 'Orders', 
           routerLink: '/orders', 
           iconClass: 'fas fa-box text-lg text-indigo-500',
-          hoverType: 'bg'
+          useDefultColorClass: 'bg'
         },
-        { label: 'Addresses', routerLink: '/addresses', iconClass: 'fa-solid fa-location-dot text-lg', hoverType: 'bg' },
-        { label: 'Reviews', routerLink: '/reviews', iconClass: 'fa-solid fa-star text-lg', hoverType: 'bg' },
+        { label: 'Addresses', routerLink: '/addresses', iconClass: 'fa-solid fa-location-dot text-lg', useDefultColorClass: 'bg' },
+        { label: 'Reviews', routerLink: '/reviews', iconClass: 'fa-solid fa-star text-lg', useDefultColorClass: 'bg' },
       ]
     },
     { 
       label: 'Logout', 
       action: () => this.logout(),
-      textColorClass: 'text-red-700',
+      colorClass: 'text-red-700 hover:text-red-800 dark:hover:text-red-600',
       iconClass: 'fas fa-sign-out-alt text-lg',
-      hoverType: 'text',
-      hoverTextColorClass: 'hover:text-red-800 dark:hover:text-red-600'
     }
   ];
 

@@ -3,10 +3,11 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from "./navbar/navbar";
-import { ZThemeToggle } from './ziadshalaby/zui-component/z-theme-toggle/z-theme-toggle';
-import { ZscrollToTop } from "./ziadshalaby/zui-component/zscroll-to-top/zscroll-to-top";
-import { Zalert } from './ziadshalaby/zui-component/zalert/zalert';
-import { ZalertService } from './ziadshalaby/zui-component/zalertService/zalert-service';
+import { Zalert } from './ziadshalaby/ngx-ze-component/zalert/zalert';
+import { ZalertService } from './ziadshalaby/ngx-ze-component/zalertService/zalert-service';
+import { ZscrollToTop } from './ziadshalaby/ngx-ze-component/zscroll-to-top/zscroll-to-top';
+import { ZThemeToggle } from './ziadshalaby/ngx-ze-component/ztheme-toggle/ztheme-toggle';
+
 
 @Component({
   selector: 'app-root',

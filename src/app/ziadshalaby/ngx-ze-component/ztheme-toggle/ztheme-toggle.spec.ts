@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ZThemeToggle } from './z-theme-toggle';
+import { ZThemeToggle } from './ztheme-toggle';
 
 describe('ZThemeToggle', () => {
   let component: ZThemeToggle;

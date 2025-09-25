@@ -4,10 +4,10 @@ import { CommonModule } from '@angular/common';
 export type themeTypes = 'light' | 'dark'
 
 @Component({
-  selector: 'app-z-theme-toggle',
+  selector: 'app-ztheme-toggle',
   imports: [CommonModule],
-  templateUrl: './z-theme-toggle.html',
-  styleUrl: './z-theme-toggle.css'
+  templateUrl: './ztheme-toggle.html',
+  styleUrl: './ztheme-toggle.css'
 })
 export class ZThemeToggle {
   // Theme state
@@ -64,7 +64,7 @@ export class ZThemeToggle {
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     const target: HTMLElement = event.target as HTMLElement;
-    if (!target.closest('app-z-theme-toggle') && this.isOpen()) {
+    if (!target.closest('app-ztheme-toggle') && this.isOpen()) {
       this.isOpen.set(false);
     }
   }

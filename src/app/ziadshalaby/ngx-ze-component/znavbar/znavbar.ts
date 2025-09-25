@@ -18,6 +18,8 @@ export type NavbarItemExport = Omit<NavbarItem, 'childrenOpenWindow'>;
   styleUrl: './znavbar.css'
 })
 export class Znavbar {
+  fixed = input<boolean>(true);
+
   // الإدخالات القابلة للتخصيص
   logoUrl = input<string | undefined>();
   siteName = input<string | undefined>();

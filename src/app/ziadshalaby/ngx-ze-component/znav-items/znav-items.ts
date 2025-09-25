@@ -9,9 +9,10 @@ export interface NavbarItem {
   action?: () => void;
   children?: NavbarItem[];
   iconClass?: string;
-  textColorClass?: string;
-  hoverType?: 'text' | 'bg';
-  hoverTextColorClass?: string;
+
+  colorClass?: string;
+  useDefultColorClass?: 'text' | 'bg';
+
   childrenOpenWindow?: boolean;
 }
 
@@ -58,15 +59,15 @@ export class ZnavItems {
   }
 
   getItemClasses = (item: NavbarItem): string => {
-    const textColor: string = item.textColorClass || 'text-gray-600 dark:text-gray-300';
+    const defaultTextHover =
+      'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100';
 
-    let hover: string = '';
-    if (item.hoverType === 'text') {
-      hover = item.hoverTextColorClass || 'hover:text-gray-900 dark:hover:text-gray-100';
-    } else {
-      hover = 'hover:bg-gray-100 dark:hover:bg-gray-700';
+    const defaultBgHover = 'hover:bg-gray-100 dark:hover:bg-gray-700';
+
+    if (item.colorClass) {
+      return item.colorClass;
     }
 
-    return `${textColor} ${hover}`;
-  }
+    return item.useDefultColorClass === 'bg' ? defaultBgHover : defaultTextHover;
+  };
 }
