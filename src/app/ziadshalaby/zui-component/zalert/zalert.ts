@@ -27,7 +27,19 @@ export type oldAlertsType = Set<number | string>
 export class Zalert {
   zalertService: ZalertService = inject(ZalertService)
   
-  alerts = computed<Alert[]>(() => this.zalertService.alerts());
+  alerts = computed<Alert[]>(() => {
+    const list = this.zalertService.alerts();
+    return this.direction() === 'bottom' ? [...list].reverse() : list;
+  });
+
+  private direction = computed<'top' | 'bottom'>(() => {
+    for (const s of this.position().split(' ')) {
+      if (s.startsWith('bottom-')) return 'bottom';
+      if (s.startsWith('top-')) return 'top';
+    }
+    return 'top';
+  });
+
   private oldAlerts = signal<oldAlertsType>(new Set());
 
   position = input<string>('top-4 right-4'); // e.g., "top-6 left-6", "bottom-4 right-10"
@@ -36,20 +48,18 @@ export class Zalert {
   autoClose = input<boolean>(true)
   duration = input<number>(5000)
 
-  get maxHeightStyle(): {maxHeight: String} {
-    let topValue: number = 0;
+  get maxHeightStyle(): { maxHeight: string } {
+    let offsetRem = 0;
 
     for (const s of this.position().split(' ')) {
-      if (s.startsWith('top-')) {
-        const match = s.match(/\d+/);
-        if (match) topValue = parseInt(match[0], 10);
+      const match = s.match(/\d+/);
+      if (match) {
+        offsetRem = parseInt(match[0], 10) * 0.25;
       }
     }
 
-    const topRem: number = topValue * 0.25; // Tailwind spacing 1 = 0.25rem
-
     return {
-      maxHeight: `calc(100vh - ${topRem}rem)`
+      maxHeight: `calc(100vh - ${offsetRem}rem)`
     };
   }
 

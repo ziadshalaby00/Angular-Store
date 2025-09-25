@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
-import { Znavbar, NavbarItemExport , UserProfile } from '../ZiadShalaby/zui-comp/znavbar/znavbar';
-import { ZalertService } from '../ZiadShalaby/zui-comp/zalertService/zalert-service';
+import { Znavbar, NavbarItemExport , UserProfile } from '../ziadshalaby/zui-component/znavbar/znavbar';
+import { ZalertService } from '../ziadshalaby/zui-component/zalertService/zalert-service';
 
 @Component({
   selector: 'app-navbar',
@@ -24,7 +24,7 @@ export class Navbar {
       hoverTextColorClass: 'hover:text-green-800 dark:hover:text-green-600' 
     },
     { label: 'Products', routerLink: '/products', iconClass: 'fas fa-tag text-lg', hoverType: 'text' },
-    { label: 'Cart', routerLink: '/cart', iconClass: 'fas fa-shopping-cart text-blue-700 text-lg', hoverType: 'text' },
+    { label: 'Cart', routerLink: '/cart', iconClass: 'fas fa-shopping-cart text-blue-700 dark:text-blue-500 text-lg', hoverType: 'text' },
     { label: 'About Us', routerLink: '/about', hoverType: 'text'},
     { label: 'Contact Us', routerLink: '/contact', hoverType: 'text'},
     {
@@ -47,7 +47,7 @@ export class Navbar {
     { 
       label: 'Cart', 
       routerLink: '/cart', 
-      iconClass: 'fas fa-shopping-cart text-lg text-blue-700', 
+      iconClass: 'fas fa-shopping-cart text-lg text-blue-700 dark:text-blue-500', 
       hoverType: 'text'
     },
     { 

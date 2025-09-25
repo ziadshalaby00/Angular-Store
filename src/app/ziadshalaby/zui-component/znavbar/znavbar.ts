@@ -84,16 +84,16 @@ export class Znavbar {
 
   visibleNavItems = computed<NavbarItem[]>(() => {
     if (this.showSearchBar()) {
-      return this.navItems().slice(0, 2).map(n => this.toNavbarItem(n, true));
+      return this.navItems().slice(0, 2).map((n: NavbarItemExport) => this.toNavbarItem(n, true));
     }
-    return this.navItems().slice(0, 5).map(n => this.toNavbarItem(n, true));
+    return this.navItems().slice(0, 5).map((n: NavbarItemExport) => this.toNavbarItem(n, true));
   });
 
   moreNavItems = computed<NavbarItem[]>(() => {
     if (this.showSearchBar()) {
-      return this.navItems().slice(2).map(n => this.toNavbarItem(n, true));
+      return this.navItems().slice(2).map((n: NavbarItemExport) => this.toNavbarItem(n, true));
     }
-    return this.navItems().slice(5).map(n => this.toNavbarItem(n, true));
+    return this.navItems().slice(5).map((n: NavbarItemExport) => this.toNavbarItem(n, true));
   });
 
   isMoreOpen = signal(false)
