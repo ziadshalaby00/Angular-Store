@@ -7,6 +7,28 @@ a, button {
     cursor: pointer;
 }
 
-/* .shadow-md {
+/* ====== Day mode ====== */
+.shadow-sm-all {
+  box-shadow: 0 0 2px rgba(0,0,0,0.1);
+}
+
+.shadow-md-all {
   box-shadow: 0 0 6px rgba(0,0,0,0.2);
-} */
+}
+
+.shadow-lg-all {
+  box-shadow: 0 0 12px rgba(0,0,0,0.3);
+}
+
+/* ====== Night mode (Dark) ====== */
+.dark .shadow-sm-all-night {
+  box-shadow: 0 0 2px rgba(156,163,175,0.3);
+}
+
+.dark .shadow-md-all-night {
+  box-shadow: 0 0 6px rgba(156,163,175,0.3);
+}
+
+.dark .shadow-lg-all-night {
+  box-shadow: 0 0 12px rgba(156,163,175,0.3);
+}

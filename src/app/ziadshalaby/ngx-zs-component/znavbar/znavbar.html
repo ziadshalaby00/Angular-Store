@@ -1,6 +1,6 @@
 <!-- navbar.component.html -->
 <nav class="bg-white dark:bg-[#18202F]
-  top-0 left-0 right-0 z-80 shadow-md dark:shadow-gray-400/30"
+  top-0 left-0 right-0 z-[800] shadow-md dark:shadow-gray-400/30"
   [class.fixed]="fixed()"
   [class.relative]="!fixed()">
   
@@ -8,7 +8,7 @@
     <div class="flex justify-between h-16 gap-4">
       <!-- Left side: Logo and site name -->
       <div class="flex items-center">
-        @if (logoUrl() || siteName()) {
+        @if (logoUrl() || siteNameConfig()) {
           <a 
             [routerLink]="['/']" 
             class="flex-shrink-0 flex items-center space-x-2"
@@ -20,10 +20,10 @@
                 class="h-8 w-auto"
               >
             }
-            @if (siteName()) {
-              <span [class]="siteName()?.siteNameColorClass ?? 'text-gray-800 dark:text-gray-100'"
+            @if (siteNameConfig()) {
+              <span [class]="siteNameConfig()?.siteNameColorClass ?? 'text-gray-800 dark:text-gray-100'"
                 class="font-bold text-xl">
-                {{ siteName()?.siteName }}
+                {{ siteNameConfig()?.siteName }}
               </span>
             }
           </a>
@@ -49,8 +49,8 @@
               More <i class="fas fa-chevron-down ml-1 text-xs text-gray-500 dark:text-gray-400"></i>
             </button>
             <div [ngClass]="isMoreOpen() ? 'block' : 'hidden'" 
-              class="absolute bg-white dark:bg-[#18202F] shadow-md dark:shadow-gray-400/30 
-              rounded-md mt-1 py-1 min-w-48 z-80">
+              class="absolute bg-white dark:bg-[#18202F] shadow-md-all shadow-md-all-night 
+              rounded-md mt-1 py-1 min-w-48 z-[800]">
               @for(item of moreNavItems(); track $index) {
                 <ZS-nav-items
                   [item]="item"
@@ -102,81 +102,87 @@
         }
 
         <!-- Login/Signup buttons or user profile -->
-        @if (showAuthButtons()) {
-          @if (isLoggedIn() && userProfile()) {
-            <!-- User profile with dropdown -->
-            <div class="relative">
-              <button 
-                (click)="toggleUserMenu()"
-                class="flex items-center space-x-2 focus:outline-none"
-              >
-                @if (userProfile()?.imageUrl) {
-                  <img 
-                    [src]="userProfile()?.imageUrl" 
-                    alt="User profile" 
-                    class="h-8 w-8 rounded-full object-cover"
-                  >
-                } @else {
-                  <div class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
-                    {{ userProfile()?.name?.charAt(0) || 'U' }}
-                  </div>
-                }
-                <i class="fas fa-chevron-down text-xs 
-                text-gray-600 dark:text-gray-400
-                hover:text-gray-700 dark:hover:text-gray-300
-                "></i>
-              </button>
-
-              <!-- User dropdown menu -->
-              @if (isUserMenuOpen()) {
-                <div 
-                  class="absolute right-0 mt-2 w-48 
-                        bg-white dark:bg-gray-800 
-                        rounded-md shadow-md dark:shadow-gray-400/30 
-                        py-1 z-90"
-                  (click)="$event.stopPropagation()"
+        @if (isLoggedIn() && userProfile() && showUserSection()) {
+          <!-- User profile with dropdown -->
+          <div class="relative">
+            <button 
+              (click)="toggleUserMenu()"
+              class="flex items-center space-x-2 focus:outline-none"
+            >
+              @if (userProfile()?.imageUrl) {
+                <img 
+                  [src]="userProfile()?.imageUrl" 
+                  alt="User profile" 
+                  class="h-8 w-8 rounded-full object-cover"
                 >
-                  @for (item of getUserMenuItems(); track $index) {
-                    <ZS-nav-items
-                      [item]="item"
-                      [collectionName]="'MenuItems'"
-                      (anyItemClicked)="itemClicked($event)"
-                    >
-                    </ZS-nav-items>
-                  }
+              } @else {
+                <div class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
+                  {{ userProfile()?.name?.charAt(0) || 'U' }}
                 </div>
               }
-            </div>
-          } @else {
-            <!-- Login and Signup buttons -->
-            <div class="hidden lg:flex items-center space-x-3">
-              <!-- Login Button -->
-              <button 
-                (click)="onLogin()"
-                class="px-4 py-2 rounded-lg text-sm font-medium 
-                      text-gray-700 dark:text-gray-200 
-                      hover:text-gray-900 dark:hover:text-white 
-                      hover:bg-gray-100 dark:hover:bg-gray-700 
-                      transition-colors duration-200 
-                      shadow-md dark:shadow-gray-400/50"
-              >
-                Login
-              </button>
+              <i class="fas fa-chevron-down text-xs 
+              text-gray-600 dark:text-gray-400
+              hover:text-gray-700 dark:hover:text-gray-300
+              "></i>
+            </button>
 
-              <!-- Sign Up Button -->
-              <button 
-                (click)="onSignup()"
-                class="px-5 py-2 whitespace-nowrap rounded-lg text-sm font-medium 
-                      text-white 
-                      bg-blue-600 hover:bg-blue-700 
-                      shadow-md dark:shadow-blue-400/30 
-                      transition-all duration-200 
-                      transform hover:-translate-y-0.5 hover:scale-105"
+            <!-- User dropdown menu -->
+            @if (isUserMenuOpen() && userMenuItems().length !== 0) {
+              <div 
+                class="absolute right-0 mt-2.5 w-48 
+                      bg-white dark:bg-gray-800 
+                      rounded-md shadow-md-all shadow-md-all-night
+                      py-1 z-[900]"
+                (click)="$event.stopPropagation()"
               >
-                Sign Up
-              </button>
-            </div>
-          }
+                @for (item of getUserMenuItems(); track $index) {
+                  <ZS-nav-items
+                    [item]="item"
+                    [collectionName]="'MenuItems'"
+                    (anyItemClicked)="itemClicked($event)"
+                  >
+                  </ZS-nav-items>
+                }
+              </div>
+            }
+          </div>
+        } @else if(authButtons()?.showAuthButtons && !isLoggedIn()) {
+          <!-- Login and Signup buttons -->
+          <div class="hidden lg:flex items-center space-x-3">
+            <!-- Login Button -->
+            <button 
+              (click)="onLogin()"
+
+              [class]="authButtons()?.loginBtnColorClass ?? 
+              'text-gray-700 dark:text-gray-200 
+              hover:text-gray-900 dark:hover:text-white
+              hover:bg-gray-100 dark:hover:bg-gray-700
+              border border-gray-300 dark:border-gray-700'"
+
+              class="px-4 py-2 rounded-lg text-sm font-medium 
+              transition-colors duration-200 
+              shadow-sm dark:shadow-gray-400/30"
+            >
+              Login
+            </button>
+
+            <!-- Sign Up Button -->
+            <button 
+              (click)="onSignup()"
+
+              [class]="authButtons()?.signupBtnColorClass ?? 
+              'text-white 
+              bg-blue-600 
+              hover:bg-blue-700'"
+
+              class="px-5 py-2 whitespace-nowrap rounded-lg text-sm font-medium 
+              shadow-md-all shadow-sm-all-night
+              transition-all duration-200 
+              transform hover:-translate-y-0.5 hover:scale-105"
+            >
+              Sign Up
+            </button>
+          </div>
         }
 
         <!-- Mobile menu button -->
@@ -198,7 +204,7 @@
 
   <!-- Mobile menu (for small screens) -->
   @if (isMobileMenuOpen()) {
-    <div class="lg:hidden bg-white dark:bg-gray-800 shadow-bottom-only">
+    <div class="lg:hidden bg-white dark:bg-[#18202F] shadow-bottom-only">
       
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
         <!-- Navigation items -->
@@ -244,16 +250,22 @@
         }
 
         <!-- Login/Signup buttons (for mobile) -->
-        @if (showAuthButtons() && !isLoggedIn()) {
+        @if (authButtons()?.showAuthButtons && !isLoggedIn()) {
           <div class="pt-3 pb-4 border-t border-gray-300 dark:border-gray-500 space-y-2">
             <!-- Login Button -->
             <button 
                 (click)="onLogin(); isMobileMenuOpen.set(false)" 
-                class="shadow-md dark:shadow-gray-400/50 
-                block text-center w-26 px-4 py-2 text-gray-700 rounded-lg 
-                text-base font-medium hover:text-gray-900 dark:hover:text-white 
-                dark:hover:bg-gray-700 dark:text-gray-200 
-                hover:bg-gray-100 transition-colors duration-200"
+
+                [class]="authButtons()?.loginBtnColorClass ?? 
+                'text-gray-700 dark:text-gray-200 
+                hover:text-gray-900 dark:hover:text-white
+                hover:bg-gray-100 dark:hover:bg-gray-700 
+                border border-gray-300 dark:border-gray-700'"
+
+                class="block text-center w-26 px-4 py-2  rounded-lg
+                shadow-sm dark:shadow-gray-400/30 
+                text-base font-medium 
+                transition-colors duration-200"
             >
                 Login
             </button>
@@ -261,9 +273,15 @@
             <!-- Sign Up Button -->
             <button 
                 (click)="onSignup(); isMobileMenuOpen.set(false)"
-                class="block px-4 text-center w-26 py-2 text-white bg-blue-600 
-                rounded-lg text-base font-medium hover:bg-blue-700 transition-all 
-                shadow-md dark:shadow-blue-400/30 
+
+                [class]="authButtons()?.signupBtnColorClass ?? 
+                'text-white
+                bg-blue-600
+                hover:bg-blue-700'"
+
+                class="block px-4 text-center w-26 py-2  
+                rounded-lg text-base font-medium transition-all 
+                shadow-md-all shadow-sm-all-night
                 duration-200 transform hover:-translate-y-0.5 hover:scale-105"
             >
                 Sign Up
@@ -283,7 +301,7 @@
 <!-- Overlay for clicking outside menus -->
 @if (isMobileMenuOpen()) {
   <div 
-    class="fixed inset-0 bg-black bg-opacity-25 z-70 lg:bg-opacity-0"
+    class="fixed inset-0 bg-black bg-opacity-25 z-[700] lg:bg-opacity-0"
     (click)="closeAllMenus()"
   ></div>
 }

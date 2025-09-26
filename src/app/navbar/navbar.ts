@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { ZalertService } from '../ziadshalaby/ngx-zs-component/zalertService/zalert-service';
-import { Znavbar, NavbarItemExport, UserProfile, siteNameType } from '../ziadshalaby/ngx-zs-component/znavbar/znavbar';
+import { Znavbar, NavbarItemExport, UserProfile, SiteNameConfigType, AuthButtonsType } from '../ziadshalaby/ngx-zs-component/znavbar/znavbar';
 
 
 @Component({
@@ -12,13 +12,17 @@ import { Znavbar, NavbarItemExport, UserProfile, siteNameType } from '../ziadsha
 export class Navbar {
   alertService: ZalertService = inject(ZalertService)
 
-  siteName: siteNameType = {
-    siteName: 'Ziadera',
-    siteNameColorClass: 'text-gray-900 dark:text-gray-100 dark:hover:text-gray-300 hover:text-gray-600'
+  siteNameConfig: SiteNameConfigType = {
+    siteName: 'Ziadera'
+  }
+
+  authButtons:AuthButtonsType = {
+    showAuthButtons: true,
+    signupBtnColorClass: 'text-white bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600'
   }
 
   logoUrl: string = 'https://i.postimg.cc/rsCB0PfM/android-chrome-512x512.png';
-  isLoggedIn = signal<boolean>(true);
+  isLoggedIn = signal<boolean>(false);
 
   navItems: NavbarItemExport[] = [
     { 

@@ -10,9 +10,15 @@ export interface UserProfile {
 }
 
 export type NavbarItemExport = Omit<NavbarItem, 'childrenOpenWindow'>;
-export interface siteNameType {
+export interface SiteNameConfigType {
   siteName: string;
   siteNameColorClass?: string;
+}
+
+export interface AuthButtonsType {
+  showAuthButtons: boolean;
+  loginBtnColorClass?: string,
+  signupBtnColorClass?: string,
 }
 
 @Component({
@@ -26,9 +32,10 @@ export class Znavbar {
 
   // الإدخالات القابلة للتخصيص
   logoUrl = input<string | undefined>();
-  siteName = input<siteNameType | undefined>();
+  siteNameConfig = input<SiteNameConfigType | undefined>();
 
-  showAuthButtons = input<boolean>(true);
+  authButtons = input<AuthButtonsType>();
+  showUserSection = input<boolean>(true);
   showSearchBar = input<boolean>(false);
 
   navItems = input<NavbarItemExport[]>([]);
@@ -37,6 +44,8 @@ export class Znavbar {
   userProfile = input<UserProfile | undefined>();
 
   userMenuItems = input<NavbarItemExport[]>([]);
+
+  // ==================================================================================
 
   // الأحداث الصادرة
   loginClicked = output<void>();

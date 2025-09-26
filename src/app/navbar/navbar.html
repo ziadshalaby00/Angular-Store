@@ -1,13 +1,18 @@
 <ZS-navbar
   [logoUrl]="logoUrl"
-  [siteName]="siteName"
-  [showAuthButtons]="true"
+  [siteNameConfig]="siteNameConfig"
+
+  [authButtons]="authButtons"
+  [showUserSection]="true"
+
   [showSearchBar]="true"
   [searchPlaceholder]="'Search for a product...'"
   [navItems]="navItems"
+
   [isLoggedIn]="isLoggedIn()"
   [userProfile]="userProfile"
   [userMenuItems]="userMenuItems"
+
   (loginClicked)="onLogin()"
   (signupClicked)="onSignup()"
   (searchSubmitted)="onSearch($event)"

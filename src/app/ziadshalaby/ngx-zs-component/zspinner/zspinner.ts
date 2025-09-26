@@ -55,7 +55,7 @@ export class Zspinner {
   // computed classes (return strings)
   wrapperClasses = computed<string>(() =>
     this.isFloating()
-      ? 'fixed inset-0 flex items-center justify-center z-100 bg-black/40 dark:bg-white/30'
+      ? 'fixed inset-0 flex items-center justify-center z-[1000] bg-black/40 dark:bg-white/30'
       : 'flex items-center justify-center'
   );
 

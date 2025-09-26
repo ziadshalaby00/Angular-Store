@@ -1,6 +1,6 @@
 <div
   [ngClass]="positionClass()"
-  class="fixed bottom-4 z-50 transition-opacity duration-300"
+  class="fixed bottom-4 z-[500] transition-opacity duration-300"
   [style.opacity]="scrollY() > 200 ? 1 : 0"
 >
   <button
@@ -39,7 +39,7 @@
     <!-- Arrow Icon -->
     <i
       class="fas fa-arrow-up"
-      [ngClass]="[arrowAprogressColor(), 'relative z-10 text-lg']"
+      [ngClass]="[arrowAprogressColor(), 'relative z-[100] text-lg']"
     ></i>
   </button>
 </div>
