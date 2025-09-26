@@ -13,12 +13,12 @@ export class Navbar {
   alertService: ZalertService = inject(ZalertService)
 
   siteNameConfig: SiteNameConfigType = {
-    siteName: 'Ziadera'
+    siteName: 'Ziadera',
+    siteNameColorClass: 'text-gray-800 hover:text-gray-600 dark:text-gray-100 dark:hover:text-gray-300'
   }
 
   authButtons:AuthButtonsType = {
-    showAuthButtons: true,
-    signupBtnColorClass: 'text-white bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600'
+    showAuthButtons: true
   }
 
   logoUrl: string = 'https://i.postimg.cc/rsCB0PfM/android-chrome-512x512.png';

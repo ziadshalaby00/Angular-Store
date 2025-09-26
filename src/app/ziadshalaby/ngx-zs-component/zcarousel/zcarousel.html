@@ -63,7 +63,7 @@
   <!-- Navigation Arrows -->
   @if (arrows()) {
     <button
-      class="absolute top-1/2 left-3 size-10 -translate-y-1/2 p-3 flex items-center justify-center rounded-full bg-gray-100/50 hover:bg-gray-100/70 transition shadow-lg dark:shadow-md dark:shadow-gray-400/30"
+      class="absolute top-1/2 left-3 size-10 -translate-y-1/2 p-3 flex items-center justify-center rounded-full bg-gray-100/50 hover:bg-gray-100/70 transition shadow-lg-all shadow-lg-all-night"
       (click)="previous()"
     >
       <i [ngClass]="arrowColorClass()"
@@ -71,7 +71,7 @@
     </button>
 
     <button
-      class="absolute top-1/2 right-3 size-10 -translate-y-1/2 p-3 flex items-center justify-center rounded-full bg-gray-100/50 hover:bg-gray-100/70 transition shadow-lg dark:shadow-md dark:shadow-gray-400/30"
+      class="absolute top-1/2 right-3 size-10 -translate-y-1/2 p-3 flex items-center justify-center rounded-full bg-gray-100/50 hover:bg-gray-100/70 transition shadow-lg-all shadow-lg-all-night"
       (click)="next()"
     >
       <i [ngClass]="arrowColorClass()"
