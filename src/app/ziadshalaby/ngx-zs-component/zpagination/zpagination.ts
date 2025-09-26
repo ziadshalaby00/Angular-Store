@@ -9,9 +9,12 @@ import { Component, computed, input, output } from '@angular/core';
 })
 export class Zpagination {
   // 🟦 Signals inputs
-  totalItems = input.required<number>();
   totalPages = input.required<number>();
   currentPage = input.required<number>();
+
+  showTotalItems = input<boolean>(false)
+  totalItemsMessage = input<string>('Total items:')
+  totalItems = input<number>();
 
   // 🟦 Output as signal
   pageChange = output<number>();

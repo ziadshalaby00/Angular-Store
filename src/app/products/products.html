@@ -192,6 +192,8 @@
 
   <!-- Pagination -->
   <ZS-pagination 
+    [showTotalItems]="true"
+    totalItemsMessage="Number of products: "
     [totalItems]="productService.totalItems()"
     [totalPages]="productService.totalPages()"
     [currentPage]="productService.currentPage()"

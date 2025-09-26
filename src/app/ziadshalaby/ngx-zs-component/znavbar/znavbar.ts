@@ -10,6 +10,10 @@ export interface UserProfile {
 }
 
 export type NavbarItemExport = Omit<NavbarItem, 'childrenOpenWindow'>;
+export interface siteNameType {
+  siteName: string;
+  siteNameColorClass?: string;
+}
 
 @Component({
   selector: 'ZS-navbar',
@@ -22,7 +26,7 @@ export class Znavbar {
 
   // الإدخالات القابلة للتخصيص
   logoUrl = input<string | undefined>();
-  siteName = input<string | undefined>();
+  siteName = input<siteNameType | undefined>();
 
   showAuthButtons = input<boolean>(true);
   showSearchBar = input<boolean>(false);
@@ -111,7 +115,8 @@ export class Znavbar {
   private toNavbarItem(item: NavbarItemExport, childrenOpenWindow = false): NavbarItem {
     return {
       ...item,
-      childrenOpenWindow
+      childrenOpenWindow,
+      children: item.children?.map(child => this.toNavbarItem(child, childrenOpenWindow)) ?? []
     };
   }
 

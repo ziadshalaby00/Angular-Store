@@ -34,3 +34,7 @@ img {
 .shadow-bottom-only {
   box-shadow: 0 4px 0 0 black;
 }
+
+.shadow-all {
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}

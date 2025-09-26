@@ -1,7 +1,11 @@
-<!-- Total items -->
-<div class="text-center text-sm text-gray-500 dark:text-gray-300 mb-2 mt-6">
-  Total items: {{ totalItems() }}
-</div>
+<div class="mt-6"></div>
+
+@if(showTotalItems()) {
+  <!-- Total items -->
+  <div class="text-center text-sm text-gray-500 dark:text-gray-300 mb-2">
+    {{ totalItemsMessage() }} {{ totalItems() }}
+  </div>
+}
 
 <div class="flex flex-wrap justify-center items-center gap-1">
   <!-- Previous Button -->

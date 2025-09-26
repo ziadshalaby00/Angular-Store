@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { ZalertService } from '../ziadshalaby/ngx-zs-component/zalertService/zalert-service';
-import { Znavbar, NavbarItemExport, UserProfile } from '../ziadshalaby/ngx-zs-component/znavbar/znavbar';
+import { Znavbar, NavbarItemExport, UserProfile, siteNameType } from '../ziadshalaby/ngx-zs-component/znavbar/znavbar';
 
 
 @Component({
@@ -12,6 +12,11 @@ import { Znavbar, NavbarItemExport, UserProfile } from '../ziadshalaby/ngx-zs-co
 export class Navbar {
   alertService: ZalertService = inject(ZalertService)
 
+  siteName: siteNameType = {
+    siteName: 'Ziadera',
+    siteNameColorClass: 'text-gray-900 dark:text-gray-100 dark:hover:text-gray-300 hover:text-gray-600'
+  }
+
   logoUrl: string = 'https://i.postimg.cc/rsCB0PfM/android-chrome-512x512.png';
   isLoggedIn = signal<boolean>(true);
 
@@ -20,7 +25,7 @@ export class Navbar {
       label: 'Test', 
       routerLink: '/test', 
       iconClass: 'fa-solid fa-vial text-lg', 
-      colorClass: `text-green-700 hover:text-green-800 dark:hover:text-green-600`, 
+      colorClass: `text-green-600 hover:text-green-700 dark:hover:text-green-500`, 
     },
     { label: 'Products', routerLink: '/products', iconClass: 'fas fa-tag text-lg'},
     { label: 'Cart', routerLink: '/cart', iconClass: 'fas fa-shopping-cart text-blue-700 dark:text-blue-500 text-lg'},
@@ -29,7 +34,7 @@ export class Navbar {
     {
       label: 'Legal Pages',
       children: [
-        { label: 'Privacy Policy', routerLink: '/privacyPolicy', useDefultColorClass: 'bg'},
+        { label: 'Privacy Policy', routerLink: '/privacyPolicy', useDefultColorClass: 'bg' },
         { label: 'Terms & Conditions', routerLink: '/termsConditions', useDefultColorClass: 'bg'},
       ]
     },
