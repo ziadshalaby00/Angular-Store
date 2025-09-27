@@ -1,5 +1,6 @@
 <div class="relative w-full">
-  <!-- Toggle button -->
+
+  <!-- Toggle Button -->
   <div 
     class="flex items-center justify-between w-full min-w-48 px-3 py-2 border rounded-lg shadow-sm dark:shadow-gray-400/30 transition-colors
            bg-white border-gray-300 text-gray-900 hover:border-gray-400
@@ -15,14 +16,14 @@
        [class.fa-chevron-up]="isOpen()"></i>
   </div>
 
-  <!-- Dropdown menu -->
+  <!-- Dropdown Menu -->
   @if (isOpen()) {
     <div class="absolute z-[300] w-full mt-1 rounded-lg shadow-lg dark:shadow-gray-400/30 overflow-hidden
-    bg-white border border-gray-300
-    dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
+                bg-white border border-gray-300
+                dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
 
-      <!-- Search input -->
-      @if(showSearch()) {
+      <!-- Search Input -->
+      @if (showSearch()) {
         <div class="relative p-2 border-b border-gray-200 dark:border-gray-700">
           <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
           <input 
@@ -32,38 +33,40 @@
             (input)="searchQuery.set($any($event.target).value)"
             (click)="$event.stopPropagation()"
             class="w-full pl-9 pr-3 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-            border-gray-300 bg-white text-gray-900
-            dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400"
+                   border-gray-300 bg-white text-gray-900
+                   dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400"
             autofocus />
         </div>
       }
 
-      <!-- Options list -->
+      <!-- Options List -->
       <div class="max-h-60 overflow-y-auto">
         @for (item of filteredItems(); track trackByFn($index, item)) {
           <div 
             class="px-4 py-2 cursor-pointer flex items-center justify-between transition-colors
-                  hover:bg-gray-200 dark:hover:bg-gray-600
-                  text-gray-900 dark:text-gray-100"
-              [class.bg-blue-200]="selectedItem()?.id === item.id"
-              [class.dark:bg-blue-900]="selectedItem()?.id === item.id"
-              (click)="selectItem(item); $event.stopPropagation()">
+                   hover:bg-gray-200 dark:hover:bg-gray-600
+                   text-gray-900 dark:text-gray-100"
+            [class.bg-blue-200]="selectedItem()?.id === item.id"
+            [class.dark:bg-blue-900]="selectedItem()?.id === item.id"
+            (click)="selectItem(item); $event.stopPropagation()">
             <span class="truncate">{{ item.name }}</span>
             @if (selectedItem()?.id === item.id) {
               <i class="fas fa-check text-blue-600 dark:text-blue-400 ml-2"></i>
             }
           </div>
         }
+
         @if (filteredItems().length === 0) {
           <div class="px-4 py-3 text-center text-gray-500 dark:text-gray-400">
             {{ noResultsText() }}
           </div>
         }
       </div>
+
     </div>
   }
 
-  <!-- Clear selection button -->
+  <!-- Clear Selection Button -->
   @if (selectedItem() && showClearButton()) {
     <button 
       class="mt-2 text-sm flex items-center transition-colors
@@ -73,4 +76,5 @@
       <i class="fas fa-times mr-1"></i> Clear selection
     </button>
   }
+
 </div>

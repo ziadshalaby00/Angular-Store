@@ -1,11 +1,14 @@
-<!-- navbar.component.html -->
+<!-- znavbar.component.html -->
+
+<!-- Fixed navbar container -->
 <nav class="bg-white dark:bg-[#18202F]
   top-0 left-0 right-0 z-[800] shadow-md dark:shadow-gray-400/30"
   [class.fixed]="fixed()"
   [class.relative]="!fixed()">
-  
+
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16 gap-4">
+
       <!-- Left side: Logo and site name -->
       <div class="flex items-center">
         @if (logoUrl() || siteNameConfig()) {
@@ -64,8 +67,9 @@
         }
       </div>
 
-      <!-- Right side: Search and user buttons -->
+      <!-- Right side: Search, Auth, and Mobile menu button -->
       <div class="flex items-center space-x-3">
+
         <!-- Search bar (if enabled) -->
         @if (showSearchBar()) {
           <div class="hidden lg:block">
@@ -152,13 +156,11 @@
             <!-- Login Button -->
             <button 
               (click)="onLogin()"
-
               [class]="authButtons()?.loginBtnColorClass ?? 
               'text-gray-700 dark:text-gray-200
               hover:text-gray-900 dark:hover:text-white
               hover:bg-gray-100 dark:hover:bg-gray-700
               border border-gray-300 dark:border-gray-700'"
-
               class="px-4 py-2 rounded-lg text-sm font-medium 
               transition-colors duration-200 
               shadow-sm dark:shadow-gray-400/50"
@@ -169,12 +171,10 @@
             <!-- Sign Up Button -->
             <button 
               (click)="onSignup()"
-
               [class]="authButtons()?.signupBtnColorClass ?? 
               'text-white 
               bg-blue-600 
               hover:bg-blue-700'"
-
               class="px-5 py-2 whitespace-nowrap rounded-lg text-sm font-medium 
               shadow-md-all shadow-sm-all-night
               transition-all duration-200 
@@ -198,6 +198,7 @@
             <i class="fas fa-bars px-1"></i>
           </button>
         </div>
+
       </div>
     </div>
   </div>
@@ -255,13 +256,11 @@
             <!-- Login Button -->
             <button 
                 (click)="onLogin(); isMobileMenuOpen.set(false)" 
-
                 [class]="authButtons()?.loginBtnColorClass ?? 
                 'text-gray-700 dark:text-gray-200 
                 hover:text-gray-900 dark:hover:text-white
                 hover:bg-gray-100 dark:hover:bg-gray-700 
                 border border-gray-300 dark:border-gray-700'"
-
                 class="block text-center w-26 px-4 py-2 rounded-lg
                 shadow-sm dark:shadow-gray-400/50 
                 text-base font-medium 
@@ -273,12 +272,10 @@
             <!-- Sign Up Button -->
             <button 
                 (click)="onSignup(); isMobileMenuOpen.set(false)"
-
                 [class]="authButtons()?.signupBtnColorClass ?? 
                 'text-white
                 bg-blue-600
                 hover:bg-blue-700'"
-
                 class="block px-4 text-center w-26 py-2  
                 rounded-lg text-base font-medium transition-all 
                 shadow-md-all shadow-sm-all-night
@@ -293,12 +290,12 @@
   }
 </nav>
 
-<!-- Space to avoid content overlapping with fixed navbar -->
+<!-- Spacer to avoid content overlapping with fixed navbar -->
 @if (fixed()) {
   <div class="h-16"></div>
 }
 
-<!-- Overlay for clicking outside menus -->
+<!-- Overlay for closing menus on outside click -->
 @if (isMobileMenuOpen()) {
   <div 
     class="fixed inset-0 bg-black bg-opacity-25 z-[700] lg:bg-opacity-0"

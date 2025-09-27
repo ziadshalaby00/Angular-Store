@@ -1,87 +1,55 @@
+<!-- =================================== Main Container =================================== -->
 <div class="relative w-full mt-6">
-    <!-- Carousel Container -->
-    <div 
-        #carouselContainer
-        class="overflow-hidden relative"
 
-        (pointerdown)="onDragStart($event)"
-        (pointermove)="onDragMove($event)"
-        (pointerup)="onDragEnd()"
-        (pointerleave)="onDragEnd()"
-        (pointercancel)="onDragEnd()"
-    >
-    <div #carouselTrack
+  <!-- =================================== Carousel Track =================================== -->
+  <div 
+    carousel-container
+    #carouselContainer
+    class="overflow-hidden relative"
+    (pointerdown)="onDragStart($event)"
+    (pointermove)="onDragMove($event)"
+    (pointerup)="onDragEnd()"
+    (pointerleave)="onDragEnd()"
+    (pointercancel)="onDragEnd()"
+    [class.dragging]="dragging()"
+  >
+    <div 
+      #carouselTrack 
+      [style.--carousel-item-width]="itemsPerBoxWidth()"
       class="flex transition-transform duration-500 ease-in-out"
-      [style.transform]="'translateX(-' + (currentIndex() * 100) + '%)'"
-        >
-      @for (item of items(); track item.id) {
-        <div
-        (click)="onItemClick(item)"
-        [ngClass]="itemsPerBoxClasses"
-        class="flex flex-col flex-shrink-0 px-1">
-              <div 
-                [ngClass]="shape"
-                [style.width.px]="itemShape() === 'circle' ? itemShapeSize(): ''"
-                [style.height.px]="itemShapeSize()"
-                class="relative cursor-pointer overflow-hidden group">
-                <img
-                  [src]="item.image"
-                  [alt]="item.name"
-                  class="w-full h-full object-cover transition-transform duration-500 hover:scale-105 transform-gpu will-change-transform"
-                />
-    
-                <!-- Overlay with dynamic attributes -->
-                <div
-                  class="absolute bottom-0 text-center left-0 right-0 bg-gradient-to-t from-black/60 to-black/40 text-white p-3 rounded-b-xl space-y-2"
-                >
-                  @for (key of getExtraFields(item); track key) {
-                    @if (key !== 'id' && key !== 'image' && key !== 'name' && key !== 'description') {
-                      <div class="border-b border-white/20 dark:border-gray-500 pb-1 last:border-b-0">
-                        <span class="text-xs font-medium capitalize">{{ key }}:</span>
-                        <span class="text-xs ml-1 opacity-90">{{ item[key] }}</span>
-                      </div>
-                    }
-                  }
-    
-                  @if (item.description) {
-                    <div class="border-white/20 dark:border-gray-500 pb-1">
-                      <p class="text-xs opacity-90">{{ item.description }}</p>
-                    </div>
-                  }
-                </div>
-              </div>
-            @if (item.name) {
-                <div class="text-center p-3">
-                  <h3 class="font-semibold text-base">{{ item.name }}</h3>
-                </div>
-            }
-        </div>
-      }
+      [style.transform]="'translateX(' + currentTranslate() + 'px)'"
+    >
+      <!-- Cards -->
+      <ng-content select="[carousel-item]"></ng-content>
+      <!-- /Cards -->
     </div>
   </div>
+  <!-- =================================== /Carousel Track =================================== -->
 
-  <!-- Navigation Arrows -->
+  <!-- =================================== Navigation Arrows =================================== -->
   @if (arrows()) {
     <button
       class="absolute top-1/2 left-3 size-10 -translate-y-1/2 p-3 flex items-center justify-center rounded-full bg-gray-100/50 hover:bg-gray-100/70 transition shadow-lg-all shadow-lg-all-night"
       (click)="previous()"
     >
-      <i [ngClass]="arrowColorClass()"
-      class="fas fa-chevron-left text-xl"></i>
+      <i [ngClass]="arrowColorClass()" class="fas fa-chevron-left text-xl"></i>
     </button>
 
     <button
       class="absolute top-1/2 right-3 size-10 -translate-y-1/2 p-3 flex items-center justify-center rounded-full bg-gray-100/50 hover:bg-gray-100/70 transition shadow-lg-all shadow-lg-all-night"
       (click)="next()"
     >
-      <i [ngClass]="arrowColorClass()"
-      class="fas fa-chevron-right text-xl"></i>
+      <i [ngClass]="arrowColorClass()" class="fas fa-chevron-right text-xl"></i>
     </button>
   }
-</div>
+  <!-- =================================== /Navigation Arrows =================================== -->
 
+</div>
+<!-- =================================== /Main Container =================================== -->
+
+
+<!-- =================================== Indicators =================================== -->
 @if(showIndicators()) {
-  <!-- Indicators -->
   <div class="flex justify-center mt-4 space-x-2">
     @for (item of indicatorBoxes(); track $index; let i = $index) {
       <button
@@ -94,3 +62,4 @@
     }
   </div>
 }
+<!-- =================================== /Indicators =================================== -->

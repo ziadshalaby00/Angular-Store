@@ -28,15 +28,12 @@ export type itemShapeType = 'rect' | 'circle'
   styleUrl: './zcarousel.css'
 })
 export class Zcarousel {
-  // Inputs
-  items = input.required<CarouselItem[]>();
-  currentIndex = model<number>(0);
-  
+
+  // ============================ Inputs ============================ //
+  itemsNumber = input.required<number>()
+
   arrows = input<boolean>(true);                        // show/hide arrows
   arrowColorClass = input<string>('text-gray-700');    // arrow color
-
-  itemShape = input<itemShapeType>('rect');
-  itemShapeSize = input<number>(300);
 
   showIndicators = input<boolean>(true);
 
@@ -45,58 +42,55 @@ export class Zcarousel {
 
   maxItemsPerBox = input<number>(4); // أقصى عدد ممكن يظهر في الـ box
 
-  // Outputs
-  itemClick = output<CarouselItem>();
+  itemMinWidth = input<number>(200)
+  // ============================ Inputs ============================ //
+
+
+  // ============================ Outputs ============================ //
   indexChange = output<number>();
-  
-  // View child
+  // ============================ Outputs ============================ //
+
+
+  // ============================ Model ============================ //
+  currentIndex = model<number>(0);
+  // ============================ Model ============================ //
+
+
+  // ============================ View Children ============================ //
   carouselContainer = viewChild<ElementRef<HTMLElement>>('carouselContainer');
+  carouselTrack = viewChild<ElementRef<HTMLDivElement>>('carouselTrack')
+  // ============================ View Children ============================ //
 
-  // Items per box (dynamic by ResizeObserver)
+
+  // ============================ Signals ============================ //
   itemsPerBox = signal<number>(1);
+  currentTranslate = signal<number>(0);
+  dragging = signal<boolean>(false);
+  private startX = signal<number>(0);
+  private prevTranslate = signal<number>(0);
+  // ============================ Signals ============================ //
 
-  // Map item width
-  readonly WIDTH_MAP: Record<string, string> = {
-    1: 'w-full',
-    2: 'w-1/2',
-    3: 'w-1/3',
-    4: 'w-1/4',
-    5: 'w-1/5',
-    6: 'w-1/6',
-    7: 'w-1/7',
-    8: 'w-1/8',
-    9: 'w-1/9',
-    10: 'w-1/10',
-  };
 
-  itemsPerBoxClass = computed<string>(() => this.WIDTH_MAP[this.itemsPerBox()] || 'w-full');
-
-  get shape(): string {
-    if (this.itemShape() === 'rect') {
-      return 'rounded-lg'
-    }
-    return 'rounded-full'
-  }
-
-  get itemsPerBoxClasses(): string {
-    if (this.itemShape() === 'rect') {
-      return String(this.itemsPerBoxClass());
-    }
-    return `${this.itemsPerBoxClass()} justify-center items-center`;
-  }
-
-  private autoPlayTimer: number | null = null;
-
-  // ========================================================
+  // ============================ Computed ============================ //
+  itemsPerBoxWidth = computed<string>(() =>  `${100/this.itemsPerBox()}%`);
+  
   totalBoxes = computed<number>(() =>
-    Math.ceil(this.items().length / this.itemsPerBox())
+    Math.ceil(this.itemsNumber() / this.itemsPerBox())
   );
 
   indicatorBoxes = computed<number[]>(() =>
     Array.from({ length: this.totalBoxes() }, (_, i) => i)
   );
+  // ============================ Computed ============================ //
 
-  // ========================================================
+
+  // ============================ Private Properties ============================ //
+  private autoPlayTimer: ReturnType<typeof setInterval> | null = null;
+  private resizeObserver!: ResizeObserver;
+  // ============================ Private Properties ============================ //
+
+
+  // ============================ Lifecycle Hooks ============================ //
   constructor() {
     // autoplay
     effect(() => {
@@ -107,9 +101,18 @@ export class Zcarousel {
   ngAfterViewInit() {
     const el = this.carouselContainer()?.nativeElement;
     if (el) {
-      this.resizeObserver = new ResizeObserver(() => this.updateItemsPerBox());
+      this.resizeObserver = new ResizeObserver(() => {
+        this.updateItemsPerBox();
+        // بعد كل تغيير في الحجم، عيّن translate حسب ال index الحالى
+        const containerWidth = el.offsetWidth;
+        const pos = -this.currentIndex() * containerWidth;
+        this.applyTranslate(pos, 'none'); // رجّع بدون transition فورى
+      });
       this.resizeObserver.observe(el);
       this.updateItemsPerBox();
+      // وضع أولى الحالة
+      const containerWidth = el.offsetWidth;
+      this.applyTranslate(-this.currentIndex() * containerWidth, 'none');
     }
   }
 
@@ -117,29 +120,24 @@ export class Zcarousel {
     this.stopAutoPlay();
     if (this.resizeObserver) this.resizeObserver.disconnect();
   }
+  // ============================ Lifecycle Hooks ============================ //
 
-  // Actions
-  onItemClick(item: CarouselItem) {
-    this.itemClick.emit(item);
-  }
 
+  // ============================ Public Methods ============================ //
   updateIndex(newIndex: number) {
-    const trackEl = this.carouselTrack();
     const containerEl = this.carouselContainer();
-    if (!trackEl || !containerEl) return;
+    if (!containerEl) return;
 
     this.currentIndex.set(newIndex);
     this.indexChange.emit(newIndex);
 
-    // اربط translate بالـ index الجديد
+    // حساب المسافة بالـ pixels وربطها بالـ signal فقط
     const containerWidth = containerEl.nativeElement.offsetWidth;
-    this.currentTranslate.set(-newIndex * containerWidth);
-    trackEl.nativeElement.style.transition = 'transform 0.3s ease-out';
-    trackEl.nativeElement.style.transform = `translateX(${this.currentTranslate()}px)`;
+    const newTranslate = -newIndex * containerWidth;
+    this.applyTranslate(newTranslate, 'transform 0.3s ease-out');
 
     this.restartAutoPlay();
   }
-
 
   next() {
     if (this.currentIndex() < this.totalBoxes() - 1) {
@@ -156,8 +154,10 @@ export class Zcarousel {
       this.updateIndex(this.totalBoxes() - 1);
     }
   }
+  // ============================ Public Methods ============================ //
 
-  // autoplay
+
+  // ============================ AutoPlay Methods ============================ //
   startAutoPlay() {
     if (this.autoPlayTimer) return;
     this.autoPlayTimer = setInterval(() => this.next(), this.duration());
@@ -174,11 +174,10 @@ export class Zcarousel {
     this.stopAutoPlay();
     if (this.autoPlay()) this.startAutoPlay();
   }
+  // ============================ AutoPlay Methods ============================ //
 
-  // ========================================================
-  private resizeObserver!: ResizeObserver;
-  itemMinWidth = input<number>(200)
 
+  // ============================ Resize Handling ============================ //
   private updateItemsPerBox() {
     const containerWidth = this.carouselContainer()?.nativeElement.offsetWidth || 0;
 
@@ -188,22 +187,10 @@ export class Zcarousel {
     // خليه أقل من أو يساوي الحد الأقصى
     this.itemsPerBox.set(Math.min(this.maxItemsPerBox(), Math.max(1, possibleCount)));
   }
+  // ============================ Resize Handling ============================ //
 
-  getExtraFields(item: any) {
-    return Object.keys(item).filter(
-      key => !['id', 'image', 'name', 'description'].includes(key)
-    );
-  }
 
-  // ========================================================
-
-  carouselTrack = viewChild<ElementRef<HTMLDivElement>>('carouselTrack')
-
-  private dragging = signal<boolean>(false);
-  private startX = signal<number>(0);
-  private currentTranslate = signal<number>(0);
-  private prevTranslate = signal<number>(0);
-
+  // ============================ Drag Handling ============================ //
   onDragStart(event: PointerEvent) {
     event.preventDefault();
     const trackEl = this.carouselTrack();
@@ -215,38 +202,53 @@ export class Zcarousel {
     this.prevTranslate.set(-this.currentIndex() * containerEl.nativeElement.offsetWidth);
 
     // إزالة transition أثناء السحب
+    // (نحن لسه لا نلمس transform مباشرة — الـ template سيطبّق currentTranslate)
     trackEl.nativeElement.style.transition = 'none';
     this.stopAutoPlay();
   }
 
   onDragMove(event: PointerEvent) {
     if (!this.dragging()) return;
-    const trackEl = this.carouselTrack();
-    if (!trackEl) return;
-
     const delta = event.clientX - this.startX();
     this.currentTranslate.set(this.prevTranslate() + delta);
-    trackEl.nativeElement.style.transform = `translateX(${this.currentTranslate()}px)`;
+    // لا تعدّل style.transform هنا — template يطبقه
   }
 
   onDragEnd() {
     if (!this.dragging()) return;
     this.dragging.set(false);
 
-    const trackEl = this.carouselTrack();
     const containerEl = this.carouselContainer();
-    if (!trackEl || !containerEl) return;
+    if (!containerEl) return;
 
     const containerWidth = containerEl.nativeElement.offsetWidth;
     const movedSlides = Math.round(-this.currentTranslate() / containerWidth);
-
     const newIndex = Math.max(0, Math.min(this.totalBoxes() - 1, movedSlides));
+
+    // حدّث الـ index (وهى بدورها تستدعى applyTranslate)
     this.updateIndex(newIndex);
 
-    trackEl.nativeElement.style.transition = 'transform 0.3s ease-out';
-    this.currentTranslate.set(-this.currentIndex() * containerWidth);
-    trackEl.nativeElement.style.transform = `translateX(${this.currentTranslate()}px)`;
+    // بعد التحديث التأكد من وضع الـ translate المتوافق مع index
+    const finalTranslate = -this.currentIndex() * containerWidth;
+    this.applyTranslate(finalTranslate, 'transform 0.3s ease-out');
 
     if (this.autoPlay()) this.startAutoPlay();
   }
+  // ============================ Drag Handling ============================ //
+
+
+  // ============================ Helper Methods ============================ //
+  // helper: set translate value and optionally change transition
+  private applyTranslate(value: number, transition: string | null = 'transform 0.3s ease-out') {
+    this.currentTranslate.set(value);
+    const trackEl = this.carouselTrack();
+    if (!trackEl) return;
+    if (transition === null) {
+      trackEl.nativeElement.style.transition = 'none';
+    } else {
+      trackEl.nativeElement.style.transition = transition;
+    }
+  }
+  // ============================ Helper Methods ============================ //
+
 }

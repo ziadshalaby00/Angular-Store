@@ -5,51 +5,56 @@
       @case ('spinner') {
         <i [class]="'fas fa-spinner fa-spin ' + spinnerSizeTextClass() + ' ' + textColor()"></i>
       }
+
       @case ('pro') {
         <div [class]="'animate-spin rounded-full border-solid ' + spinnerSizeProClass() + ' ' + borderColor()"></div>
       }
+
       @case ('gear') {
         <i [class]="'fas fa-gear fa-spin ' + spinnerSizeTextClass() + ' ' + textColor()"></i>
       }
+
       @case ('fan') {
         <i [class]="'fas fa-fan fa-spin ' + spinnerSizeTextClass() + ' ' + textColor()"></i>
       }
+
       @case ('pulse') {
         <div [class]="'animate-spin rounded-full border-solid ' + spinnerSizePulseClass() + ' ' + borderColor() + ' border-t-transparent'"></div>
       }
+
       @case ('dots') {
         <div class="flex space-x-2 items-center">
-            <span class="rounded-full animate-bounce" [class]="bgColor() + ' ' + spinnerSizeDotsClass()" style="animation-delay:0s"></span>
-            <span class="rounded-full animate-bounce" [class]="bgColor() + ' ' + spinnerSizeDotsClass()" style="animation-delay:0.2s"></span>
-            <span class="rounded-full animate-bounce" [class]="bgColor() + ' ' + spinnerSizeDotsClass()" style="animation-delay:0.4s"></span>
+          <span class="rounded-full animate-bounce" [class]="bgColor() + ' ' + spinnerSizeDotsClass()" style="animation-delay:0s"></span>
+          <span class="rounded-full animate-bounce" [class]="bgColor() + ' ' + spinnerSizeDotsClass()" style="animation-delay:0.2s"></span>
+          <span class="rounded-full animate-bounce" [class]="bgColor() + ' ' + spinnerSizeDotsClass()" style="animation-delay:0.4s"></span>
         </div>
       }
+
       @case ('bars') {
         <div class="flex space-x-1 items-center h-6">
-
           <span class="rounded-sm animate-bar-scale" [class]="bgColor() + ' ' + spinnerSizeBarsClass(1)" style="animation-delay:0s"></span>
-
           <span class="rounded-sm animate-bar-scale" [class]="bgColor() + ' ' + spinnerSizeBarsClass(2)" style="animation-delay:0.2s"></span>
           <span class="rounded-sm animate-bar-scale" [class]="bgColor() + ' ' + spinnerSizeBarsClass(3)" style="animation-delay:0.4s"></span>
         </div>
       }
+
       @case ('double') {
         <div class="relative">
-            <!-- الحلقة الأولى -->
-            <div 
+          <!-- الحلقة الأولى -->
+          <div 
             [class]="'animate-spin rounded-full border-solid ' 
                     + spinnerSizeDoubleClass(1) 
                     + ' ' + borderColor() 
                     + ' border-t-transparent'">
-            </div>
-            <!-- الحلقة التانية (داخلية) -->
-            <div 
-                [class]="'animate-spin opacity-75 rounded-full border-solid absolute top-1/2 left-1/2 -translate-1/2 ' 
-                        + spinnerSizeDoubleClass(2) 
-                        + ' ' + borderColor() 
-                        + ' border-b-transparent'" 
-                style="animation-direction: reverse;">
-            </div>
+          </div>
+          <!-- الحلقة التانية (داخلية) -->
+          <div 
+            [class]="'animate-spin opacity-75 rounded-full border-solid absolute top-1/2 left-1/2 -translate-1/2 ' 
+                    + spinnerSizeDoubleClass(2) 
+                    + ' ' + borderColor() 
+                    + ' border-b-transparent'" 
+            style="animation-direction: reverse;">
+          </div>
         </div>
       }
     }

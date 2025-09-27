@@ -1,34 +1,48 @@
-/* You can add global styles to this file, and also import other style files */
+/* ====== Imports ====== */
 @import "tailwindcss";
 @import '../using-fontawesome/css/all.min.css';
+
+/* ====== Custom Variants ====== */
 @custom-variant dark (&:where(.dark, .dark *));
 
-a, button {
-    cursor: pointer;
+/* ====== Base Styles ====== */
+a,
+button {
+  cursor: pointer;
 }
 
-/* ====== Day mode ====== */
+/* ====== Light Mode Shadows ====== */
 .shadow-sm-all {
-  box-shadow: 0 0 2px rgba(0,0,0,0.1);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
 .shadow-md-all {
-  box-shadow: 0 0 6px rgba(0,0,0,0.2);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
 }
 
 .shadow-lg-all {
-  box-shadow: 0 0 12px rgba(0,0,0,0.3);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
 }
 
-/* ====== Night mode (Dark) ====== */
+/* ====== Dark Mode Shadows ====== */
 .dark .shadow-sm-all-night {
-  box-shadow: 0 0 2px rgba(156,163,175,0.3);
+  box-shadow: 0 0 2px rgba(156, 163, 175, 0.3);
 }
 
 .dark .shadow-md-all-night {
-  box-shadow: 0 0 6px rgba(156,163,175,0.3);
+  box-shadow: 0 0 6px rgba(156, 163, 175, 0.3);
 }
 
 .dark .shadow-lg-all-night {
-  box-shadow: 0 0 12px rgba(156,163,175,0.3);
+  box-shadow: 0 0 12px rgba(156, 163, 175, 0.3);
+}
+
+/* ====== Carousel Global Styles ====== */
+zs-carousel {
+  --carousel-item-width: 25%;
+}
+
+[carousel-item] {
+  flex: 0 0 var(--carousel-item-width);
+  box-sizing: border-box;
 }

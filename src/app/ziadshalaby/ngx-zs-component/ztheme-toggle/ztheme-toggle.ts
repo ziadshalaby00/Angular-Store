@@ -1,7 +1,7 @@
 import { Component, signal, HostListener, effect, output, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-export type themeTypes = 'light' | 'dark'
+export type themeTypes = 'light' | 'dark';
 
 @Component({
   selector: 'ZS-theme-toggle',
@@ -10,29 +10,19 @@ export type themeTypes = 'light' | 'dark'
   styleUrl: './ztheme-toggle.css'
 })
 export class ZThemeToggle {
-  // Theme state
+  // ✅ Signals
   currentTheme = signal<themeTypes>('light');
   isOpen = signal<boolean>(false);
 
-  // Output event
-  themeChange = output<themeTypes>();
-
-  // ✅ Input signals for body classes
+  // ✅ Input signals
   bodyBgClass = input<string>('bg-white dark:bg-gray-900');
   bodyTextClass = input<string>('text-gray-900 dark:text-gray-100');
 
+  // ✅ Output events
+  themeChange = output<themeTypes>();
+
   constructor() {
-    // Initialize theme from localStorage or prefer-color-scheme
-    effect((): void => {
-      const theme: themeTypes = this.currentTheme();
-      document.documentElement.classList.toggle('dark', theme === 'dark');
-      localStorage.setItem('theme', theme);
-
-      // ✅ Apply classes to body
-      document.body.className = `${this.bodyBgClass()} ${this.bodyTextClass()}`;
-    });
-
-    // Initialize theme
+    // Initialize theme from localStorage or prefers-color-scheme
     const savedTheme: themeTypes = localStorage.getItem('theme') as 'light' | 'dark';
     const systemDark: boolean = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
@@ -48,8 +38,19 @@ export class ZThemeToggle {
         this.currentTheme.set(e.matches ? 'dark' : 'light');
       }
     });
+
+    // Effect to sync theme with DOM and localStorage
+    effect((): void => {
+      const theme: themeTypes = this.currentTheme();
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      localStorage.setItem('theme', theme);
+
+      // ✅ Apply classes to body
+      document.body.className = `${this.bodyBgClass()} ${this.bodyTextClass()}`;
+    });
   }
 
+  // ✅ Component methods
   toggleOpen(): void {
     this.isOpen.set(!this.isOpen());
   }
@@ -60,7 +61,7 @@ export class ZThemeToggle {
     this.themeChange.emit(theme); // 👈 Emit to parent
   }
 
-  // Close the menu when clicking outside
+  // ✅ Host listeners
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     const target: HTMLElement = event.target as HTMLElement;

@@ -23,15 +23,24 @@ export interface NavbarItem {
   styleUrl: './znav-items.css'
 })
 export class ZnavItems {
+
+  // --- Injection & Services ---
   private znavItemsService: ZnavItemsService = inject(ZnavItemsService);
 
+  // --- Inputs & Outputs ---
   item = input.required<NavbarItem>();
   collectionName = input.required<string>();
   anyItemClicked = output<NavbarItem>();
 
+  // --- Signals & Computed ---
   // index ثابت لكل instance (مش computed متغير)
   index = signal<string>(crypto.randomUUID());
 
+  isOpen = computed<boolean>((): boolean => 
+    this.znavItemsService.openIndex(this.collectionName()) === this.index()
+  );
+
+  // --- Lifecycle & Effects ---
   constructor() {
     effect((): void => {
       const col: string = this.collectionName();
@@ -39,6 +48,7 @@ export class ZnavItems {
     });
   }
 
+  // --- Event Handlers ---
   toggle(): void {
     const currentOpen: string = this.znavItemsService.openIndex(this.collectionName());
     // لازم نستدعي this.index() عشان نحصل على القيمة النصية
@@ -49,15 +59,12 @@ export class ZnavItems {
     }
   }
 
-  isOpen = computed<boolean>((): boolean => 
-    this.znavItemsService.openIndex(this.collectionName()) === this.index()
-  );
-
   onItemClick(): void {
     this.item().action?.();
     this.anyItemClicked.emit(this.item());
   }
 
+  // --- Helper Methods ---
   getItemClasses = (item: NavbarItem): string => {
     const defaultTextHover =
       'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100';

@@ -7,22 +7,34 @@
 
     @if(!categoryService.loading() && !categoryService.error()) {
       <ZS-carousel
-        [items]="categories"
+        [itemsNumber]="categoryService.categories().length"
         [maxItemsPerBox]="4"
-
         [itemMinWidth]="256"
-
-        [autoPlay]="true"
+        [autoPlay]="false"
         [duration]="3500"
-
         [arrows]="true"
-        [arrowColorClass]="'text-blue-700'"
+        arrowColorClass="text-blue-700"
+      >
+        @for (item of categoryService.categories(); track item.id) {
+          <div carousel-item (click)="filters.category.set(item.id)" class="flex items-center justify-center">
+            <div class="flex flex-col items-center px-1 cursor-pointer">
+              <div class="overflow-hidden group size-64 rounded-full">
+                <img
+                  [src]="configService.apiUrl + item.image"
+                  [alt]="item.name"
+                  class="w-full h-full object-cover transition-transform duration-500 hover:scale-105 transform-gpu will-change-transform"
+                />
+              </div>
 
-        [itemShape]="'circle'"
-        [itemShapeSize]="256"
-
-        (itemClick)="filters.category.set($event.id)"
-      ></ZS-carousel>
+              @if (item.name) {
+                <div class="text-center p-3">
+                  <h3 class="font-semibold text-base">{{ item.name }}</h3>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </ZS-carousel>
     }
   </div>
 

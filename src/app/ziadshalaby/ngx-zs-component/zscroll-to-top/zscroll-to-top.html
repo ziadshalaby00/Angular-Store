@@ -7,36 +7,36 @@
     (click)="scrollToTop()"
     class="w-12 h-12 rounded-full flex transparent items-center justify-center relative overflow-hidden"
   >
-    <!-- Progress Ring Background -->
+    <!-- 🌀 Progress Ring (SVG) -->
     <svg class="absolute inset-0 w-full h-full transform -rotate-90">
-        <!-- Background Ring -->
-        <circle
-            cx="24"
-            cy="24"
-            r="22"
-            stroke="transparent"
-            stroke-width="5"
-            fill="currentColor"
-            [ngClass]="circleBgColor()"
-        />
+      <!-- Background Ring -->
+      <circle
+        cx="24"
+        cy="24"
+        r="22"
+        stroke="transparent"
+        stroke-width="5"
+        fill="currentColor"
+        [ngClass]="circleBgColor()"
+      />
 
-        <!-- Progress Ring -->
-        <circle
-            cx="24"
-            cy="24"
-            r="22"
-            stroke="currentColor"
-            stroke-width="5"
-            fill="transparent"
-            [attr.stroke-dasharray]="circleCircumference"
-            [attr.stroke-dashoffset]="progressOffset()"
-            [ngClass]="arrowAprogressColor()"
-            class="transition-all duration-300 ease-out"
-            stroke-linecap="round"
-        />
+      <!-- Progress Ring -->
+      <circle
+        cx="24"
+        cy="24"
+        r="22"
+        stroke="currentColor"
+        stroke-width="5"
+        fill="transparent"
+        [attr.stroke-dasharray]="circleCircumference"
+        [attr.stroke-dashoffset]="progressOffset()"
+        [ngClass]="arrowAprogressColor()"
+        class="transition-all duration-300 ease-out"
+        stroke-linecap="round"
+      />
     </svg>
 
-    <!-- Arrow Icon -->
+    <!-- ⬆️ Arrow Icon -->
     <i
       class="fas fa-arrow-up"
       [ngClass]="[arrowAprogressColor(), 'relative z-[100] text-lg']"

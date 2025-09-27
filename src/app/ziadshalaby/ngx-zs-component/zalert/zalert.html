@@ -1,14 +1,22 @@
-<div class="fixed ml-4 break-all z-[900] flex flex-col overflow-y-auto custom-scrollbar p-2 space-y-3"
-[ngStyle]="maxHeightStyle" [ngClass]="position()">
+<div 
+  class="fixed ml-4 break-all z-[900] flex flex-col overflow-y-auto custom-scrollbar p-2 space-y-3"
+  [ngStyle]="maxHeightStyle" 
+  [ngClass]="position()"
+>
+
   @for (alert of alertConfig(); track alert.id) {
+
     <div
       class="pointer-events-auto max-w-sm min-h-14 rounded-lg border p-4 shadow-md dark:shadow-gray-400/30
-            transition-all duration-300 ease-in-out animate-fade-in relative overflow-hidden"
+              transition-all duration-300 ease-in-out animate-fade-in relative overflow-hidden"
       [class]="alert.bgColor + ' ' + alert.textColor + ' ' + alert.borderColor"
     >
+
+      <!-- Alert Content -->
       <div class="flex items-start">
         <i [class]="alert.icon + ' mt-0.5 me-3'"></i>
         <div class="flex-1 text-sm font-medium">{{ alert.message }}</div>
+
         @if (alert.showCloseButton ?? defultShowCloseButton()) {
           <button
             type="button"
@@ -24,8 +32,8 @@
         }
       </div>
 
-      @if(alert.autoClose ?? defultAutoClose()) {
-        <!-- Progress bar -->
+      <!-- Auto-close Progress Bar -->
+      @if (alert.autoClose ?? defultAutoClose()) {
         <div class="absolute bottom-0 left-0 h-1 bg-gray-300 dark:bg-gray-700 w-full">
           <div
             class="h-1 bg-current transition-[width] duration-100"
@@ -33,6 +41,9 @@
           ></div>
         </div>
       }
+
     </div>
+
   }
+
 </div>

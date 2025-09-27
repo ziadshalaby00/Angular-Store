@@ -15,46 +15,27 @@ export interface DropdownItem {
   styleUrl: './zselect.css'
 })
 export class Zselect {
-  // Input signals (required)
+
+  // ─────── Inputs ───────
   items = input.required<DropdownItem[]>();
-
-  // Show Search Input
-  showSearch = input<boolean>(true)
-
-  // Input signals (optional with default values)
+  showSearch = input<boolean>(true);
   placeholder = input<string>('Select an option...');
   searchPlaceholder = input<string>('Search...');
   noResultsText = input<string>('No results found');
   showClearButton = input<boolean>(true);
+  selectItemIdfromParent = input<number | null>(null);
 
-  // Model for two-way binding
+  // ─────── Model (Two-way binding) ───────
   selectedItem = model<DropdownItem | null>(null);
 
-  // select item from paranet
-  selectItemIdfromParent = input<number | null>(null)
-
-    constructor() {
-      effect(() => {
-        const id = this.selectItemIdfromParent();
-        const item = this.items().find(item => item.id === id);
-
-        if (item) {
-          this.selectItem(item);
-        } else if (id === null) {
-          this.clearSelection();
-        }
-      });
-    }
-
-
-  // Output signals
+  // ─────── Outputs ───────
   selectionCleared = output<void>();
-  
-  // Local signals
+
+  // ─────── Local Signals ───────
   isOpen = signal<boolean>(false);
   searchQuery = signal<string>('');
 
-  // Computed signals
+  // ─────── Computed Signals ───────
   filteredItems = computed(() => {
     if (!this.searchQuery()) return this.items();
     
@@ -62,8 +43,22 @@ export class Zselect {
       item.name.toLowerCase().includes(this.searchQuery().toLowerCase())
     );
   });
-  
-  // Methods
+
+  // ─────── Constructor & Effects ───────
+  constructor() {
+    effect(() => {
+      const id = this.selectItemIdfromParent();
+      const item = this.items().find(item => item.id === id);
+
+      if (item) {
+        this.selectItem(item);
+      } else if (id === null) {
+        this.clearSelection();
+      }
+    });
+  }
+
+  // ─────── Methods ───────
   toggleDropdown() {
     this.isOpen.set(!this.isOpen());
     if (this.isOpen()) {

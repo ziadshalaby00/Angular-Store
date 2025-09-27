@@ -8,21 +8,24 @@ import { Component, computed, input, output } from '@angular/core';
   styleUrl: './zpagination.css'
 })
 export class Zpagination {
+
   // 🟦 Signals inputs
   totalPages = input.required<number>();
   currentPage = input.required<number>();
 
-  showTotalItems = input<boolean>(false)
-  totalItemsMessage = input<string>('Total items:')
+  showTotalItems = input<boolean>(false);
+  totalItemsMessage = input<string>('Total items:');
   totalItems = input<number>();
 
   // 🟦 Output as signal
   pageChange = output<number>();
 
+  // 🟦 Computed properties
   pages = computed<number[]>(() => 
     Array.from({ length: this.totalPages() }, (_, i) => i + 1)
   );
 
+  // 🟦 Event handlers
   goToPage(page: number) {
     if (page < 1 || page > this.totalPages()) return;
     this.pageChange.emit(page);
@@ -35,4 +38,5 @@ export class Zpagination {
   prevPage() {
     this.goToPage(this.currentPage() - 1);
   }
+
 }

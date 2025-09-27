@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 
+
+// ======================
+// أنواع مخصصة (Types)
+// ======================
+
 export type LoaderType = 'spinner' | 'pro' | 'double' | 'gear' | 'fan' | 'pulse' | 'dots' | 'bars';
 export type LoaderSize = 'sm' | 'md' | 'lg';
 
@@ -12,6 +17,12 @@ export type BaseColors =
   | 'violet'| 'purple' | 'fuchsia' | 'pink';
 
 type ColorPrefixes = 'text' | 'bg' | 'border';
+
+
+// ======================
+// ثوابت وخرائط (Constants & Mappings)
+// ======================
+
 const colorMapping: Map<BaseColors, Record<ColorPrefixes, string>> = new Map([
   ['slate',   { text: 'text-slate-600',   bg: 'bg-slate-600',   border: 'border-slate-600' }],
   ['gray',    { text: 'text-gray-600',    bg: 'bg-gray-600',    border: 'border-gray-600' }],
@@ -37,6 +48,11 @@ const colorMapping: Map<BaseColors, Record<ColorPrefixes, string>> = new Map([
   ['rose',    { text: 'text-rose-600',    bg: 'bg-rose-600',    border: 'border-rose-600' }],
 ]);
 
+
+// ======================
+// تعريف المكوّن (Component)
+// ======================
+
 @Component({
   selector: 'ZS-spinner',
   imports: [],
@@ -44,7 +60,11 @@ const colorMapping: Map<BaseColors, Record<ColorPrefixes, string>> = new Map([
   styleUrl: './zspinner.css'
 })
 export class Zspinner {
-  // Inputs (signals)
+
+  // ======================
+  // المدخلات (Inputs)
+  // ======================
+
   isFloating = input<boolean>(false);
   color = input<BaseColors>('blue');
   withBox = input<boolean>(false);
@@ -52,7 +72,11 @@ export class Zspinner {
   type = input<LoaderType>('spinner');
   size = input<LoaderSize>('md');
 
-  // computed classes (return strings)
+
+  // ======================
+  // الحسابات (Computed Properties)
+  // ======================
+
   wrapperClasses = computed<string>(() =>
     this.isFloating()
       ? 'fixed inset-0 flex items-center justify-center z-[1000] bg-black/40 dark:bg-white/30'

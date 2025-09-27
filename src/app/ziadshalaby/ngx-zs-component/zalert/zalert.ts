@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { ZalertService } from '../zalertService/zalert-service';
 
+
+// =============== Interfaces ===============
 export interface Alert {
   id: number | string; // نستخدمه للتتبع والإغلاق
   message: string;
@@ -19,6 +21,10 @@ export interface AlertFullType extends Alert {
   borderColor: string;
 }
 
+export type oldAlertsType = Set<number | string>
+
+
+// =============== Constants ===============
 const ALERT_CONFIG: Record<Alert['type'], Omit<AlertFullType, keyof Alert>> = {
   success: {
     icon: 'fas fa-check-circle',
@@ -46,8 +52,8 @@ const ALERT_CONFIG: Record<Alert['type'], Omit<AlertFullType, keyof Alert>> = {
   },
 };
 
-export type oldAlertsType = Set<number | string>
 
+// =============== Component Decorator ===============
 @Component({
   selector: 'ZS-alert',
   imports: [CommonModule],
@@ -55,12 +61,21 @@ export type oldAlertsType = Set<number | string>
   styleUrl: './zalert.css'
 })
 export class Zalert {
+
+
+  // =============== Dependencies ===============
   zalertService: ZalertService = inject(ZalertService)
-  
-  alerts = computed<Alert[]>(() => {
-    const list = this.zalertService.alerts();
-    return this.direction() === 'bottom' ? [...list].reverse() : list;
-  });
+
+
+  // =============== Inputs ===============
+  position = input<string>('top-4 right-4'); // e.g., "top-6 left-6", "bottom-4 right-10"
+  defultShowCloseButton = input<boolean>(true);
+  defultAutoClose = input<boolean>(true)
+  defultDuration = input<number>(5000)
+
+
+  // =============== Signals & Computed ===============
+  private oldAlerts = signal<oldAlertsType>(new Set());
 
   private direction = computed<'top' | 'bottom'>(() => {
     for (const s of this.position().split(' ')) {
@@ -70,14 +85,23 @@ export class Zalert {
     return 'top';
   });
 
-  private oldAlerts = signal<oldAlertsType>(new Set());
+  alerts = computed<Alert[]>(() => {
+    const list = this.zalertService.alerts();
+    return this.direction() === 'bottom' ? [...list].reverse() : list;
+  });
 
-  position = input<string>('top-4 right-4'); // e.g., "top-6 left-6", "bottom-4 right-10"
-  defultShowCloseButton = input<boolean>(true);
+  alertConfig = computed<AlertFullType[]>(() => {
+    return this.alerts().map((alert: Alert) => {
+      const config = ALERT_CONFIG[alert.type] || ALERT_CONFIG['info'];
+      return {
+        ...alert,
+        ...config,
+      };
+    });
+  });
 
-  defultAutoClose = input<boolean>(true)
-  defultDuration = input<number>(5000)
 
+  // =============== Getters ===============
   get maxHeightStyle(): { maxHeight: string } {
     let offsetRem = 0;
 
@@ -93,16 +117,12 @@ export class Zalert {
     };
   }
 
-  alertConfig = computed<AlertFullType[]>(() => {
-    return this.alerts().map((alert: Alert) => {
-      const config = ALERT_CONFIG[alert.type] || ALERT_CONFIG['info'];
-      return {
-        ...alert,
-        ...config,
-      };
-    });
-  });
 
+  // =============== Private Properties ===============
+  private activeIntervals = new Map<string | number, number>();
+
+
+  // =============== Lifecycle & Effects ===============
   constructor() {
     effect(() => {
       const lastAlert = this.alerts().at(-1);
@@ -112,8 +132,13 @@ export class Zalert {
     });
   }
 
-  private activeIntervals = new Map<string | number, number>();
+  ngOnDestroy(): void {
+    this.activeIntervals.forEach(clearInterval);
+    this.activeIntervals.clear();
+  }
 
+
+  // =============== Private Methods ===============
   private registerAlert(alert: Alert): void {
     // سجل إن الـ alert اتعالج
     const set: oldAlertsType = new Set(this.oldAlerts());
@@ -145,6 +170,8 @@ export class Zalert {
     }
   }
 
+
+  // =============== Public Methods ===============
   closeAlert(id: string | number): void {
     // نظف أي interval شغال
     const interval = this.activeIntervals.get(id);
@@ -162,8 +189,4 @@ export class Zalert {
     this.zalertService.onAlertClosed(id);
   }
 
-  ngOnDestroy(): void {
-    this.activeIntervals.forEach(clearInterval);
-    this.activeIntervals.clear();
-  }
 }

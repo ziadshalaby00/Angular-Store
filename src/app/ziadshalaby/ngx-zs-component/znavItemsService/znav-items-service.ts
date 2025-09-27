@@ -9,9 +9,18 @@ interface CollectionEntry {
   providedIn: 'root'
 })
 export class ZnavItemsService {
+
+  // --- State ---
   // Map<collectionName, CollectionEntry>
   collections = signal<Map<string, CollectionEntry>>(new Map());
 
+  // --- Public API (Read) ---
+  openIndex(collectionName: string): string {
+    const entry: CollectionEntry | undefined = this.collections().get(collectionName);
+    return entry ? entry.openIndex : '';
+  }
+
+  // --- Public API (Write) ---
   addItemInCollection(collectionName: string, index: string): void {
     this.collections.update((prev: Map<string, CollectionEntry>) => {
       const m: Map<string, CollectionEntry> = new Map(prev);
@@ -37,10 +46,5 @@ export class ZnavItemsService {
       }
       return m;
     });
-  }
-
-  openIndex(collectionName: string): string {
-    const entry: CollectionEntry | undefined = this.collections().get(collectionName);
-    return entry ? entry.openIndex : '';
   }
 }

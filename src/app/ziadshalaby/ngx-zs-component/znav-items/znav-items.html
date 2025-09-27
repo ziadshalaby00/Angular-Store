@@ -1,11 +1,13 @@
 @if (item()) {
   @if (item().children?.length) {
     <div class="relative w-full">
+
+      <!-- Main toggle button -->
       <button 
         (click)="toggle()" 
         [ngClass]="getItemClasses(item())"
         class="px-3 py-2 gap-2 flex items-center 
-              rounded-md  md:text-base font-medium 
+              rounded-md md:text-base font-medium 
               text-sm w-full text-left"
         aria-haspopup="true"
         [attr.aria-expanded]="isOpen()"
@@ -19,14 +21,13 @@
         <i class="fas fa-chevron-down mr-2 ml-auto text-xs"></i>
       </button>
 
-      <!-- Desktop dropdown -->
+      <!-- Dropdown content -->
       <div [ngClass]="{
-                'block': isOpen(),
-                'hidden': !isOpen(),
-                'absolute left-6 bg-white dark:bg-gray-800 shadow-md-all shadow-md-all-night rounded-md mt-1 py-1 w-48 z-[900]': item().childrenOpenWindow,
-                'px-4 mt-1': !item().childrenOpenWindow
-            }"
-      >
+        'block': isOpen(),
+        'hidden': !isOpen(),
+        'absolute left-6 bg-white dark:bg-gray-800 shadow-md-all shadow-md-all-night rounded-md mt-1 py-1 w-48 z-[900]': item().childrenOpenWindow,
+        'px-4 mt-1': !item().childrenOpenWindow
+      }">
         @for (child of item().children; track $index) {
           <ZS-nav-items
             [item]="child"
@@ -36,8 +37,11 @@
           </ZS-nav-items>
         }
       </div>
+
     </div>
   } @else {
+
+    <!-- Leaf item (no children) -->
     <a
       [routerLink]="item().routerLink"
       [ngClass]="getItemClasses(item())"
@@ -51,5 +55,6 @@
       }
       <span class="break-word">{{ item().label }}</span>
     </a>
+
   }
 }
