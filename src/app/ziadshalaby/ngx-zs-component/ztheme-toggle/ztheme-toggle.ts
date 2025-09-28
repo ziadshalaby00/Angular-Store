@@ -15,8 +15,7 @@ export class ZThemeToggle {
   isOpen = signal<boolean>(false);
 
   // ✅ Input signals
-  bodyBgClass = input<string>('bg-white dark:bg-gray-900');
-  bodyTextClass = input<string>('text-gray-900 dark:text-gray-100');
+  bodyClass = input<string>('bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100');
 
   // ✅ Output events
   themeChange = output<themeTypes>();
@@ -46,7 +45,7 @@ export class ZThemeToggle {
       localStorage.setItem('theme', theme);
 
       // ✅ Apply classes to body
-      document.body.className = `${this.bodyBgClass()} ${this.bodyTextClass()}`;
+      document.body.className = this.bodyClass();
     });
   }
 

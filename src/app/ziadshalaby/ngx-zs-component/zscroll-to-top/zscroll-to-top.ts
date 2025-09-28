@@ -13,8 +13,8 @@ export class ZscrollToTop {
 
   // ✅ Input Signals (Modern Angular)
   position = input<positionType>('right'); // default: right
-  circleBgColor = input<string>('text-gray-400/80');
-  arrowAprogressColor = input<string>('text-blue-600');
+  circleColorClass = input<string>('text-gray-400/80');
+  arrowAprogressColorClass = input<string>('text-blue-600');
 
   // Internal Constants
   readonly circleRadius = 22;

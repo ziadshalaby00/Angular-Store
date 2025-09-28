@@ -17,7 +17,7 @@
         stroke="transparent"
         stroke-width="5"
         fill="currentColor"
-        [ngClass]="circleBgColor()"
+        [ngClass]="circleColorClass()"
       />
 
       <!-- Progress Ring -->
@@ -30,7 +30,7 @@
         fill="transparent"
         [attr.stroke-dasharray]="circleCircumference"
         [attr.stroke-dashoffset]="progressOffset()"
-        [ngClass]="arrowAprogressColor()"
+        [ngClass]="arrowAprogressColorClass()"
         class="transition-all duration-300 ease-out"
         stroke-linecap="round"
       />
@@ -39,7 +39,7 @@
     <!-- ⬆️ Arrow Icon -->
     <i
       class="fas fa-arrow-up"
-      [ngClass]="[arrowAprogressColor(), 'relative z-[100] text-lg']"
+      [ngClass]="[arrowAprogressColorClass(), 'relative z-[100] text-lg']"
     ></i>
   </button>
 </div>

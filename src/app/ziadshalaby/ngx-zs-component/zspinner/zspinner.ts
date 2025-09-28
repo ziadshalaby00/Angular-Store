@@ -68,7 +68,7 @@ export class Zspinner {
   isFloating = input<boolean>(false);
   color = input<BaseColors>('blue');
   withBox = input<boolean>(false);
-  boxColor = input<string>('bg-gray-300/90 dark:bg-gray-400/80');
+  boxColorClass = input<string>('bg-gray-300/90 dark:bg-gray-400/80');
   type = input<LoaderType>('spinner');
   size = input<LoaderSize>('md');
 
@@ -85,7 +85,7 @@ export class Zspinner {
 
   boxClasses = computed<string>(() =>
     this.withBox()
-      ? `p-4 rounded-lg shadow-md ${this.boxColor()}`
+      ? `p-4 rounded-lg shadow-md ${this.boxColorClass()}`
       : ''
   );
 

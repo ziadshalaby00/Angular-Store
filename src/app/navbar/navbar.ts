@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { ZalertService } from '../ziadshalaby/ngx-zs-component/zalertService/zalert-service';
 import { Znavbar, NavbarItemExport, UserProfile, SiteNameConfigType, AuthButtonsType } from '../ziadshalaby/ngx-zs-component/znavbar/znavbar';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -11,6 +11,7 @@ import { Znavbar, NavbarItemExport, UserProfile, SiteNameConfigType, AuthButtons
 })
 export class Navbar {
   alertService: ZalertService = inject(ZalertService)
+  private router: Router = inject(Router)
 
   siteNameConfig: SiteNameConfigType = {
     siteName: 'Ziadera',
@@ -89,6 +90,7 @@ export class Navbar {
   }
 
   onSignup() {
+    this.router.navigate(['/signup'])
     console.log('Signup clicked');
   }
 

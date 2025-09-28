@@ -68,7 +68,7 @@ export class Zalert {
 
 
   // =============== Inputs ===============
-  position = input<string>('top-4 right-4'); // e.g., "top-6 left-6", "bottom-4 right-10"
+  positionClass = input<string>('top-4 right-4'); // e.g., "top-6 left-6", "bottom-4 right-10"
   defultShowCloseButton = input<boolean>(true);
   defultAutoClose = input<boolean>(true)
   defultDuration = input<number>(5000)
@@ -78,7 +78,7 @@ export class Zalert {
   private oldAlerts = signal<oldAlertsType>(new Set());
 
   private direction = computed<'top' | 'bottom'>(() => {
-    for (const s of this.position().split(' ')) {
+    for (const s of this.positionClass().split(' ')) {
       if (s.startsWith('bottom-')) return 'bottom';
       if (s.startsWith('top-')) return 'top';
     }
@@ -105,7 +105,7 @@ export class Zalert {
   get maxHeightStyle(): { maxHeight: string } {
     let offsetRem = 0;
 
-    for (const s of this.position().split(' ')) {
+    for (const s of this.positionClass().split(' ')) {
       const match = s.match(/\d+/);
       if (match) {
         offsetRem = parseInt(match[0], 10) * 0.25;

@@ -1,7 +1,7 @@
 <div 
   class="fixed ml-4 break-all z-[900] flex flex-col overflow-y-auto custom-scrollbar p-2 space-y-3"
   [ngStyle]="maxHeightStyle" 
-  [ngClass]="position()"
+  [ngClass]="positionClass()"
 >
 
   @for (alert of alertConfig(); track alert.id) {
