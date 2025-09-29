@@ -1,0 +1,68 @@
+<label class="z-input w-full block" [attr.for]="id()">
+  <div class="mb-1 flex items-center gap-2">
+    @if (label()) {
+      <span class="text-sm font-medium truncate">{{ label() }}</span>
+    }
+    @if (hint()) {
+      <small class="text-xs text-slate-500 dark:text-slate-400">{{ hint() }}</small>
+    }
+  </div>
+
+  <div
+    class="relative flex items-center"
+    [class]="containerClasses()"
+  >
+    <!-- أيقونة يسار -->
+    @if (icon()) {
+      <i [ngClass]="icon() + ' mr-2 text-base'" aria-hidden="true"></i>
+    }
+
+    <input
+      [id]="id()"
+      [attr.type]="type() === 'search' ? 'text' : type()"
+      [attr.placeholder]="placeholder()"
+      [value]="value()"
+      [attr.disabled]="disabled() ? true : null"
+      [attr.min]="type() === 'number' ? min() : null"
+      [attr.max]="type() === 'number' ? max() : null"
+      [attr.required]="required() ? true : null"
+      class="flex-1 bg-transparent outline-none text-sm caret-current w-full"
+      (input)="onInput($event)"
+      (keydown.enter)="onEnter()"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+      (change)="onChange()"
+      [attr.autocomplete]="autocomplete()"
+      [attr.maxlength]="maxlength()"
+    />
+
+    <!-- زر مسح -->
+    @if (showClear()) {
+      <button
+        type="button"
+        (click)="clear()"
+        class="ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+        [attr.aria-label]="'Clear ' + (label() || '')"
+      >
+        <i class="fa fa-times text-sm" aria-hidden="true"></i>
+      </button>
+    }
+
+    <!-- أيقونة بحث (لـ search فقط أو عند طلبها) -->
+    @if (type() === 'search' || showSearchIcon()) {
+      <button
+        type="button"
+        (click)="onSearch()"
+        class="ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+        [attr.aria-label]="'Search'"
+      >
+        <i class="fa fa-search text-sm" aria-hidden="true"></i>
+      </button>
+    }
+  </div>
+
+  <!-- رسالة خطأ -->
+  @if (error()) {
+    <p class="mt-1 text-xs text-red-500">{{ error() }}</p>
+  }
+</label>
