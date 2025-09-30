@@ -54,7 +54,7 @@
     />
 
     <!-- Clear Button -->
-    @if (showClear()) {
+    @if (showClear() && !this.disabledOrReadonly()) {
       <button
         type="button"
         (click)="clear()"

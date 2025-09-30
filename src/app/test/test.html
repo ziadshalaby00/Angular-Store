@@ -2,6 +2,31 @@
 <div class="min-h-[90vh] p-6 flex items-center justify-evenly">
     <div class="flex items-center justify-center flex-col gap-4">
         @for(item of inputStyls; track item) {
+            <!-- <ZS-input
+            [value]="'ziad'"
+            [required]="true"
+            type="search"
+            [disabled]="true"
+            name="test"
+            [label]="item"
+            [inputStyle]="item"
+            [validateFn]="validateFn"
+            (valueChange)="valueChange($event)"
+            >
+            </ZS-input> -->
+
+            <ZS-select
+                label="Category"
+                [items]="[{id: 1, name: '1'}, {id: 2, name: '2'}, {id: 3, name: '3'}]"
+                placeholder="Select a category..."
+                [inputStyle]="item"
+                searchPlaceholder="Search...">
+            </ZS-select>
+        }
+    </div>
+
+    <div class="flex items-center justify-center flex-col gap-4">
+        @for(item of inputStyls; track item) {
             <ZS-date
                 hint="request"
                 [required]="true"

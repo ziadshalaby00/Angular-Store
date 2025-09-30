@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, ElementRef, inject, input, model, output, signal, ViewChild } from '@angular/core';
-import { ZinputService, InputStyle, paletteMap } from '../zinputService/zinput-service';
+import { Component, computed, ElementRef, inject, input, model, output, signal, viewChild, ViewChild } from '@angular/core';
+import { FormStyle, FormPaletteMap } from '../configTypeAndClsService/configTypeAndCls';
 
 // ----------------------
 // Types
@@ -34,8 +34,6 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   styleUrl: './zinput.css'
 })
 export class Zinput {
-  inputService: ZinputService = inject(ZinputService)
-
   // ----------------------
   // Inputs (signal-style)
   // ----------------------
@@ -46,7 +44,7 @@ export class Zinput {
 
   readonly placeholder = input<string | null>(null);
   readonly type = input<InputType>('text');
-  readonly inputStyle = input<InputStyle>('normal');
+  readonly inputStyle = input<FormStyle>('normal');
 
   readonly disabled = input<boolean>(false);
   readonly isReadonly = input<boolean>(false);
@@ -72,7 +70,7 @@ export class Zinput {
   // ----------------------
   // ViewChild
   // ----------------------
-  @ViewChild('inputEl') inputEl!: ElementRef<HTMLInputElement>;
+  readonly inputEl = viewChild<ElementRef<HTMLInputElement>>('inputEl');
 
   // ----------------------
   // Model
@@ -107,21 +105,22 @@ export class Zinput {
   // ----------------------
   // Computed Properties
   // ----------------------
+  readonly disabledOrReadonly = computed<boolean>(() => (this.disabled() || this.isReadonly()))
+
   readonly containerClasses = computed(() => {
     const base =
       'w-full rounded-lg border px-3 py-2 transition-all duration-150 focus-within:ring-2';
-    const inputStyle = this.inputStyle();
     const hasError = !!this.error();
-    const isDisabled = this.disabled();
 
-    let inputStyleEntry = paletteMap.get(inputStyle) ?? paletteMap.get('normal');
+    let inputStyleEntry = FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('normal');
 
     if (hasError) {
-      inputStyleEntry = paletteMap.get('danger');
+      inputStyleEntry = FormPaletteMap.get('danger');
     }
 
-    const disabledCls = isDisabled
-      ? 'opacity-60 cursor-not-allowed'
+    const disabledCls = this.disabled() ? 'opacity-60' : '';
+    const disabeldOrReadonlyCls = this.disabledOrReadonly()
+      ? 'cursor-not-allowed'
       : 'cursor-text';
 
     return [
@@ -132,6 +131,7 @@ export class Zinput {
       inputStyleEntry?.text,
       inputStyleEntry?.ring,
       disabledCls,
+      disabeldOrReadonlyCls
     ].join(' ');
   });
 
@@ -197,7 +197,16 @@ export class Zinput {
       }
     }
 
-    // 7. custom validator
+    // 7. url
+    if (type === 'url' && val) {
+      try {
+        new URL(val); // يمكنك استخدام هذه الطريقة للتحقق من صحة الرابط
+      } catch {
+        result.push('Please enter a valid URL');
+      }
+    }
+
+    // 8. custom validator
     result.push(...(this.validateFn()(val) ?? []));
 
     return result.length !== 0 ? result : null;
@@ -208,7 +217,7 @@ export class Zinput {
   // ----------------------
   ngAfterViewInit() {
     if (this.autofocus()) {
-      queueMicrotask(() => this.inputEl.nativeElement.focus());
+      queueMicrotask(() => this.inputEl()?.nativeElement.focus());
     }
   }
 
@@ -216,11 +225,13 @@ export class Zinput {
   // Event Handlers
   // ----------------------
   onInput(ev: Event) {
+    if (this.disabledOrReadonly()) return;
     const v = (ev.target as HTMLInputElement).value;
     this.value.set(v);
   }
 
   onEnter() {
+    if (this.disabledOrReadonly()) return;
     this.enter.emit();
   }
 
@@ -229,27 +240,31 @@ export class Zinput {
   }
 
   onBlur() {
+    if (this.disabledOrReadonly()) return;
     this.touched.set(true); // ✅ المستخدم لمس الحقل
     this.value.set(this.formatFn()(this.value()))
     this.blur.emit();
   }
 
   onChange() {
+    if (this.disabledOrReadonly()) return;
     this.change.emit(this.value());
   }
 
   onSearch() {
+    if (this.disabledOrReadonly()) return;
     this.search.emit();
   }
 
   clear() {
-    if (this.disabled()) return;
+    if (this.disabledOrReadonly()) return;
     this.value.set(null);
     this.change.emit(null);
     this.cleared.emit();
   }
 
   onKeydown(ev: KeyboardEvent) {
+    if (this.disabledOrReadonly()) return;
     this.keydown.emit(ev);
   }
 }

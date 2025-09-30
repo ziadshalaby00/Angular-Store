@@ -1,5 +1,5 @@
 import { Component, computed, input, model, output } from '@angular/core';
-import { InputStyle, paletteMap } from '../zinputService/zinput-service';
+import { FormStyle, FormPaletteMap } from '../configTypeAndClsService/configTypeAndCls';
 
 // date-picker.model.ts
 export type DatePickerType = 'date' | 'datetime-local' | 'month' | 'week' | 'time';
@@ -21,7 +21,7 @@ export class Zdate {
   readonly readonly = input<boolean>(false);
 
   readonly type = input<DatePickerType>('date');
-  readonly inputStyle = input<InputStyle>('normal');
+  readonly inputStyle = input<FormStyle>('normal');
 
   // Model
   readonly value = model<string | null>(null);
@@ -47,7 +47,7 @@ export class Zdate {
   // Computed classes
   readonly inputClasses = computed(() => {
     const base = 'w-full appearance-none focus:outline-none px-4 py-2.5 pl-10 pr-4 focus-within:ring-2 rounded-lg border shadow-sm  transition-all duration-150';
-    const styleEntry = paletteMap.get(this.inputStyle()) ?? paletteMap.get('normal');
+    const styleEntry = FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('normal');
     const disabledCls = this.disabled() ? 'opacity-60 cursor-not-allowed' : 'cursor-text';
     return [
       base, 

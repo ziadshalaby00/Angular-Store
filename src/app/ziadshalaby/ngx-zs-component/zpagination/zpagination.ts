@@ -10,18 +10,18 @@ import { Component, computed, input, output } from '@angular/core';
 export class Zpagination {
 
   // 🟦 Signals inputs
-  totalPages = input.required<number>();
-  currentPage = input.required<number>();
+  readonly totalPages = input.required<number>();
+  readonly currentPage = input.required<number>();
 
-  showTotalItems = input<boolean>(false);
-  totalItemsMessage = input<string>('Total items:');
-  totalItems = input<number>();
+  readonly showTotalItems = input<boolean>(false);
+  readonly totalItemsMessage = input<string>('Total items:');
+  readonly totalItems = input<number>();
 
   // 🟦 Output as signal
-  pageChange = output<number>();
+  readonly pageChange = output<number>();
 
   // 🟦 Computed properties
-  pages = computed<number[]>(() => 
+  readonly pages = computed<number[]>(() => 
     Array.from({ length: this.totalPages() }, (_, i) => i + 1)
   );
 

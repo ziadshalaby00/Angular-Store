@@ -42,72 +42,72 @@ export class Znavbar {
   // المدخلات (Inputs)
   // =============================================================================
 
-  fixed = input<boolean>(true);
+  readonly fixed = input<boolean>(true);
 
   // الإدخالات القابلة للتخصيص
-  logoUrl = input<string | undefined>();
-  siteNameConfig = input<SiteNameConfigType | undefined>();
+  readonly logoUrl = input<string | undefined>();
+  readonly siteNameConfig = input<SiteNameConfigType | undefined>();
 
-  authButtons = input<AuthButtonsType>();
-  showUserSection = input<boolean>(true);
-  showSearchBar = input<boolean>(false);
+  readonly authButtons = input<AuthButtonsType>();
+  readonly showUserSection = input<boolean>(true);
+  readonly showSearchBar = input<boolean>(false);
 
-  navItems = input<NavbarItemExport[]>([]);
+  readonly navItems = input<NavbarItemExport[]>([]);
 
-  isLoggedIn = input<boolean>(false);
-  userProfile = input<UserProfile | undefined>();
+  readonly isLoggedIn = input<boolean>(false);
+  readonly userProfile = input<UserProfile | undefined>();
 
-  userMenuItems = input<NavbarItemExport[]>([]);
+  readonly userMenuItems = input<NavbarItemExport[]>([]);
 
-  searchPlaceholder = input<string>('Search...');
+  readonly searchPlaceholder = input<string>('Search...');
 
   // =============================================================================
   // المخرجات (Outputs)
   // =============================================================================
 
-  loginClicked = output<void>();
-  signupClicked = output<void>();
-  searchSubmitted = output<string>();
+  readonly loginClicked = output<void>();
+  readonly signupClicked = output<void>();
+  readonly searchSubmitted = output<string>();
 
   // =============================================================================
   // الإشارات (Signals) للحالة الداخلية
   // =============================================================================
 
   // حالة القائمة المتنقلة (للشاشات الصغيرة)
-  isMobileMenuOpen = signal<boolean>(false);
+  readonly isMobileMenuOpen = signal<boolean>(false);
 
   // حالة قائمة المستخدم
-  isUserMenuOpen = signal<boolean>(false);
+  readonly isUserMenuOpen = signal<boolean>(false);
 
   // حالة قائمة "More"
-  isMoreOpen = signal<boolean>(false);
+  readonly isMoreOpen = signal<boolean>(false);
 
   // قيمة البحث
-  searchValue = signal<string>('');
+  readonly searchValue = signal<string>('');
 
   // =============================================================================
   // الحوسبة (Computed Properties)
   // =============================================================================
 
-  visibleNavItems = computed<NavbarItem[]>(() => {
+  readonly visibleNavItems = computed<NavbarItem[]>(() => {
     if (this.showSearchBar()) {
       return this.navItems().slice(0, 2).map((n: NavbarItemExport) => this.toNavbarItem(n, true));
     }
     return this.navItems().slice(0, 5).map((n: NavbarItemExport) => this.toNavbarItem(n, true));
   });
 
-  moreNavItems = computed<NavbarItem[]>(() => {
+  readonly moreNavItems = computed<NavbarItem[]>(() => {
     if (this.showSearchBar()) {
       return this.navItems().slice(2).map((n: NavbarItemExport) => this.toNavbarItem(n, true));
     }
     return this.navItems().slice(5).map((n: NavbarItemExport) => this.toNavbarItem(n, true));
   });
 
-  mobileNavItems = computed<NavbarItem[]>(() => 
+  readonly mobileNavItems = computed<NavbarItem[]>(() => 
     this.navItems().map((n: NavbarItemExport) => this.toNavbarItem(n, false))
   );
 
-  getUserMenuItems = computed<NavbarItem[]>(() => 
+  readonly getUserMenuItems = computed<NavbarItem[]>(() => 
     this.userMenuItems().map((n: NavbarItemExport) => this.toNavbarItem(n, false))
   );
 

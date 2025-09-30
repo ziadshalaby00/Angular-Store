@@ -12,26 +12,26 @@ export type positionType = 'left' | 'right';
 export class ZscrollToTop {
 
   // ✅ Input Signals (Modern Angular)
-  position = input<positionType>('right'); // default: right
-  circleColorClass = input<string>('text-gray-400/80');
-  arrowAprogressColorClass = input<string>('text-blue-600');
+  readonly position = input<positionType>('right'); // default: right
+  readonly circleColorClass = input<string>('text-gray-400/80');
+  readonly arrowAprogressColorClass = input<string>('text-blue-600');
 
   // Internal Constants
   readonly circleRadius = 22;
   readonly circleCircumference = 2 * Math.PI * this.circleRadius;
 
   // Internal Signals
-  scrollY = signal<number>(0);
+  readonly scrollY = signal<number>(0);
 
   // Computed Properties
-  progressOffset = computed(() => {
+  readonly progressOffset = computed(() => {
     const _ = this.scrollY();
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     const progress = maxScroll > 0 ? this.scrollY() / maxScroll : 0;
     return this.circleCircumference * (1 - progress);
   });
 
-  positionClass = computed(() => ({
+  readonly positionClass = computed(() => ({
     'right-4': this.position() === 'right',
     'left-4': this.position() === 'left',
   }));

@@ -1,57 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { ZalertService } from '../zalertService/zalert-service';
-
-
-// =============== Interfaces ===============
-export interface Alert {
-  id: number | string; // نستخدمه للتتبع والإغلاق
-  message: string;
-  type: 'success' | 'danger' | 'warning' | 'info';
-  autoClose?: boolean;
-  duration?: number;
-  showCloseButton?: boolean
-  progress?: number;
-}
-
-export interface AlertFullType extends Alert {
-  icon: string;
-  bgColor: string;
-  textColor: string;
-  borderColor: string;
-}
-
-export type oldAlertsType = Set<number | string>
-
-
-// =============== Constants ===============
-const ALERT_CONFIG: Record<Alert['type'], Omit<AlertFullType, keyof Alert>> = {
-  success: {
-    icon: 'fas fa-check-circle',
-    bgColor: 'bg-green-100 dark:bg-green-800',
-    textColor: 'text-green-800 dark:text-green-100',
-    borderColor: 'border-green-500 dark:border-green-300',
-  },
-  danger: {
-    icon: 'fas fa-exclamation-circle',
-    bgColor: 'bg-red-100 dark:bg-red-800',
-    textColor: 'text-red-800 dark:text-red-100',
-    borderColor: 'border-red-500 dark:border-red-300',
-  },
-  warning: {
-    icon: 'fas fa-exclamation-triangle',
-    bgColor: 'bg-yellow-100 dark:bg-yellow-800',
-    textColor: 'text-yellow-800 dark:text-yellow-100',
-    borderColor: 'border-yellow-500 dark:border-yellow-300',
-  },
-  info: {
-    icon: 'fas fa-info-circle',
-    bgColor: 'bg-blue-100 dark:bg-blue-800',
-    textColor: 'text-blue-800 dark:text-blue-100',
-    borderColor: 'border-blue-500 dark:border-blue-300',
-  },
-};
-
+import { Alert, ALERT_CONFIG, AlertFullType, oldAlertsType } from '../configTypeAndClsService/configTypeAndCls';
 
 // =============== Component Decorator ===============
 @Component({
@@ -64,20 +14,20 @@ export class Zalert {
 
 
   // =============== Dependencies ===============
-  zalertService: ZalertService = inject(ZalertService)
+  readonly zalertService: ZalertService = inject(ZalertService)
 
 
   // =============== Inputs ===============
-  positionClass = input<string>('top-4 right-4'); // e.g., "top-6 left-6", "bottom-4 right-10"
-  defultShowCloseButton = input<boolean>(true);
-  defultAutoClose = input<boolean>(true)
-  defultDuration = input<number>(5000)
+  readonly positionClass = input<string>('top-4 right-4'); // e.g., "top-6 left-6", "bottom-4 right-10"
+  readonly defultShowCloseButton = input<boolean>(true);
+  readonly defultAutoClose = input<boolean>(true)
+  readonly defultDuration = input<number>(5000)
 
 
   // =============== Signals & Computed ===============
-  private oldAlerts = signal<oldAlertsType>(new Set());
+  private readonly oldAlerts = signal<oldAlertsType>(new Set());
 
-  private direction = computed<'top' | 'bottom'>(() => {
+  private readonly direction = computed<'top' | 'bottom'>(() => {
     for (const s of this.positionClass().split(' ')) {
       if (s.startsWith('bottom-')) return 'bottom';
       if (s.startsWith('top-')) return 'top';
@@ -85,12 +35,12 @@ export class Zalert {
     return 'top';
   });
 
-  alerts = computed<Alert[]>(() => {
+  readonly alerts = computed<Alert[]>(() => {
     const list = this.zalertService.alerts();
     return this.direction() === 'bottom' ? [...list].reverse() : list;
   });
 
-  alertConfig = computed<AlertFullType[]>(() => {
+  readonly alertConfig = computed<AlertFullType[]>(() => {
     return this.alerts().map((alert: Alert) => {
       const config = ALERT_CONFIG[alert.type] || ALERT_CONFIG['info'];
       return {

@@ -1,23 +1,26 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Zinput } from '../ziadshalaby/ngx-zs-component/zinput/zinput';
 import { Zdate } from '../ziadshalaby/ngx-zs-component/zdate/zdate';
-import { InputStyle } from '../ziadshalaby/ngx-zs-component/zinputService/zinput-service';
+import { ConfigTypeAndCls, FormStyle } from '../ziadshalaby/ngx-zs-component/configTypeAndClsService/configTypeAndCls';
+import { Zselect } from '../ziadshalaby/ngx-zs-component/zselect/zselect';
 
 @Component({
   selector: 'app-test',
-  imports: [CommonModule, Zdate, Zinput],
+  imports: [CommonModule, Zdate, Zinput, Zselect],
   templateUrl: './test.html',
   styleUrl: './test.css'
 })
 export class Test {
+
+  configTypeAndCls = inject(ConfigTypeAndCls)
 
   // ============ Example ============
   onDateChange(event: any) {
     console.log(event)
   }
 
-  readonly inputStyls: InputStyle[] = ['normal', 'primary', 'secondary', 'danger', 'warning', 'info', 'light', 'dark', 'teal', 'violet', 'success']
+  readonly inputStyls: FormStyle[] = ['normal', 'primary', 'secondary', 'danger', 'warning', 'info', 'light', 'dark', 'teal', 'violet', 'success']
 
   ngOnInit() {
     

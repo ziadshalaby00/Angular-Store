@@ -1,13 +1,12 @@
 import { TestBed } from '@angular/core/testing';
+import { ConfigTypeAndCls } from './configTypeAndCls';
 
-import { ZinputService } from './zinput-service';
-
-describe('ZinputService', () => {
-  let service: ZinputService;
+describe('ConfigTypeAndCls', () => {
+  let service: ConfigTypeAndCls;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ZinputService);
+    service = TestBed.inject(ConfigTypeAndCls);
   });
 
   it('should be created', () => {

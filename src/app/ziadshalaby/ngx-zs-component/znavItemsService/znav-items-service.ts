@@ -12,7 +12,7 @@ export class ZnavItemsService {
 
   // --- State ---
   // Map<collectionName, CollectionEntry>
-  collections = signal<Map<string, CollectionEntry>>(new Map());
+  readonly collections = signal<Map<string, CollectionEntry>>(new Map());
 
   // --- Public API (Read) ---
   openIndex(collectionName: string): string {

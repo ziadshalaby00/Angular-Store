@@ -30,55 +30,55 @@ export type itemShapeType = 'rect' | 'circle'
 export class Zcarousel {
 
   // ============================ Inputs ============================ //
-  itemsNumber = input.required<number>()
+  readonly itemsNumber = input.required<number>()
 
-  arrows = input<boolean>(true);                        // show/hide arrows
-  arrowColorClass = input<string>('text-gray-700');    // arrow color
+  readonly arrows = input<boolean>(true);                        // show/hide arrows
+  readonly arrowColorClass = input<string>('text-gray-700');    // arrow color
 
-  showIndicators = input<boolean>(true);
+  readonly showIndicators = input<boolean>(true);
 
-  autoPlay = input<boolean>(true);
-  duration = input<number>(3000);
+  readonly autoPlay = input<boolean>(true);
+  readonly duration = input<number>(3000);
 
-  maxItemsPerBox = input<number>(4); // أقصى عدد ممكن يظهر في الـ box
+  readonly maxItemsPerBox = input<number>(4); // أقصى عدد ممكن يظهر في الـ box
 
-  itemMinWidth = input<number>(200)
+  readonly itemMinWidth = input<number>(200)
   // ============================ Inputs ============================ //
 
 
   // ============================ Outputs ============================ //
-  indexChange = output<number>();
+  readonly indexChange = output<number>();
   // ============================ Outputs ============================ //
 
 
   // ============================ Model ============================ //
-  currentIndex = model<number>(0);
+  readonly currentIndex = model<number>(0);
   // ============================ Model ============================ //
 
 
   // ============================ View Children ============================ //
-  carouselContainer = viewChild<ElementRef<HTMLElement>>('carouselContainer');
-  carouselTrack = viewChild<ElementRef<HTMLDivElement>>('carouselTrack')
+  readonly carouselContainer = viewChild<ElementRef<HTMLElement>>('carouselContainer');
+  readonly carouselTrack = viewChild<ElementRef<HTMLDivElement>>('carouselTrack')
   // ============================ View Children ============================ //
 
 
   // ============================ Signals ============================ //
-  itemsPerBox = signal<number>(1);
-  currentTranslate = signal<number>(0);
-  dragging = signal<boolean>(false);
-  private startX = signal<number>(0);
-  private prevTranslate = signal<number>(0);
+  readonly itemsPerBox = signal<number>(1);
+  readonly currentTranslate = signal<number>(0);
+  readonly dragging = signal<boolean>(false);
+  private readonly startX = signal<number>(0);
+  private readonly prevTranslate = signal<number>(0);
   // ============================ Signals ============================ //
 
 
   // ============================ Computed ============================ //
-  itemsPerBoxWidth = computed<string>(() =>  `${100/this.itemsPerBox()}%`);
+  readonly itemsPerBoxWidth = computed<string>(() =>  `${100/this.itemsPerBox()}%`);
   
-  totalBoxes = computed<number>(() =>
+  readonly totalBoxes = computed<number>(() =>
     Math.ceil(this.itemsNumber() / this.itemsPerBox())
   );
 
-  indicatorBoxes = computed<number[]>(() =>
+  readonly indicatorBoxes = computed<number[]>(() =>
     Array.from({ length: this.totalBoxes() }, (_, i) => i)
   );
   // ============================ Computed ============================ //

@@ -1,6 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Alert } from '../zalert/zalert';
-
+import { Alert } from '../configTypeAndClsService/configTypeAndCls';
 
 // =============== Interfaces ===============
 export interface NewAlert extends Omit<Alert, 'id' | 'progress'> {}
@@ -13,7 +12,7 @@ export interface NewAlert extends Omit<Alert, 'id' | 'progress'> {}
 export class ZalertService {
 
   // =============== State ===============
-  alerts = signal<Alert[]>([]);
+  readonly alerts = signal<Alert[]>([]);
 
 
   // =============== Public Methods ===============

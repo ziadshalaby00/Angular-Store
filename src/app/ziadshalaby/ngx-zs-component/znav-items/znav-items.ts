@@ -25,18 +25,18 @@ export interface NavbarItem {
 export class ZnavItems {
 
   // --- Injection & Services ---
-  private znavItemsService: ZnavItemsService = inject(ZnavItemsService);
+  private readonly znavItemsService: ZnavItemsService = inject(ZnavItemsService);
 
   // --- Inputs & Outputs ---
-  item = input.required<NavbarItem>();
-  collectionName = input.required<string>();
-  anyItemClicked = output<NavbarItem>();
+  readonly item = input.required<NavbarItem>();
+  readonly collectionName = input.required<string>();
+  readonly anyItemClicked = output<NavbarItem>();
 
   // --- Signals & Computed ---
   // index ثابت لكل instance (مش computed متغير)
-  index = signal<string>(crypto.randomUUID());
+  readonly index = signal<string>(crypto.randomUUID());
 
-  isOpen = computed<boolean>((): boolean => 
+  readonly isOpen = computed<boolean>((): boolean => 
     this.znavItemsService.openIndex(this.collectionName()) === this.index()
   );
 

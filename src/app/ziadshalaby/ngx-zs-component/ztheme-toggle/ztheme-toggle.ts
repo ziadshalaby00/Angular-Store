@@ -11,14 +11,14 @@ export type themeTypes = 'light' | 'dark';
 })
 export class ZThemeToggle {
   // ✅ Signals
-  currentTheme = signal<themeTypes>('light');
-  isOpen = signal<boolean>(false);
+  readonly currentTheme = signal<themeTypes>('light');
+  readonly isOpen = signal<boolean>(false);
 
   // ✅ Input signals
-  bodyClass = input<string>('bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100');
+  readonly bodyClass = input<string>('bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100');
 
   // ✅ Output events
-  themeChange = output<themeTypes>();
+  readonly themeChange = output<themeTypes>();
 
   constructor() {
     // Initialize theme from localStorage or prefers-color-scheme
