@@ -43,59 +43,68 @@
   dark:bg-gray-900 shadow-md-all shadow-md-all-night rounded-xl flex flex-wrap gap-4 items-start">
     <!-- Category Filter -->
     <div>
-      <label class="block text-xs font-semibold mb-1">Category</label>
       <ZS-select
+        label="Category"
         [items]="categoryService.categories()"
         [selectItemIdfromParent]="filters.category()"
         (selectedItemChange)="filters.category.set($event?.id)"
         placeholder="Select a category..."
+        [inputStyle]="'teal'"
         searchPlaceholder="Search categories...">
       </ZS-select>
     </div>
 
     <!-- Brand Filter -->
     <div>
-      <label class="block text-xs font-semibold mb-1">Brand</label>
       <ZS-select
+        label="Brand"
         [items]="brandService.brands()"
         (selectedItemChange)="filters.brand.set($event?.id)"
         placeholder="Select a brand..."
+        [inputStyle]="'teal'"
         searchPlaceholder="Search brands...">
       </ZS-select>
     </div>
 
     <!-- Price Range -->
-    <div>
-      <label class="block text-xs font-semibold mb-1">Price Min</label>
-      <input type="number" [(ngModel)]="filters.min_price"
-              class="border border-gray-300 dark:bg-gray-800 focus:outline-none focus:ring-0
-              hover:border-gray-400 dark:hover:border-gray-600 shadow-sm dark:shadow-gray-400/30
-              dark:border-gray-700 rounded-lg px-3 py-2 text-sm" placeholder="0">
-    </div>
-    <div>
-      <label class="block text-xs font-semibold mb-1">Price Max</label>
-      <input type="number" [(ngModel)]="filters.max_price"
-              class="border border-gray-300 dark:bg-gray-800 focus:outline-none focus:ring-0
-              hover:border-gray-400 dark:hover:border-gray-600 shadow-sm dark:shadow-gray-400/30
-              dark:border-gray-700 rounded-lg px-3 py-2 text-sm" placeholder="1000">
-    </div>
+    <ZS-input
+    name="Price Min"
+    label="Price Min"
+    type="number"
+    placeholder="0"
+    [(value)]="filters.min_price"
+    [inputStyle]="'teal'"
+    > 
+    </ZS-input>
+
+    <ZS-input
+    name="Price Max"
+    label="Price Max"
+    type="number"
+    placeholder="1000"
+    [(value)]="filters.max_price"
+    [inputStyle]="'teal'"
+    > 
+    </ZS-input>
 
     <!-- Stock Filter -->
     <div>
-      <label class="block text-xs font-semibold mb-1">Stock</label>
       <ZS-select
+        label="Stock"
         [items]="stockFilters"
         (selectedItemChange)="filters.stock.set($event?.id)"
+        [inputStyle]="'teal'"
         [showSearch]="false">
       </ZS-select>
     </div>
 
     <!-- Ordering -->
     <div>
-      <label class="block text-xs font-semibold mb-1">Order By</label>
       <ZS-select
+        label="Order By"
         [items]="orderingFilters"
         (selectedItemChange)="filters.ordering.set($event?.id)"
+        [inputStyle]="'teal'"
         [showSearch]="false">
       </ZS-select>
     </div>

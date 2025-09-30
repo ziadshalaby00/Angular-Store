@@ -1,32 +1,42 @@
 <label class="z-input w-full block" [attr.for]="id()">
-  <div class="mb-1 flex items-center gap-2">
-    @if (label()) {
-      <span class="text-sm font-medium truncate">{{ label() }}</span>
-    }
-    @if (hint()) {
-      <small class="text-xs text-slate-500 dark:text-slate-400">{{ hint() }}</small>
-    }
-  </div>
 
+  <!-- Label and Hint -->
+  @if(label() || hint()) {
+    <div class="mb-1 flex items-center gap-2">
+      @if (label()) {
+        <span class="text-sm font-semibold truncate">
+          {{ label() }} @if (required()) { <span class="text-red-500">*</span> }
+        </span>
+      }
+      @if (hint()) {
+        <small class="text-xs text-slate-500 dark:text-slate-400">{{ hint() }}</small>
+      }
+    </div>
+  }
+
+  <!-- Input Container (Field + Icons) -->
   <div
     class="relative flex items-center"
     [class]="containerClasses()"
   >
-    <!-- أيقونة يسار -->
+
+    <!-- Left Icon -->
     @if (icon()) {
       <i [ngClass]="icon() + ' mr-2 text-base'" aria-hidden="true"></i>
     }
 
-    <input
+    <!-- Input Field -->
+    <input #inputEl
       [id]="id()"
-      [attr.type]="type() === 'search' ? 'text' : type()"
+      [name]="name()"
+      [attr.type]="actualType"
       [attr.placeholder]="placeholder()"
       [value]="value()"
-      [attr.disabled]="disabled() ? true : null"
+      [disabled]="disabled() ? true : null"
       [attr.min]="type() === 'number' ? min() : null"
       [attr.max]="type() === 'number' ? max() : null"
+      [attr.step]="type() === 'number' ? step() : null"
       [attr.required]="required() ? true : null"
-      class="flex-1 bg-transparent outline-none text-sm caret-current w-full"
       (input)="onInput($event)"
       (keydown.enter)="onEnter()"
       (focus)="onFocus()"
@@ -34,9 +44,16 @@
       (change)="onChange()"
       [attr.autocomplete]="autocomplete()"
       [attr.maxlength]="maxlength()"
+      [attr.minlength]="minlength()"
+      [attr.autofocus]="autofocus() ? true : null"
+      [attr.readonly]="isReadonly() ? true : null"
+      [attr.aria-invalid]="!!error()"
+      [attr.inputmode]="inputmode()"
+      [spellcheck]="spellcheck()"
+      class="flex-1 bg-transparent outline-none text-sm caret-current w-full"
     />
 
-    <!-- زر مسح -->
+    <!-- Clear Button -->
     @if (showClear()) {
       <button
         type="button"
@@ -48,7 +65,7 @@
       </button>
     }
 
-    <!-- أيقونة بحث (لـ search فقط أو عند طلبها) -->
+    <!-- Search Icon (for 'search' type or when explicitly enabled) -->
     @if (type() === 'search' || showSearchIcon()) {
       <button
         type="button"
@@ -59,10 +76,19 @@
         <i class="fa fa-search text-sm" aria-hidden="true"></i>
       </button>
     }
+
   </div>
 
-  <!-- رسالة خطأ -->
+  <!-- Error Messages -->
   @if (error()) {
-    <p class="mt-1 text-xs text-red-500">{{ error() }}</p>
+    <ul class="mt-1 text-xs text-red-500 space-y-1">
+      @for (err of error(); track $index) {
+        <li class="flex items-center gap-2">
+          <i class="fa fa-circle text-[6px]" aria-hidden="true"></i>
+          <span>{{ err }}</span>
+        </li>
+      }
+    </ul>
   }
+
 </label>

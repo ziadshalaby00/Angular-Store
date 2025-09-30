@@ -1,19 +1,30 @@
 <div class="relative w-full">
-
+  <!-- Label and Hint -->
+  @if(label() || hint()) {
+    <div class="mb-1 flex items-center gap-2">
+      @if (label()) {
+        <span class="text-sm font-semibold truncate">
+          {{ label() }} @if (required()) { <span class="text-red-500">*</span> }
+        </span>
+      }
+      @if (hint()) {
+        <small class="text-xs text-slate-500 dark:text-slate-400">{{ hint() }}</small>
+      }
+    </div>
+  }
+  
   <!-- Toggle Button -->
-  <div 
-    class="flex items-center justify-between w-full min-w-48 px-3 py-2 border rounded-lg shadow-sm dark:shadow-gray-400/30 transition-colors
-           bg-white border-gray-300 text-gray-900 hover:border-gray-400
-           dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:hover:border-gray-600"
+  <div tabindex="0"
+    [class]="containerClasses()"
     (click)="toggleDropdown()">
     @if (selectedItem()) {
       <span class="truncate">{{ selectedItem()?.name }}</span>
     } @else {
-      <span class="text-gray-500 dark:text-gray-400">{{ placeholder() }}</span>
+      <span class="">{{ placeholder() }}</span>
     }
-    <i class="fas ml-2 text-gray-500 dark:text-gray-400" 
-       [class.fa-chevron-down]="!isOpen()" 
-       [class.fa-chevron-up]="isOpen()"></i>
+    <i class="fas ml-2 " 
+      [class.fa-chevron-down]="!isOpen()" 
+      [class.fa-chevron-up]="isOpen()"></i>
   </div>
 
   <!-- Dropdown Menu -->
@@ -25,17 +36,17 @@
       <!-- Search Input -->
       @if (showSearch()) {
         <div class="relative p-2 border-b border-gray-200 dark:border-gray-700">
-          <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
-          <input 
-            type="text"
+
+          <ZS-input
+            type="search"
             [placeholder]="searchPlaceholder()"
             [value]="searchQuery()"
-            (input)="searchQuery.set($any($event.target).value)"
+            (valueChange)="searchQuery.set($event)"
             (click)="$event.stopPropagation()"
-            class="w-full pl-9 pr-3 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                   border-gray-300 bg-white text-gray-900
-                   dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400"
-            autofocus />
+            [autofocus]="true"
+            [inputStyle]="inputStyle()"
+          >
+          </ZS-input>
         </div>
       }
 
@@ -69,9 +80,7 @@
   <!-- Clear Selection Button -->
   @if (selectedItem() && showClearButton()) {
     <button 
-      class="mt-2 text-sm flex items-center transition-colors
-             text-blue-600 hover:text-blue-800
-             dark:text-blue-400 dark:hover:text-blue-300"
+      [class]="clearClass()"
       (click)="clearSelection()">
       <i class="fas fa-times mr-1"></i> Clear selection
     </button>

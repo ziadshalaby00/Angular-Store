@@ -19,7 +19,8 @@ export class Navbar {
   }
 
   authButtons:AuthButtonsType = {
-    showAuthButtons: true
+    showAuthButtons: true,
+    signupBtnColorClass: 'text-white bg-teal-600 hover:bg-teal-700'
   }
 
   logoUrl: string = 'https://i.postimg.cc/rsCB0PfM/android-chrome-512x512.png';
@@ -85,7 +86,8 @@ export class Navbar {
 
     this.alertService.addAlert({
       message: 'Logged in successfully',
-      type: 'success'
+      type: 'success',
+      autoClose: false
     })
   }
 

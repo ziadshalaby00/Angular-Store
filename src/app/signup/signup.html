@@ -1,0 +1,75 @@
+<!-- signup.component.html -->
+<!-- <div class="min-h-[85vh] flex items-center justify-center"> -->
+    <div class="flex flex-col mt-18 gap-6 max-w-md mx-auto 
+    border border-teal-300 dark:border-teal-600 hover:border-teal-400 dark:hover:border-teal-500
+    p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+      <h2 class="text-2xl text-center font-bold mb-4 text-teal-800 dark:text-teal-300">Sign Up</h2>
+    
+      <ZS-input
+        [name]="'fullname'"
+        [label]="'Full Name'"
+        [placeholder]="'Enter your full name'"
+        [icon]="faUserClass"
+        [value]="fullname()"
+        [type]="'text'"
+        (change)="fullname.set($event)"
+        [required]="true"
+        [inputStyle]="'teal'"
+      ></ZS-input>
+    
+      <ZS-input
+        [name]="'username'"
+        [label]="'Username'"
+        [placeholder]="'Enter your username'"
+        [icon]="faUserClass"
+        [value]="username()"
+        [type]="'text'"
+        (change)="username.set($event)"
+        [required]="true"
+        [inputStyle]="'teal'"
+      ></ZS-input>
+    
+      <ZS-input
+        [name]="'email'"
+        [label]="'Email'"
+        [placeholder]="'Enter your email'"
+        [icon]="faEnvelopeClass"
+        [value]="email()"
+        [type]="'email'"
+        (change)="email.set($event)"
+        [required]="true"
+        [inputStyle]="'teal'"
+      ></ZS-input>
+    
+      <ZS-input
+        [name]="'pass'"
+        [label]="'Password'"
+        [placeholder]="'Enter password'"
+        [icon]="faLockClass"
+        [value]="password()"
+        [type]="'password'"
+        (change)="password.set($event)"
+        [required]="true"
+        [inputStyle]="'teal'"
+      ></ZS-input>
+    
+      <ZS-input
+        [name]="'confpass'"
+        [label]="'Confirm Password'"
+        [placeholder]="'Confirm password'"
+        [icon]="faLockClass"
+        [value]="confirmPassword()"
+        [type]="'password'"
+        (change)="confirmPassword.set($event)"
+        [required]="true"
+        [inputStyle]="'teal'"
+      ></ZS-input>
+    
+      <button
+        (click)="submit()"
+        class="w-full mt-4 bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-lg transition-colors disabled:opacity-50"
+      >
+        Sign Up
+      </button>
+    </div>
+<!-- </div> -->
