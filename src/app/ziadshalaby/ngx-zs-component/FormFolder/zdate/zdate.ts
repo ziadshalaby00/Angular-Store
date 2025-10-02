@@ -1,5 +1,5 @@
 import { Component, computed, input, model, output } from '@angular/core';
-import { FormStyle, FormPaletteMap } from '../configTypeAndClsService/configTypeAndCls';
+import { FormPaletteMap, FormStyle } from '../zformService/zform-service';
 
 // date-picker.model.ts
 export type DatePickerType = 'date' | 'datetime-local' | 'month' | 'week' | 'time';
@@ -46,7 +46,7 @@ export class Zdate {
 
   // Computed classes
   readonly inputClasses = computed(() => {
-    const base = 'w-full appearance-none focus:outline-none px-4 py-2.5 pl-10 pr-4 focus-within:ring-2 rounded-lg border shadow-sm  transition-all duration-150';
+    const base = 'focus-within:ring-2 border transition-all duration-150';
     const styleEntry = FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('normal');
     const disabledCls = this.disabled() ? 'opacity-60 cursor-not-allowed' : 'cursor-text';
     return [

@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Config } from './config';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ZalertService } from '../ziadshalaby/ngx-zs-component/zalertService/zalert-service';
+import { ZalertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/zalertService/zalert-service';
 
 @Injectable({
   providedIn: 'root'

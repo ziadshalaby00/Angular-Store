@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, ElementRef, inject, input, model, output, signal, viewChild, ViewChild } from '@angular/core';
-import { FormStyle, FormPaletteMap } from '../configTypeAndClsService/configTypeAndCls';
+import { Component, computed, ElementRef, input, model, output, signal, viewChild } from '@angular/core';
+import { FormPaletteMap, FormSize, FormStyle } from '../zformService/zform-service';
+import { Zlabel } from '../zlabel/zlabel';
 
 // ----------------------
 // Types
@@ -18,6 +19,32 @@ export type InputType =
 export type ValidatorFn = (value: string | null) => string[];
 export type FormatterFn = (value: string | null) => string | null;
 
+type sizeClassesType = 'container' | 'field' | 'leftIcon' | 'rightIcon'
+const sizeClassesMap = new Map<sizeClassesType, Record<FormSize, string>>([
+  ['container', { 
+    sm: 'px-2 py-1 rounded-md', 
+    md: 'px-3 py-2 rounded-lg', 
+    lg: 'px-4 py-3 rounded-lg' 
+  }],
+
+  ['field', { 
+    sm: 'text-xs', 
+    md: 'text-sm', 
+    lg: 'text-base' 
+  }],
+
+  ['leftIcon', { 
+    sm: 'text-sm mr-1.5', 
+    md: 'text-base mr-2', 
+    lg: 'text-lg mr-2.5' 
+  }],
+
+  ['rightIcon', { 
+    sm: 'text-xs', 
+    md: 'text-sm', 
+    lg: 'text-base' 
+  }]
+]);
 // ----------------------
 // Regex
 // ----------------------
@@ -29,7 +56,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // ----------------------
 @Component({
   selector: 'ZS-input',
-  imports: [CommonModule],
+  imports: [CommonModule, Zlabel],
   templateUrl: './zinput.html',
   styleUrl: './zinput.css'
 })
@@ -54,6 +81,7 @@ export class Zinput {
 
   readonly icon = input<string | null>(null);
   readonly showSearchIcon = input<boolean>(false);
+  readonly showLoaderIconOnSerachInput = input<boolean>(false);
 
   readonly maxlength = input<number | null>(null);
   readonly minlength = input<number | null>(null);
@@ -66,6 +94,10 @@ export class Zinput {
   readonly formatFn = input<FormatterFn>((val) => val?.trim() ?? null);
 
   readonly autofocus = input<boolean>(false);
+
+  readonly searchDebounceDelay = input<number>(300);
+
+  readonly size = input<FormSize>('md')
 
   // ----------------------
   // ViewChild
@@ -84,14 +116,17 @@ export class Zinput {
   readonly focus = output<void>();
   readonly blur = output<void>();
   readonly change = output<string | null>();
-  readonly search = output<void>();
+  readonly search = output<string | null>();
   readonly cleared = output<void>();
   readonly keydown = output<KeyboardEvent>();
 
   // ----------------------
   // Internal State
   // ----------------------
-  private readonly touched = signal(false); // ✅ لتعقب التفاعل
+  private readonly touched = signal<boolean>(false); // ✅ لتعقب التفاعل
+  readonly showPassword = signal<boolean>(false);
+  private searchDebounceTimer?: ReturnType<typeof setTimeout>;
+  readonly LoaderIconOnSerachInput = signal<string | null>(null); 
 
   // ----------------------
   // Getters
@@ -99,7 +134,14 @@ export class Zinput {
   get actualType(): string {
     if (this.type() === 'phone') return 'tel';
     if (this.type() === 'search') return 'text';
+    if (this.type() === 'password' && this.showPassword()) {
+      return 'text'; // 👈 لو عايز تظهر الباسورد
+    }
     return this.type();
+  }
+
+  getSize(type: sizeClassesType): string {
+    return sizeClassesMap.get(type)?.[this.size()] ?? ''
   }
 
   // ----------------------
@@ -108,8 +150,7 @@ export class Zinput {
   readonly disabledOrReadonly = computed<boolean>(() => (this.disabled() || this.isReadonly()))
 
   readonly containerClasses = computed(() => {
-    const base =
-      'w-full rounded-lg border px-3 py-2 transition-all duration-150 focus-within:ring-2';
+    const base = 'border transition-all duration-150 focus-within:ring-2';
     const hasError = !!this.error();
 
     let inputStyleEntry = FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('normal');
@@ -132,7 +173,7 @@ export class Zinput {
       inputStyleEntry?.ring,
       disabledCls,
       disabeldOrReadonlyCls
-    ].join(' ');
+    ].filter(Boolean).join(' ')
   });
 
   readonly showClear = computed(() => {
@@ -228,6 +269,21 @@ export class Zinput {
     if (this.disabledOrReadonly()) return;
     const v = (ev.target as HTMLInputElement).value;
     this.value.set(v);
+
+    // 👇 لو الحقل Search نعمل debounce
+    if (this.type() === 'search') {
+
+      if(this.showLoaderIconOnSerachInput()) 
+        this.LoaderIconOnSerachInput.set('fas fa-spinner fa-spin')
+
+      if (this.searchDebounceTimer)
+        clearTimeout(this.searchDebounceTimer);
+      
+      this.searchDebounceTimer = setTimeout(() => {
+        this.search.emit(this.value()); // ✅ بعد delay
+        this.LoaderIconOnSerachInput.set(null)
+      }, this.searchDebounceDelay())
+    }
   }
 
   onEnter() {
@@ -253,14 +309,21 @@ export class Zinput {
 
   onSearch() {
     if (this.disabledOrReadonly()) return;
-    this.search.emit();
+    this.search.emit(this.value());
   }
 
   clear() {
     if (this.disabledOrReadonly()) return;
+
     this.value.set(null);
     this.change.emit(null);
+    this.search.emit(null)
     this.cleared.emit();
+  }
+
+  togglePassword() {
+    if (this.disabledOrReadonly()) return;
+    this.showPassword.update((v) => !v);
   }
 
   onKeydown(ev: KeyboardEvent) {

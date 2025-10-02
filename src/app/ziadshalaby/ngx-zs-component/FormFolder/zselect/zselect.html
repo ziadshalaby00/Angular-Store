@@ -44,10 +44,12 @@
             type="search"
             [placeholder]="searchPlaceholder()"
             [value]="searchQuery()"
-            (valueChange)="searchQuery.set($event)"
+            (search)="searchQuery.set($event)"
             (click)="$event.stopPropagation()"
             [autofocus]="true"
             [inputStyle]="inputStyle()"
+            [searchDebounceDelay]="searchDebounceDelay()"
+            [showLoaderIconOnSerachInput]="showLoaderIconOnSerachInput()"
           >
           </ZS-input>
         </div>

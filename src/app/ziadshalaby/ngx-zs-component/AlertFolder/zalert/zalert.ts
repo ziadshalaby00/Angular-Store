@@ -1,7 +1,36 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { ZalertService } from '../zalertService/zalert-service';
-import { Alert, ALERT_CONFIG, AlertFullType, oldAlertsType } from '../configTypeAndClsService/configTypeAndCls';
+
+// =================================================================================================
+// =================================================================================================
+export interface Alert {
+  id: number | string;
+  message: string;
+  type: 'success' | 'danger' | 'warning' | 'info';
+  autoClose?: boolean;
+  duration?: number;
+  showCloseButton?: boolean;
+  progress?: number;
+}
+
+export interface AlertFullType extends Alert {
+  icon: string;
+  bgColor: string;
+  textColor: string;
+  borderColor: string;
+}
+
+export type oldAlertsType = Set<number | string>;
+
+export const ALERT_CONFIG: Record<Alert['type'], Omit<AlertFullType, keyof Alert>> = {
+  success:  { icon: 'fas fa-check-circle',          bgColor: 'bg-green-100 dark:bg-green-800',    textColor: 'text-green-800 dark:text-green-100',    borderColor: 'border-green-500 dark:border-green-300' },
+  danger:   { icon: 'fas fa-exclamation-circle',    bgColor: 'bg-red-100 dark:bg-red-800',        textColor: 'text-red-800 dark:text-red-100',        borderColor: 'border-red-500 dark:border-red-300' },
+  warning:  { icon: 'fas fa-exclamation-triangle',  bgColor: 'bg-yellow-100 dark:bg-yellow-800',  textColor: 'text-yellow-800 dark:text-yellow-100',  borderColor: 'border-yellow-500 dark:border-yellow-300' },
+  info:     { icon: 'fas fa-info-circle',           bgColor: 'bg-blue-100 dark:bg-blue-800',      textColor: 'text-blue-800 dark:text-blue-100',      borderColor: 'border-blue-500 dark:border-blue-300' },
+};
+// =================================================================================================
+// =================================================================================================
 
 // =============== Component Decorator ===============
 @Component({

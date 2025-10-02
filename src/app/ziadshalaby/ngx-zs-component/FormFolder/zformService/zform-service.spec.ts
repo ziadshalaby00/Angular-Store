@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { ConfigTypeAndCls } from './configTypeAndCls';
 
-describe('ConfigTypeAndCls', () => {
-  let service: ConfigTypeAndCls;
+import { ZformService } from './zform-service';
+
+describe('ZformService', () => {
+  let service: ZformService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ConfigTypeAndCls);
+    service = TestBed.inject(ZformService);
   });
 
   it('should be created', () => {

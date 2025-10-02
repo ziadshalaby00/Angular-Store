@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Alert } from '../configTypeAndClsService/configTypeAndCls';
+import { Alert } from '../zalert/zalert';
 
 // =============== Interfaces ===============
 export interface NewAlert extends Omit<Alert, 'id' | 'progress'> {}

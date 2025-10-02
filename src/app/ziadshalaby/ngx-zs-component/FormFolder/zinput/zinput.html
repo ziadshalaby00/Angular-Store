@@ -1,28 +1,31 @@
 <label class="z-input w-full block" [attr.for]="id()">
 
   <!-- Label and Hint -->
-  @if(label() || hint()) {
-    <div class="mb-1 flex items-center gap-2">
-      @if (label()) {
-        <span class="text-sm font-semibold truncate">
-          {{ label() }} @if (required()) { <span class="text-red-500">*</span> }
-        </span>
-      }
-      @if (hint()) {
-        <small class="text-xs text-slate-500 dark:text-slate-400">{{ hint() }}</small>
-      }
-    </div>
-  }
+  <ZS-label
+  [label]="label()"
+  [hint]="hint()"
+  [required]="required()"
+  [hintID]="id() + '-hint'"
+  >
+  </ZS-label>
 
   <!-- Input Container (Field + Icons) -->
   <div
-    class="relative flex items-center"
-    [class]="containerClasses()"
+    class="relative flex items-center w-full"
+    [class]="containerClasses() + ' ' + getSize('container')"
   >
+  <!--// sm => px-2 py-1 || lg => px-4 py-3 -->
 
     <!-- Left Icon -->
-    @if (icon()) {
-      <i [ngClass]="icon() + ' mr-2 text-base'" aria-hidden="true"></i>
+    @if (icon() || LoaderIconOnSerachInput()) {
+      <i [ngClass]="
+      (
+        LoaderIconOnSerachInput() 
+        ? LoaderIconOnSerachInput() 
+        : icon()
+      ) + ' ' + getSize('leftIcon')"
+      aria-hidden="true"></i>
+      <!--// sm => text-sm  mr-1.5 || lg => text-lg  mr-2.5 -->
     }
 
     <!-- Input Field -->
@@ -50,8 +53,37 @@
       [attr.aria-invalid]="!!error()"
       [attr.inputmode]="inputmode()"
       [spellcheck]="spellcheck()"
-      class="flex-1 bg-transparent outline-none text-sm caret-current w-full"
+
+      class="flex-1 bg-transparent outline-none caret-current w-full"
+      [class]="getSize('field')"
+      
+      [attr.aria-describedby]="
+        (hint() ? id() + '-hint' : '') +
+        (hint() && error() ? ' ' : '') +
+        (error() ? id() + '-error' : '')
+      "
     />
+    <!--// sm => text-xs || lg => text-base -->
+
+    <!-- Maintains Height -->
+    <div class="h-6"></div>
+
+    <!-- Password Toggle -->
+    @if (type() === 'password') {
+      <button
+        type="button"
+        (click)="togglePassword()"
+        class="ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+        [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+      >
+        <i
+          class="fa"
+          [class]="(showPassword() ? 'fa-eye-slash' : 'fa-eye') + ' ' + getSize('rightIcon')"
+          aria-hidden="true"
+        ></i>
+      </button>
+      <!--// sm => text-xs || lg => text-base -->
+    }
 
     <!-- Clear Button -->
     @if (showClear() && !this.disabledOrReadonly()) {
@@ -61,8 +93,9 @@
         class="ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
         [attr.aria-label]="'Clear ' + (label() || '')"
       >
-        <i class="fa fa-times text-sm" aria-hidden="true"></i>
+        <i class="fa fa-times" [class]="getSize('rightIcon')" aria-hidden="true"></i>
       </button>
+      <!--// sm => text-xs || lg => text-base -->
     }
 
     <!-- Search Icon (for 'search' type or when explicitly enabled) -->
@@ -73,15 +106,16 @@
         class="ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
         [attr.aria-label]="'Search'"
       >
-        <i class="fa fa-search text-sm" aria-hidden="true"></i>
+        <i class="fa fa-search" [class]="getSize('rightIcon')" aria-hidden="true"></i>
       </button>
+      <!--// sm => text-xs || lg => text-base -->
     }
 
   </div>
 
   <!-- Error Messages -->
   @if (error()) {
-    <ul class="mt-1 text-xs text-red-500 space-y-1">
+    <ul [id]="id() + '-error'" class="mt-1 text-xs text-red-500 space-y-1">
       @for (err of error(); track $index) {
         <li class="flex items-center gap-2">
           <i class="fa fa-circle text-[6px]" aria-hidden="true"></i>

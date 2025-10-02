@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ZnavItemsService } from './znav-items-service';
+import { ZnavItemService } from './znav-item-service';
 
-describe('ZnavItemsService', () => {
-  let service: ZnavItemsService;
+describe('ZnavItemService', () => {
+  let service: ZnavItemService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ZnavItemsService);
+    service = TestBed.inject(ZnavItemService);
   });
 
   it('should be created', () => {

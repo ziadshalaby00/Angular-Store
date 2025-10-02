@@ -1,7 +1,7 @@
 import { Component, computed, effect, inject, input, output, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ZnavItemsService } from '../znavItemsService/znav-items-service';
+import { ZnavItemService } from '../znavItemService/znav-item-service';
 
 export interface NavbarItem {
   label: string;
@@ -17,15 +17,15 @@ export interface NavbarItem {
 }
 
 @Component({
-  selector: 'ZS-nav-items',
+  selector: 'ZS-nav-item',
   imports: [CommonModule, RouterModule],
-  templateUrl: './znav-items.html',
-  styleUrl: './znav-items.css'
+  templateUrl: './znav-item.html',
+  styleUrl: './znav-item.css'
 })
-export class ZnavItems {
+export class ZnavItem {
 
   // --- Injection & Services ---
-  private readonly znavItemsService: ZnavItemsService = inject(ZnavItemsService);
+  private readonly znavItemService: ZnavItemService = inject(ZnavItemService);
 
   // --- Inputs & Outputs ---
   readonly item = input.required<NavbarItem>();
@@ -37,25 +37,25 @@ export class ZnavItems {
   readonly index = signal<string>(crypto.randomUUID());
 
   readonly isOpen = computed<boolean>((): boolean => 
-    this.znavItemsService.openIndex(this.collectionName()) === this.index()
+    this.znavItemService.openIndex(this.collectionName()) === this.index()
   );
 
   // --- Lifecycle & Effects ---
   constructor() {
     effect((): void => {
       const col: string = this.collectionName();
-      if (col) this.znavItemsService.addItemInCollection(col, this.index());
+      if (col) this.znavItemService.addItemInCollection(col, this.index());
     });
   }
 
   // --- Event Handlers ---
   toggle(): void {
-    const currentOpen: string = this.znavItemsService.openIndex(this.collectionName());
+    const currentOpen: string = this.znavItemService.openIndex(this.collectionName());
     // لازم نستدعي this.index() عشان نحصل على القيمة النصية
     if (currentOpen === this.index()) {
-      this.znavItemsService.onOpenIndexChange(this.collectionName(), '');
+      this.znavItemService.onOpenIndexChange(this.collectionName(), '');
     } else {
-      this.znavItemsService.onOpenIndexChange(this.collectionName(), this.index());
+      this.znavItemService.onOpenIndexChange(this.collectionName(), this.index());
     }
   }
 

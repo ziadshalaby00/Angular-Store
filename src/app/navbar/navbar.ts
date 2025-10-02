@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { ZalertService } from '../ziadshalaby/ngx-zs-component/zalertService/zalert-service';
+import { ZalertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/zalertService/zalert-service';
 import { Znavbar, NavbarItemExport, UserProfile, SiteNameConfigType, AuthButtonsType } from '../ziadshalaby/ngx-zs-component/znavbar/znavbar';
 import { Router } from '@angular/router';
 

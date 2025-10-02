@@ -3,8 +3,8 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from "./navbar/navbar";
-import { Zalert } from './ziadshalaby/ngx-zs-component/zalert/zalert';
-import { ZalertService } from './ziadshalaby/ngx-zs-component/zalertService/zalert-service';
+import { Zalert } from './ziadshalaby/ngx-zs-component/AlertFolder/zalert/zalert';
+import { ZalertService } from './ziadshalaby/ngx-zs-component/AlertFolder/zalertService/zalert-service';
 import { ZscrollToTop } from './ziadshalaby/ngx-zs-component/zscroll-to-top/zscroll-to-top';
 import { ZThemeToggle } from './ziadshalaby/ngx-zs-component/ztheme-toggle/ztheme-toggle';
 

@@ -1,8 +1,8 @@
 import { Component, signal, computed, input, model, output, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FormStyle, FormPaletteMap } from '../configTypeAndClsService/configTypeAndCls';
 import { Zinput } from '../zinput/zinput';
+import { FormPaletteMap, FormStyle } from '../zformService/zform-service';
 
 export interface DropdownItem {
   id: number | string;
@@ -34,6 +34,10 @@ export class Zselect {
   readonly showClearButton = input<boolean>(true);
   readonly isReadonly = input<boolean>(false)
   
+  readonly searchDebounceDelay = input<number>(300);
+
+  readonly showLoaderIconOnSerachInput = input<boolean>(false)
+
   readonly selectItemIdfromParent = input<number | null>(null);
 
   // ─────── Model (Two-way binding) ───────

@@ -1,5 +1,5 @@
 import { Component, computed, signal } from '@angular/core';
-import { Zinput } from '../ziadshalaby/ngx-zs-component/zinput/zinput';
+import { Zinput } from '../ziadshalaby/ngx-zs-component/FormFolder/zinput/zinput';
 
 @Component({
   selector: 'app-signup',

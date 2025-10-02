@@ -8,7 +8,7 @@ interface CollectionEntry {
 @Injectable({
   providedIn: 'root'
 })
-export class ZnavItemsService {
+export class ZnavItemService {
 
   // --- State ---
   // Map<collectionName, CollectionEntry>

@@ -50,6 +50,7 @@
         (selectedItemChange)="filters.category.set($event?.id)"
         placeholder="Select a category..."
         [inputStyle]="'teal'"
+        [searchDebounceDelay]="1"
         searchPlaceholder="Search categories...">
       </ZS-select>
     </div>
@@ -62,6 +63,7 @@
         (selectedItemChange)="filters.brand.set($event?.id)"
         placeholder="Select a brand..."
         [inputStyle]="'teal'"
+        [searchDebounceDelay]="1"
         searchPlaceholder="Search brands...">
       </ZS-select>
     </div>

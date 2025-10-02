@@ -29,12 +29,12 @@
         'px-4 mt-1': !item().childrenOpenWindow
       }">
         @for (child of item().children; track $index) {
-          <ZS-nav-items
+          <ZS-nav-item
             [item]="child"
             [collectionName]="collectionName() + '-' + index()"
             (anyItemClicked)="this.anyItemClicked.emit($event)"
           >
-          </ZS-nav-items>
+          </ZS-nav-item>
         }
       </div>
 

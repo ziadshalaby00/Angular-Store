@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, input, output, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ZnavItems, NavbarItem } from '../znav-items/znav-items';
+import { ZnavItem, NavbarItem } from '../NavItemFolder/znav-item/znav-item';
 
 // =============================================================================
 // الواجهات والأنواع (Interfaces & Types)
@@ -32,7 +32,7 @@ export interface AuthButtonsType {
 
 @Component({
   selector: 'ZS-navbar',
-  imports: [RouterModule, CommonModule, ZnavItems],
+  imports: [RouterModule, CommonModule, ZnavItem],
   templateUrl: './znavbar.html',
   styleUrl: './znavbar.css'
 })
