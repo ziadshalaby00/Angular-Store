@@ -2,10 +2,10 @@
 
   <!-- Label and Hint -->
   <ZS-label
-  [label]="label()"
-  [hint]="hint()"
-  [required]="required()"
-  [hintID]="id() + '-hint'"
+    [label]="label()"
+    [hint]="hint()"
+    [required]="required()"
+    [hintID]="id() + '-hint'"
   >
   </ZS-label>
 
@@ -14,17 +14,19 @@
     class="relative flex items-center w-full"
     [class]="containerClasses() + ' ' + getSize('container')"
   >
-  <!--// sm => px-2 py-1 || lg => px-4 py-3 -->
+    <!--// sm => px-2 py-1 || lg => px-4 py-3 -->
 
     <!-- Left Icon -->
     @if (icon() || LoaderIconOnSerachInput()) {
-      <i [ngClass]="
-      (
-        LoaderIconOnSerachInput() 
-        ? LoaderIconOnSerachInput() 
-        : icon()
-      ) + ' ' + getSize('leftIcon')"
-      aria-hidden="true"></i>
+      <i
+        [ngClass]="
+          (
+            LoaderIconOnSerachInput() 
+            ? LoaderIconOnSerachInput() 
+            : icon()
+          ) + ' ' + getSize('leftIcon')"
+        aria-hidden="true"
+      ></i>
       <!--// sm => text-sm  mr-1.5 || lg => text-lg  mr-2.5 -->
     }
 
@@ -53,10 +55,8 @@
       [attr.aria-invalid]="!!error()"
       [attr.inputmode]="inputmode()"
       [spellcheck]="spellcheck()"
-
       class="flex-1 bg-transparent outline-none caret-current w-full"
       [class]="getSize('field')"
-      
       [attr.aria-describedby]="
         (hint() ? id() + '-hint' : '') +
         (hint() && error() ? ' ' : '') +

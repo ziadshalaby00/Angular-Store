@@ -19,7 +19,11 @@ export type InputType =
 export type ValidatorFn = (value: string | null) => string[];
 export type FormatterFn = (value: string | null) => string | null;
 
-type sizeClassesType = 'container' | 'field' | 'leftIcon' | 'rightIcon'
+type sizeClassesType = 'container' | 'field' | 'leftIcon' | 'rightIcon';
+
+// ----------------------
+// Constants & Regex
+// ----------------------
 const sizeClassesMap = new Map<sizeClassesType, Record<FormSize, string>>([
   ['container', { 
     sm: 'px-2 py-1 rounded-md', 
@@ -45,9 +49,7 @@ const sizeClassesMap = new Map<sizeClassesType, Record<FormSize, string>>([
     lg: 'text-base' 
   }]
 ]);
-// ----------------------
-// Regex
-// ----------------------
+
 const phoneRegex = /^\+?[0-9\s\-()]{7,20}$/; // يقبل فقط أرقام (7–20) مع + أو () أو - أو مسافات
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -94,10 +96,8 @@ export class Zinput {
   readonly formatFn = input<FormatterFn>((val) => val?.trim() ?? null);
 
   readonly autofocus = input<boolean>(false);
-
   readonly searchDebounceDelay = input<number>(300);
-
-  readonly size = input<FormSize>('md')
+  readonly size = input<FormSize>('md');
 
   // ----------------------
   // ViewChild
@@ -121,7 +121,7 @@ export class Zinput {
   readonly keydown = output<KeyboardEvent>();
 
   // ----------------------
-  // Internal State
+  // Internal State (Signals)
   // ----------------------
   private readonly touched = signal<boolean>(false); // ✅ لتعقب التفاعل
   readonly showPassword = signal<boolean>(false);
@@ -129,25 +129,9 @@ export class Zinput {
   readonly LoaderIconOnSerachInput = signal<string | null>(null); 
 
   // ----------------------
-  // Getters
-  // ----------------------
-  get actualType(): string {
-    if (this.type() === 'phone') return 'tel';
-    if (this.type() === 'search') return 'text';
-    if (this.type() === 'password' && this.showPassword()) {
-      return 'text'; // 👈 لو عايز تظهر الباسورد
-    }
-    return this.type();
-  }
-
-  getSize(type: sizeClassesType): string {
-    return sizeClassesMap.get(type)?.[this.size()] ?? ''
-  }
-
-  // ----------------------
   // Computed Properties
   // ----------------------
-  readonly disabledOrReadonly = computed<boolean>(() => (this.disabled() || this.isReadonly()))
+  readonly disabledOrReadonly = computed<boolean>(() => (this.disabled() || this.isReadonly()));
 
   readonly containerClasses = computed(() => {
     const base = 'border transition-all duration-150 focus-within:ring-2';
@@ -173,7 +157,7 @@ export class Zinput {
       inputStyleEntry?.ring,
       disabledCls,
       disabeldOrReadonlyCls
-    ].filter(Boolean).join(' ')
+    ].filter(Boolean).join(' ');
   });
 
   readonly showClear = computed(() => {
@@ -181,7 +165,7 @@ export class Zinput {
   });
 
   readonly error = computed<string[] | null>(() => {
-    let result = Array()
+    let result = Array();
 
     const val = this.value();
     const type = this.type();
@@ -254,6 +238,22 @@ export class Zinput {
   });
 
   // ----------------------
+  // Getters
+  // ----------------------
+  get actualType(): string {
+    if (this.type() === 'phone') return 'tel';
+    if (this.type() === 'search') return 'text';
+    if (this.type() === 'password' && this.showPassword()) {
+      return 'text'; // 👈 لو عايز تظهر الباسورد
+    }
+    return this.type();
+  }
+
+  getSize(type: sizeClassesType): string {
+    return sizeClassesMap.get(type)?.[this.size()] ?? '';
+  }
+
+  // ----------------------
   // Lifecycle Hooks
   // ----------------------
   ngAfterViewInit() {
@@ -272,17 +272,16 @@ export class Zinput {
 
     // 👇 لو الحقل Search نعمل debounce
     if (this.type() === 'search') {
-
-      if(this.showLoaderIconOnSerachInput()) 
-        this.LoaderIconOnSerachInput.set('fas fa-spinner fa-spin')
+      if (this.showLoaderIconOnSerachInput()) 
+        this.LoaderIconOnSerachInput.set('fas fa-spinner fa-spin');
 
       if (this.searchDebounceTimer)
         clearTimeout(this.searchDebounceTimer);
       
       this.searchDebounceTimer = setTimeout(() => {
         this.search.emit(this.value()); // ✅ بعد delay
-        this.LoaderIconOnSerachInput.set(null)
-      }, this.searchDebounceDelay())
+        this.LoaderIconOnSerachInput.set(null);
+      }, this.searchDebounceDelay());
     }
   }
 
@@ -298,7 +297,7 @@ export class Zinput {
   onBlur() {
     if (this.disabledOrReadonly()) return;
     this.touched.set(true); // ✅ المستخدم لمس الحقل
-    this.value.set(this.formatFn()(this.value()))
+    this.value.set(this.formatFn()(this.value()));
     this.blur.emit();
   }
 
@@ -317,7 +316,7 @@ export class Zinput {
 
     this.value.set(null);
     this.change.emit(null);
-    this.search.emit(null)
+    this.search.emit(null);
     this.cleared.emit();
   }
 

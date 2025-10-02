@@ -1,3 +1,7 @@
+:host {
+    display: block;
+}
+
 /* allow vertical page scroll while enabling horizontal drag inside carousel */
 [carousel-container] {
   touch-action: pan-y;
