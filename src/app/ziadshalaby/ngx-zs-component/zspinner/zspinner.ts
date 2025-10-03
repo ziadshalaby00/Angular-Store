@@ -1,7 +1,7 @@
-import { Component, computed, input } from '@angular/core';
+// =================================================================================================
+// Types
+// =================================================================================================
 
-// =================================================================================================
-// =================================================================================================
 export type LoaderType = 'spinner' | 'pro' | 'double' | 'gear' | 'fan' | 'pulse' | 'dots' | 'bars';
 export type LoaderSize = 'sm' | 'md' | 'lg';
 
@@ -14,6 +14,9 @@ export type BaseColors =
 
 export type LoaderColorPrefixes = 'text' | 'bg' | 'border';
 
+// =================================================================================================
+// Color Mapping
+// =================================================================================================
 
 export const LoaderColorMapping: Map<BaseColors, Record<LoaderColorPrefixes, string>> = new Map([
   ['slate',   { text: 'text-slate-600',   bg: 'bg-slate-600',   border: 'border-slate-600' }],
@@ -39,12 +42,12 @@ export const LoaderColorMapping: Map<BaseColors, Record<LoaderColorPrefixes, str
   ['pink',    { text: 'text-pink-600',    bg: 'bg-pink-600',    border: 'border-pink-600' }],
   ['rose',    { text: 'text-rose-600',    bg: 'bg-rose-600',    border: 'border-rose-600' }],
 ]);
+
 // =================================================================================================
+// Component Definition
 // =================================================================================================
 
-// ======================
-// تعريف المكوّن (Component)
-// ======================
+import { Component, computed, input } from '@angular/core';
 
 @Component({
   selector: 'ZS-spinner',
@@ -54,9 +57,9 @@ export const LoaderColorMapping: Map<BaseColors, Record<LoaderColorPrefixes, str
 })
 export class Zspinner {
 
-  // ======================
-  // المدخلات (Inputs)
-  // ======================
+  // =================================================================================================
+  // Inputs
+  // =================================================================================================
 
   readonly isFloating = input<boolean>(false);
   readonly color = input<BaseColors>('blue');
@@ -65,10 +68,9 @@ export class Zspinner {
   readonly type = input<LoaderType>('spinner');
   readonly size = input<LoaderSize>('md');
 
-
-  // ======================
-  // الحسابات (Computed Properties)
-  // ======================
+  // =================================================================================================
+  // Computed Properties
+  // =================================================================================================
 
   readonly wrapperClasses = computed<string>(() =>
     this.isFloating()
@@ -110,50 +112,41 @@ export class Zspinner {
   };
 
   readonly spinnerSizeProClass = computed<string>(() => {
-     const sizes: Record<LoaderSize, string> = {
+    const sizes: Record<LoaderSize, string> = {
       sm: 'border-t-2 border-b-2 h-6 w-6',
       md: 'border-t-4 border-b-4 h-10 w-10',
       lg: 'border-t-6 border-b-6 h-14 w-14'
     };
     return sizes[this.size()];
-  })
+  });
 
   readonly spinnerSizePulseClass = computed<string>(() => {
-     const sizes: Record<LoaderSize, string> = {
+    const sizes: Record<LoaderSize, string> = {
       sm: 'border-2 h-6 w-6',
       md: 'border-4 h-10 w-10',
       lg: 'border-6 h-14 w-14'
     };
     return sizes[this.size()];
-  })
+  });
 
   readonly spinnerSizeDoubleClass = (num: 1 | 2): string => {
-     const sizes: Record<LoaderSize, {1: string, 2: string}> = {
-      sm: {
-        1: 'border-2 size-6',
-        2: 'border-2 size-4'
-      },
-      md: {
-        1: 'border-4 size-10',
-        2: 'border-4 size-7'
-      },
-      lg: {
-        1: 'border-6 size-16',
-        2: 'border-6 size-11'
-      },
+    const sizes: Record<LoaderSize, { 1: string; 2: string }> = {
+      sm: { 1: 'border-2 size-6', 2: 'border-2 size-4' },
+      md: { 1: 'border-4 size-10', 2: 'border-4 size-7' },
+      lg: { 1: 'border-6 size-16', 2: 'border-6 size-11' }
     };
     return sizes[this.size()][num];
-  }
+  };
 
-  readonly bgColor = computed<string | undefined>(() => {
-    return LoaderColorMapping.get(this.color())?.bg
-  })
+  readonly bgColor = computed<string | undefined>(() =>
+    LoaderColorMapping.get(this.color())?.bg
+  );
 
-  readonly borderColor = computed<string | undefined>(() => {
-    return LoaderColorMapping.get(this.color())?.border
-  })
+  readonly borderColor = computed<string | undefined>(() =>
+    LoaderColorMapping.get(this.color())?.border
+  );
 
-  readonly textColor = computed<string | undefined>(() => {
-    return LoaderColorMapping.get(this.color())?.text
-  })
+  readonly textColor = computed<string | undefined>(() =>
+    LoaderColorMapping.get(this.color())?.text
+  );
 }

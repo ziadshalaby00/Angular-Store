@@ -6,12 +6,12 @@ import { Navbar } from "./navbar/navbar";
 import { Zalert } from './ziadshalaby/ngx-zs-component/AlertFolder/zalert/zalert';
 import { ZalertService } from './ziadshalaby/ngx-zs-component/AlertFolder/zalertService/zalert-service';
 import { ZscrollToTop } from './ziadshalaby/ngx-zs-component/zscroll-to-top/zscroll-to-top';
-import { ZThemeToggle } from './ziadshalaby/ngx-zs-component/ztheme-toggle/ztheme-toggle';
+import { ZthemeToggle } from './ziadshalaby/ngx-zs-component/ztheme-toggle/ztheme-toggle';
 
 
 @Component({
   selector: 'app-root',
-  imports: [FormsModule, RouterOutlet, Navbar, ZThemeToggle, ZscrollToTop, Zalert],
+  imports: [FormsModule, RouterOutlet, Navbar, ZthemeToggle, ZscrollToTop, Zalert],
   template: ``,
   templateUrl: './app.html',
   styleUrl: './app.css',

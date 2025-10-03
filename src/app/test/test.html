@@ -4,7 +4,7 @@
         @for(item of inputStyls; track item) {
             <ZS-input
             [required]="true"
-            type="text"
+            type="number"
             name="test"
             [label]="item"
             [inputStyle]="item"
@@ -16,17 +16,19 @@
         }
     </div> -->
 
-    <!-- <div class="flex items-center justify-center flex-col gap-4">
+    <div class="flex items-center justify-center mb-46 flex-col gap-4">
         @for(item of inputStyls; track item) {
             <ZS-select
-                label="Category"
-                [items]="[{id: 1, name: '1'}, {id: 2, name: '2'}, {id: 3, name: '3'}]"
-                placeholder="Select a category..."
-                [inputStyle]="item"
-                searchPlaceholder="Search...">
+            [multiple]="true"
+            [label]="item"
+            [items]="brandService.brands()"
+            (selectedItemsChange)="onSelect($event)"
+            placeholder="Select a category..."
+            [inputStyle]="item"
+            searchPlaceholder="Search...">
             </ZS-select>
         }
-    </div> -->
+    </div>
 
     <!-- <div class="flex items-center justify-center flex-col gap-4">
         @for(item of inputStyls; track item) {

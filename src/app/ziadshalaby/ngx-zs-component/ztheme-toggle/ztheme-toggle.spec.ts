@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ZThemeToggle } from './ztheme-toggle';
+import { ZthemeToggle } from './ztheme-toggle';
 
-describe('ZThemeToggle', () => {
-  let component: ZThemeToggle;
-  let fixture: ComponentFixture<ZThemeToggle>;
+describe('ZthemeToggle', () => {
+  let component: ZthemeToggle;
+  let fixture: ComponentFixture<ZthemeToggle>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ZThemeToggle]
+      imports: [ZthemeToggle]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ZThemeToggle);
+    fixture = TestBed.createComponent(ZthemeToggle);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

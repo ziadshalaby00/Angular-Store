@@ -1,59 +1,67 @@
+<!-- ========================= Conditional Rendering ========================= -->
 @if (item()) {
   @if (item().children?.length) {
+
+    <!-- ========================= Parent Item with Dropdown ========================= -->
     <div class="relative w-full">
 
-      <!-- Main toggle button -->
-      <button 
-        (click)="toggle()" 
+      <!-- ========================= Main Toggle Button ========================= -->
+      <button
+        type="button"
+        (click)="toggle()"
         [ngClass]="getItemClasses(item())"
-        class="px-3 py-2 gap-2 flex items-center 
-              rounded-md md:text-base font-medium 
-              text-sm w-full text-left"
+        class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm font-medium md:text-base"
         aria-haspopup="true"
         [attr.aria-expanded]="isOpen()"
+        [attr.aria-controls]="'submenu-' + index()"
       >
-        <div class="flex gap-2 items-center">
+        <div class="flex items-center gap-2">
           @if (item().iconClass) {
-            <i [class]="item().iconClass"></i>
+            <i [class]="item().iconClass" aria-hidden="true"></i>
           }
-          <span class="break-word">{{ item().label }}</span>
+          <span class="break-words">{{ item().label }}</span>
         </div>
-        <i class="fas fa-chevron-down mr-2 ml-auto text-xs"></i>
+        <i class="fas fa-chevron-down ml-auto mr-2 text-xs" aria-hidden="true"></i>
       </button>
 
-      <!-- Dropdown content -->
-      <div [ngClass]="{
-        'block': isOpen(),
-        'hidden': !isOpen(),
-        'absolute left-6 bg-white dark:bg-gray-800 shadow-md-all shadow-md-all-night rounded-md mt-1 py-1 w-48 z-[900]': item().childrenOpenWindow,
-        'px-4 mt-1': !item().childrenOpenWindow
-      }">
+      <!-- ========================= Dropdown Menu ========================= -->
+      <div
+        [id]="'submenu-' + index()"
+        [ngClass]="{
+          'block': isOpen(),
+          'hidden': !isOpen(),
+          'absolute left-6 z-[900] w-48 mt-1 py-1 bg-white dark:bg-gray-800 rounded-md shadow-md-all shadow-md-all-night': item().childrenOpenWindow,
+          'px-4 mt-1': !item().childrenOpenWindow
+        }"
+        role="menu"
+        [attr.aria-label]="item().label + ' submenu'"
+      >
         @for (child of item().children; track $index) {
           <ZS-nav-item
             [item]="child"
             [collectionName]="collectionName() + '-' + index()"
-            (anyItemClicked)="this.anyItemClicked.emit($event)"
-          >
-          </ZS-nav-item>
+            (anyItemClicked)="anyItemClicked.emit($event)"
+            role="menuitem"
+          ></ZS-nav-item>
         }
       </div>
 
     </div>
+
   } @else {
 
-    <!-- Leaf item (no children) -->
+    <!-- ========================= Leaf Item (No Children) ========================= -->
     <a
       [routerLink]="item().routerLink"
       [ngClass]="getItemClasses(item())"
-      class="px-3 py-2 gap-2 
-            flex items-center rounded-md 
-            text-sm md:text-base font-medium"
+      class="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium md:text-base"
       (click)="onItemClick()"
+      role="menuitem"
     >
       @if (item().iconClass) {
-        <i [class]="item().iconClass"></i>
+        <i [class]="item().iconClass" aria-hidden="true"></i>
       }
-      <span class="break-word">{{ item().label }}</span>
+      <span class="break-words">{{ item().label }}</span>
     </a>
 
   }

@@ -1,62 +1,126 @@
-<!-- use [class] for the whole computed class string -->
-<div [class]="wrapperClasses()">
+<!-- ========================= Loader Wrapper ========================= -->
+<div 
+  [class]="wrapperClasses()" 
+  role="status" 
+  aria-live="polite" 
+  aria-busy="true"
+>
   <div [class]="boxClasses()">
+
     @switch (type()) {
+
+      <!-- ========================= Spinner ========================= -->
       @case ('spinner') {
-        <i [class]="'fas fa-spinner fa-spin ' + spinnerSizeTextClass() + ' ' + textColor()"></i>
+        <i 
+          [class]="'fas fa-spinner fa-spin ' + spinnerSizeTextClass() + ' ' + textColor()" 
+          aria-hidden="true"
+        ></i>
+        <span class="sr-only">Loading...</span>
       }
 
+      <!-- ========================= Pro Spinner ========================= -->
       @case ('pro') {
-        <div [class]="'animate-spin rounded-full border-solid ' + spinnerSizeProClass() + ' ' + borderColor()"></div>
+        <div 
+          [class]="'animate-spin rounded-full border-solid ' + spinnerSizeProClass() + ' ' + borderColor()" 
+          aria-hidden="true"
+        ></div>
+        <span class="sr-only">Loading...</span>
       }
 
+      <!-- ========================= Gear ========================= -->
       @case ('gear') {
-        <i [class]="'fas fa-gear fa-spin ' + spinnerSizeTextClass() + ' ' + textColor()"></i>
+        <i 
+          [class]="'fas fa-gear fa-spin ' + spinnerSizeTextClass() + ' ' + textColor()" 
+          aria-hidden="true"
+        ></i>
+        <span class="sr-only">Loading...</span>
       }
 
+      <!-- ========================= Fan ========================= -->
       @case ('fan') {
-        <i [class]="'fas fa-fan fa-spin ' + spinnerSizeTextClass() + ' ' + textColor()"></i>
+        <i 
+          [class]="'fas fa-fan fa-spin ' + spinnerSizeTextClass() + ' ' + textColor()" 
+          aria-hidden="true"
+        ></i>
+        <span class="sr-only">Loading...</span>
       }
 
+      <!-- ========================= Pulse ========================= -->
       @case ('pulse') {
-        <div [class]="'animate-spin rounded-full border-solid ' + spinnerSizePulseClass() + ' ' + borderColor() + ' border-t-transparent'"></div>
+        <div 
+          [class]="'animate-spin rounded-full border-solid ' +
+                   spinnerSizePulseClass() + ' ' +
+                   borderColor() + ' border-t-transparent'" 
+          aria-hidden="true"
+        ></div>
+        <span class="sr-only">Loading...</span>
       }
 
+      <!-- ========================= Dots ========================= -->
       @case ('dots') {
-        <div class="flex space-x-2 items-center">
-          <span class="rounded-full animate-bounce" [class]="bgColor() + ' ' + spinnerSizeDotsClass()" style="animation-delay:0s"></span>
-          <span class="rounded-full animate-bounce" [class]="bgColor() + ' ' + spinnerSizeDotsClass()" style="animation-delay:0.2s"></span>
-          <span class="rounded-full animate-bounce" [class]="bgColor() + ' ' + spinnerSizeDotsClass()" style="animation-delay:0.4s"></span>
+        <div class="flex space-x-2 items-center" aria-hidden="true">
+          <span 
+            class="rounded-full animate-bounce" 
+            [class]="bgColor() + ' ' + spinnerSizeDotsClass()" 
+            style="animation-delay: 0s"
+          ></span>
+          <span 
+            class="rounded-full animate-bounce" 
+            [class]="bgColor() + ' ' + spinnerSizeDotsClass()" 
+            style="animation-delay: 0.2s"
+          ></span>
+          <span 
+            class="rounded-full animate-bounce" 
+            [class]="bgColor() + ' ' + spinnerSizeDotsClass()" 
+            style="animation-delay: 0.4s"
+          ></span>
         </div>
+        <span class="sr-only">Loading...</span>
       }
 
+      <!-- ========================= Bars ========================= -->
       @case ('bars') {
-        <div class="flex space-x-1 items-center h-6">
-          <span class="rounded-sm animate-bar-scale" [class]="bgColor() + ' ' + spinnerSizeBarsClass(1)" style="animation-delay:0s"></span>
-          <span class="rounded-sm animate-bar-scale" [class]="bgColor() + ' ' + spinnerSizeBarsClass(2)" style="animation-delay:0.2s"></span>
-          <span class="rounded-sm animate-bar-scale" [class]="bgColor() + ' ' + spinnerSizeBarsClass(3)" style="animation-delay:0.4s"></span>
+        <div class="flex space-x-1 items-center h-6" aria-hidden="true">
+          <span 
+            class="rounded-sm animate-bar-scale" 
+            [class]="bgColor() + ' ' + spinnerSizeBarsClass(1)" 
+            style="animation-delay: 0s"
+          ></span>
+          <span 
+            class="rounded-sm animate-bar-scale" 
+            [class]="bgColor() + ' ' + spinnerSizeBarsClass(2)" 
+            style="animation-delay: 0.2s"
+          ></span>
+          <span 
+            class="rounded-sm animate-bar-scale" 
+            [class]="bgColor() + ' ' + spinnerSizeBarsClass(3)" 
+            style="animation-delay: 0.4s"
+          ></span>
         </div>
+        <span class="sr-only">Loading...</span>
       }
 
+      <!-- ========================= Double Spinner ========================= -->
       @case ('double') {
-        <div class="relative">
-          <!-- الحلقة الأولى -->
+        <div class="relative" aria-hidden="true">
+          <!-- Outer ring -->
           <div 
-            [class]="'animate-spin rounded-full border-solid ' 
-                    + spinnerSizeDoubleClass(1) 
-                    + ' ' + borderColor() 
-                    + ' border-t-transparent'">
-          </div>
-          <!-- الحلقة التانية (داخلية) -->
+            [class]="'animate-spin rounded-full border-solid ' +
+                     spinnerSizeDoubleClass(1) + ' ' +
+                     borderColor() + ' border-t-transparent'"
+          ></div>
+          <!-- Inner ring (reversed animation) -->
           <div 
-            [class]="'animate-spin opacity-75 rounded-full border-solid absolute top-1/2 left-1/2 -translate-1/2 ' 
-                    + spinnerSizeDoubleClass(2) 
-                    + ' ' + borderColor() 
-                    + ' border-b-transparent'" 
-            style="animation-direction: reverse;">
-          </div>
+            [class]="'animate-spin opacity-75 rounded-full border-solid absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ' +
+                     spinnerSizeDoubleClass(2) + ' ' +
+                     borderColor() + ' border-b-transparent'"
+            style="animation-direction: reverse;"
+          ></div>
         </div>
+        <span class="sr-only">Loading...</span>
       }
+
     }
+    
   </div>
 </div>

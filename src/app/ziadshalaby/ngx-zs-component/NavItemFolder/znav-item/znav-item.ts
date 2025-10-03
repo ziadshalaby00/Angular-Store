@@ -1,7 +1,6 @@
-import { Component, computed, effect, inject, input, output, signal, WritableSignal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { ZnavItemService } from '../znavItemService/znav-item-service';
+// ==============================================
+// Types
+// ==============================================
 
 export interface NavbarItem {
   label: string;
@@ -9,12 +8,23 @@ export interface NavbarItem {
   action?: () => void;
   children?: NavbarItem[];
   iconClass?: string;
-
   colorClass?: string;
-  useDefultColorClass?: 'text' | 'bg';
-
+  useDefaultColorClass?: 'text' | 'bg';
   childrenOpenWindow?: boolean;
 }
+
+// ==============================================
+// Imports
+// ==============================================
+
+import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { ZnavItemService } from '../znavItemService/znav-item-service';
+
+// ==============================================
+// Component Metadata
+// ==============================================
 
 @Component({
   selector: 'ZS-nav-item',
@@ -24,38 +34,55 @@ export interface NavbarItem {
 })
 export class ZnavItem {
 
-  // --- Injection & Services ---
-  private readonly znavItemService: ZnavItemService = inject(ZnavItemService);
+  // ==============================================
+  // Injection & Services
+  // ==============================================
 
-  // --- Inputs & Outputs ---
+  private readonly znavItemService = inject(ZnavItemService);
+
+  // ==============================================
+  // Inputs & Outputs
+  // ==============================================
+
   readonly item = input.required<NavbarItem>();
   readonly collectionName = input.required<string>();
   readonly anyItemClicked = output<NavbarItem>();
 
-  // --- Signals & Computed ---
-  // index ثابت لكل instance (مش computed متغير)
+  // ==============================================
+  // Signals & Computed Properties
+  // ==============================================
+
   readonly index = signal<string>(crypto.randomUUID());
 
-  readonly isOpen = computed<boolean>((): boolean => 
+  readonly isOpen = computed<boolean>(() =>
     this.znavItemService.openIndex(this.collectionName()) === this.index()
   );
 
-  // --- Lifecycle & Effects ---
+  // ==============================================
+  // Lifecycle & Effects
+  // ==============================================
+
   constructor() {
-    effect((): void => {
-      const col: string = this.collectionName();
-      if (col) this.znavItemService.addItemInCollection(col, this.index());
+    effect(() => {
+      const collection = this.collectionName();
+      if (collection) {
+        this.znavItemService.addItemInCollection(collection, this.index());
+      }
     });
   }
 
-  // --- Event Handlers ---
+  // ==============================================
+  // Event Handlers
+  // ==============================================
+
   toggle(): void {
-    const currentOpen: string = this.znavItemService.openIndex(this.collectionName());
-    // لازم نستدعي this.index() عشان نحصل على القيمة النصية
-    if (currentOpen === this.index()) {
+    const currentOpen = this.znavItemService.openIndex(this.collectionName());
+    const myIndex = this.index();
+
+    if (currentOpen === myIndex) {
       this.znavItemService.onOpenIndexChange(this.collectionName(), '');
     } else {
-      this.znavItemService.onOpenIndexChange(this.collectionName(), this.index());
+      this.znavItemService.onOpenIndexChange(this.collectionName(), myIndex);
     }
   }
 
@@ -64,17 +91,22 @@ export class ZnavItem {
     this.anyItemClicked.emit(this.item());
   }
 
-  // --- Helper Methods ---
+  // ==============================================
+  // Helper Methods
+  // ==============================================
+
   getItemClasses = (item: NavbarItem): string => {
     const defaultTextHover =
       'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100';
-
-    const defaultBgHover = 'hover:bg-gray-100 dark:hover:bg-gray-700';
+    const defaultBgHover =
+      'hover:bg-gray-100 dark:hover:bg-gray-700';
 
     if (item.colorClass) {
       return item.colorClass;
     }
 
-    return item.useDefultColorClass === 'bg' ? defaultBgHover : defaultTextHover;
+    return item.useDefaultColorClass === 'bg'
+      ? defaultBgHover
+      : defaultTextHover;
   };
 }

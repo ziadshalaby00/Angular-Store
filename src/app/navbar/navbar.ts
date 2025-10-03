@@ -40,8 +40,8 @@ export class Navbar {
     {
       label: 'Legal Pages',
       children: [
-        { label: 'Privacy Policy', routerLink: '/privacyPolicy', useDefultColorClass: 'bg' },
-        { label: 'Terms & Conditions', routerLink: '/termsConditions', useDefultColorClass: 'bg'},
+        { label: 'Privacy Policy', routerLink: '/privacyPolicy', useDefaultColorClass: 'bg' },
+        { label: 'Terms & Conditions', routerLink: '/termsConditions', useDefaultColorClass: 'bg'},
       ]
     },
   ];
@@ -66,10 +66,10 @@ export class Navbar {
           label: 'Orders', 
           routerLink: '/orders', 
           iconClass: 'fas fa-box text-lg text-indigo-500',
-          useDefultColorClass: 'bg'
+          useDefaultColorClass: 'bg'
         },
-        { label: 'Addresses', routerLink: '/addresses', iconClass: 'fa-solid fa-location-dot text-lg', useDefultColorClass: 'bg' },
-        { label: 'Reviews', routerLink: '/reviews', iconClass: 'fa-solid fa-star text-lg', useDefultColorClass: 'bg' },
+        { label: 'Addresses', routerLink: '/addresses', iconClass: 'fa-solid fa-location-dot text-lg', useDefaultColorClass: 'bg' },
+        { label: 'Reviews', routerLink: '/reviews', iconClass: 'fa-solid fa-star text-lg', useDefaultColorClass: 'bg' },
       ]
     },
     { 

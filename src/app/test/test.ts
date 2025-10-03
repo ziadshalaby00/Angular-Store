@@ -4,15 +4,16 @@ import { Zinput } from '../ziadshalaby/ngx-zs-component/FormFolder/zinput/zinput
 import { Zselect } from '../ziadshalaby/ngx-zs-component/FormFolder/zselect/zselect';
 import { Zdate } from '../ziadshalaby/ngx-zs-component/FormFolder/zdate/zdate';
 import { FormStyle, ZformService } from '../ziadshalaby/ngx-zs-component/FormFolder/zformService/zform-service';
+import { Brand } from '../services/brand';
 
 @Component({
   selector: 'app-test',
-  imports: [CommonModule, Zinput],
+  imports: [CommonModule, Zselect, Zinput],
   templateUrl: './test.html',
   styleUrl: './test.css'
 })
 export class Test {
-
+  brandService = inject(Brand);
   zformService = inject(ZformService)
 
   // ============ Example ============
@@ -23,7 +24,7 @@ export class Test {
   readonly inputStyls: FormStyle[] = ['normal', 'primary', 'danger', 'warning', 'info', 'light', 'dark', 'teal', 'violet', 'success']
 
   ngOnInit() {
-    
+    this.brandService.loadBrands();
   }
 
   validateFn = (val: string | null) => {
@@ -34,6 +35,10 @@ export class Test {
   }
 
   valueChange(event: string | null) {
+    console.log(event)
+  }
+
+  onSelect(event: any) {
     console.log(event)
   }
 }

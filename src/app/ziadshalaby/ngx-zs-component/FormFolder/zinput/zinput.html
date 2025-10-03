@@ -1,37 +1,40 @@
-<label class="z-input w-full block" [attr.for]="id()">
+<!-- ==============================================
+     Input Field Component (ZS-Input)
+     ============================================== -->
 
-  <!-- Label and Hint -->
+<div class="w-full block">
+
+  <!-- ========================= Label & Hint ========================= -->
   <ZS-label
     [label]="label()"
     [hint]="hint()"
     [required]="required()"
     [hintID]="id() + '-hint'"
+    [for]="id()"
   >
   </ZS-label>
 
-  <!-- Input Container (Field + Icons) -->
+  <!-- ========================= Input Container ========================= -->
   <div
     class="relative flex items-center w-full"
     [class]="containerClasses() + ' ' + getSize('container')"
   >
-    <!--// sm => px-2 py-1 || lg => px-4 py-3 -->
 
-    <!-- Left Icon -->
-    @if (icon() || LoaderIconOnSerachInput()) {
+    <!-- ========================= Left Icon ========================= -->
+    @if (icon() || loaderIconOnSearchInput()) {
       <i
-        [ngClass]="
-          (
-            LoaderIconOnSerachInput() 
-            ? LoaderIconOnSerachInput() 
+        [ngClass]="(
+          loaderIconOnSearchInput()
+            ? loaderIconOnSearchInput()
             : icon()
-          ) + ' ' + getSize('leftIcon')"
+        ) + ' ' + getSize('leftIcon')"
         aria-hidden="true"
       ></i>
-      <!--// sm => text-sm  mr-1.5 || lg => text-lg  mr-2.5 -->
     }
 
-    <!-- Input Field -->
-    <input #inputEl
+    <!-- ========================= Input Field ========================= -->
+    <input
+      #inputEl
       [id]="id()"
       [name]="name()"
       [attr.type]="actualType"
@@ -63,16 +66,16 @@
         (error() ? id() + '-error' : '')
       "
     />
-    <!--// sm => text-xs || lg => text-base -->
 
-    <!-- Maintains Height -->
+    <!-- ========================= Spacer (Maintains Height) ========================= -->
     <div class="h-6"></div>
 
-    <!-- Password Toggle -->
+    <!-- ========================= Password Toggle ========================= -->
     @if (type() === 'password') {
       <button
         type="button"
         (click)="togglePassword()"
+        [attr.aria-pressed]="showPassword()"
         class="ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
         [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
       >
@@ -82,40 +85,50 @@
           aria-hidden="true"
         ></i>
       </button>
-      <!--// sm => text-xs || lg => text-base -->
     }
 
-    <!-- Clear Button -->
-    @if (showClear() && !this.disabledOrReadonly()) {
+    <!-- ========================= Clear Button ========================= -->
+    @if (showClear() && !disabledOrReadonly()) {
       <button
         type="button"
         (click)="clear()"
         class="ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-        [attr.aria-label]="'Clear ' + (label() || '')"
+        [attr.aria-label]="'Clear ' + (label() || 'input')"
       >
-        <i class="fa fa-times" [class]="getSize('rightIcon')" aria-hidden="true"></i>
+        <i
+          class="fa fa-times"
+          [class]="getSize('rightIcon')"
+          aria-hidden="true"
+        ></i>
       </button>
-      <!--// sm => text-xs || lg => text-base -->
     }
 
-    <!-- Search Icon (for 'search' type or when explicitly enabled) -->
+    <!-- ========================= Search Icon ========================= -->
     @if (type() === 'search' || showSearchIcon()) {
       <button
         type="button"
         (click)="onSearch()"
         class="ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-        [attr.aria-label]="'Search'"
+        aria-label="Search"
       >
-        <i class="fa fa-search" [class]="getSize('rightIcon')" aria-hidden="true"></i>
+        <i
+          class="fa fa-search"
+          [class]="getSize('rightIcon')"
+          aria-hidden="true"
+        ></i>
       </button>
-      <!--// sm => text-xs || lg => text-base -->
     }
 
   </div>
 
-  <!-- Error Messages -->
+  <!-- ========================= Error Messages ========================= -->
   @if (error()) {
-    <ul [id]="id() + '-error'" class="mt-1 text-xs text-red-500 space-y-1">
+    <ul
+      [id]="id() + '-error'"
+      class="mt-1 text-xs text-red-500 space-y-1"
+      role="status"
+      aria-live="polite"
+    >
       @for (err of error(); track $index) {
         <li class="flex items-center gap-2">
           <i class="fa fa-circle text-[6px]" aria-hidden="true"></i>
@@ -125,4 +138,4 @@
     </ul>
   }
 
-</label>
+</div>

@@ -1,64 +1,80 @@
+<!-- ========================= Theme Switcher Panel ========================= -->
 <div 
   class="fixed left-0 top-1/6 z-[700] transform -translate-y-1/2 transition-all duration-300"
   [class.-translate-x-[96px]]="!isOpen()"
+  role="complementary"
+  aria-label="Theme switcher panel"
 >
-  <!-- Container for both buttons -->
+  <!-- ========================= Theme Selection Buttons ========================= -->
   <div class="flex items-center">
-    
-    <!-- Light/Dark selection buttons -->
-    <div class="flex overflow-hidden transition-all duration-300">
-      
-      <!-- Light button -->
-      <button 
+    <div 
+      class="flex overflow-hidden transition-all duration-300"
+      role="group"
+      aria-label="Theme selection"
+    >
+      <!-- Light Theme Button -->
+      <button
         (click)="setTheme('light')"
+        type="button"
         class="px-3 py-2 rounded-l-none border-l-0 border-y transition-colors flex-shrink-0
                bg-white text-gray-900 border-gray-300
                dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600
-               hover:bg-gray-100 dark:hover:bg-gray-700 w-12"
+               hover:bg-gray-100 dark:hover:bg-gray-700 w-12
+               focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+        aria-label="Activate light theme"
+        [attr.aria-pressed]="currentTheme() === 'light'"
       >
-        <i class="fas fa-sun text-yellow-500"></i>
+        <i class="fas fa-sun text-yellow-500" aria-hidden="true"></i>
       </button>
-      
-      <!-- Dark button -->
-      <button 
+
+      <!-- Dark Theme Button -->
+      <button
         (click)="setTheme('dark')"
+        type="button"
         class="px-3 py-2 rounded-r-lg border-y border-r transition-colors flex-shrink-0
                bg-white text-gray-900 border-gray-300
                dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600
-               hover:bg-gray-100 dark:hover:bg-gray-700 w-12"
+               hover:bg-gray-100 dark:hover:bg-gray-700 w-12
+               focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+        aria-label="Activate dark theme"
+        [attr.aria-pressed]="currentTheme() === 'dark'"
       >
-        <i class="fas fa-moon"></i>
+        <i class="fas fa-moon" aria-hidden="true"></i>
       </button>
-      
     </div>
 
-    <!-- Toggle button with connecting line -->
+    <!-- ========================= Toggle Button with Connector ========================= -->
     <div 
-      class="relative" 
+      class="relative"
       [class.hidden]="isOpen()"
     >
-      <!-- Connecting line -->
-      <div 
+      <!-- Connector Line -->
+      <div
         class="absolute top-1/2 right-0 h-0.5 w-3 transform -translate-y-1/2
                 bg-gray-300 dark:bg-gray-600"
+        aria-hidden="true"
       ></div>
-      
-      <!-- Toggle button -->
-      <button 
+
+      <!-- Toggle Button -->
+      <button
         (click)="toggleOpen()"
-        class="relative z-[100] w-12 h-12 rounded-full rounded-l-none border-l-0 border-2 transition-all duration-300 flex items-center justify-center
+        type="button"
+        class="relative z-[100] w-12 h-12 rounded-full rounded-l-none border-l-0 border-2
+               transition-all duration-300 flex items-center justify-center
                bg-white text-gray-900 border-gray-300
                dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600
-               hover:bg-gray-100 dark:hover:bg-gray-700"
+               hover:bg-gray-100 dark:hover:bg-gray-700
+               focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+        aria-label="Toggle theme switcher"
+        [attr.aria-expanded]="isOpen()"
+        aria-controls="theme-panel"
       >
         @if (currentTheme() === 'dark') {
-          <i class="fas fa-moon"></i>
+          <i class="fas fa-moon" aria-hidden="true"></i>
         } @else {
-          <i class="fas fa-sun text-yellow-500"></i>
+          <i class="fas fa-sun text-yellow-500" aria-hidden="true"></i>
         }
       </button>
-      
     </div>
-    
   </div>
 </div>

@@ -1,7 +1,21 @@
+// ==============================================
+// Imports
+// ==============================================
+
 import { Component, signal, HostListener, effect, output, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+
+// ==============================================
+// Types
+// ==============================================
+
 export type themeTypes = 'light' | 'dark';
+
+
+// ==============================================
+// Component Metadata
+// ==============================================
 
 @Component({
   selector: 'ZS-theme-toggle',
@@ -9,61 +23,85 @@ export type themeTypes = 'light' | 'dark';
   templateUrl: './ztheme-toggle.html',
   styleUrl: './ztheme-toggle.css'
 })
-export class ZThemeToggle {
-  // ✅ Signals
+export class ZthemeToggle {
+
+
+  // ==============================================
+  // Signals
+  // ==============================================
+
   readonly currentTheme = signal<themeTypes>('light');
   readonly isOpen = signal<boolean>(false);
 
-  // ✅ Input signals
+
+  // ==============================================
+  // Inputs
+  // ==============================================
+
   readonly bodyClass = input<string>('bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100');
 
-  // ✅ Output events
+
+  // ==============================================
+  // Outputs
+  // ==============================================
+
   readonly themeChange = output<themeTypes>();
 
+
+  // ==============================================
+  // Lifecycle & Side Effects
+  // ==============================================
+
   constructor() {
-    // Initialize theme from localStorage or prefers-color-scheme
-    const savedTheme: themeTypes = localStorage.getItem('theme') as 'light' | 'dark';
-    const systemDark: boolean = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
+    // Initialize theme from localStorage or system preference
+    const savedTheme = localStorage.getItem('theme') as themeTypes | null;
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
     if (savedTheme) {
       this.currentTheme.set(savedTheme);
     } else {
-      this.currentTheme.set(systemDark ? 'dark' : 'light');
+      this.currentTheme.set(systemPrefersDark ? 'dark' : 'light');
     }
 
-    // Listen for system theme changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    // Listen for system theme changes (only if no user preference is saved)
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
       if (!localStorage.getItem('theme')) {
         this.currentTheme.set(e.matches ? 'dark' : 'light');
       }
     });
 
-    // Effect to sync theme with DOM and localStorage
-    effect((): void => {
-      const theme: themeTypes = this.currentTheme();
+    // Sync theme with DOM and localStorage whenever it changes
+    effect(() => {
+      const theme = this.currentTheme();
       document.documentElement.classList.toggle('dark', theme === 'dark');
       localStorage.setItem('theme', theme);
-
-      // ✅ Apply classes to body
       document.body.className = this.bodyClass();
     });
   }
 
-  // ✅ Component methods
+
+  // ==============================================
+  // Component Methods
+  // ==============================================
+
   toggleOpen(): void {
     this.isOpen.set(!this.isOpen());
   }
 
-  setTheme(theme: 'light' | 'dark'): void {
+  setTheme(theme: themeTypes): void {
     this.currentTheme.set(theme);
     this.isOpen.set(false);
-    this.themeChange.emit(theme); // 👈 Emit to parent
+    this.themeChange.emit(theme);
   }
 
-  // ✅ Host listeners
+
+  // ==============================================
+  // Host Listeners
+  // ==============================================
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
-    const target: HTMLElement = event.target as HTMLElement;
+    const target = event.target as HTMLElement;
     if (!target.closest('ZS-theme-toggle') && this.isOpen()) {
       this.isOpen.set(false);
     }

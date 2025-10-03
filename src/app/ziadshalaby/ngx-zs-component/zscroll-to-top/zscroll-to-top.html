@@ -1,15 +1,25 @@
+<!-- ========================= Scroll-to-Top Container ========================= -->
 <div
   [ngClass]="positionClass()"
   class="fixed bottom-4 z-[500] transition-opacity duration-300"
   [style.opacity]="scrollY() > 200 ? 1 : 0"
 >
+  <!-- ========================= Scroll Button ========================= -->
   <button
     (click)="scrollToTop()"
-    class="w-12 h-12 rounded-full flex transparent items-center justify-center relative overflow-hidden"
+    class="w-12 h-12 rounded-full flex items-center justify-center relative overflow-hidden focus:outline-none"
+    type="button"
+    role="button"
+    aria-label="Scroll to top"
+    title="Scroll to top"
   >
-    <!-- 🌀 Progress Ring (SVG) -->
-    <svg class="absolute inset-0 w-full h-full transform -rotate-90">
-      <!-- Background Ring -->
+    <!-- ========================= Progress Ring (SVG) ========================= -->
+    <svg
+      class="absolute inset-0 w-full h-full transform -rotate-90"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <!-- Background Circle -->
       <circle
         cx="24"
         cy="24"
@@ -20,7 +30,7 @@
         [ngClass]="circleColorClass()"
       />
 
-      <!-- Progress Ring -->
+      <!-- Animated Progress Circle -->
       <circle
         cx="24"
         cy="24"
@@ -30,16 +40,17 @@
         fill="transparent"
         [attr.stroke-dasharray]="circleCircumference"
         [attr.stroke-dashoffset]="progressOffset()"
-        [ngClass]="arrowAprogressColorClass()"
+        [ngClass]="arrowProgressColorClass()"
         class="transition-all duration-300 ease-out"
         stroke-linecap="round"
       />
     </svg>
 
-    <!-- ⬆️ Arrow Icon -->
+    <!-- ========================= Up Arrow Icon ========================= -->
     <i
-      class="fas fa-arrow-up"
-      [ngClass]="[arrowAprogressColorClass(), 'relative z-[100] text-lg']"
+      class="fas fa-arrow-up relative z-[100] text-lg"
+      [ngClass]="arrowProgressColorClass()"
+      aria-hidden="true"
     ></i>
   </button>
 </div>

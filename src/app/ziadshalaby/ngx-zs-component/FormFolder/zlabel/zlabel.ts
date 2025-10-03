@@ -1,3 +1,6 @@
+// ==============================================
+// Component Metadata
+// ==============================================
 import { Component, input } from '@angular/core';
 
 @Component({
@@ -7,8 +10,17 @@ import { Component, input } from '@angular/core';
   styleUrl: './zlabel.css'
 })
 export class Zlabel {
-  readonly label = input<string | null>(null)
-  readonly hint = input<string | null>(null)
-  readonly hintID = input<string | null>(null)
-  readonly required = input<boolean>(false)
+
+  // ==============================================
+  // Label & Hint Configuration
+  // ==============================================
+  readonly label   = input<string | null>(null);
+  readonly hint    = input<string | null>(null);
+  readonly hintID  = input<string | null>(null);
+
+  // ==============================================
+  // Accessibility & State Inputs
+  // ==============================================
+  readonly required = input<boolean>(false);
+  readonly for      = input<string | null>(null);
 }

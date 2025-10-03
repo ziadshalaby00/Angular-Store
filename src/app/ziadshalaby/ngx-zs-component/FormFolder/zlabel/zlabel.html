@@ -1,13 +1,34 @@
-<!-- Label and Hint -->
-@if(label() || hint()) {
-    <div class="mb-1 flex items-center gap-2">
-        @if (label()) {
-            <span class="text-sm font-semibold truncate">
-                {{ label() }} @if (required()) { <span class="text-red-500">*</span> }
-            </span>
+<!-- ================= Label Wrapper ================= -->
+@if (label() || hint()) {
+  <label 
+    [for]="for()" 
+    class="mb-1 flex items-center gap-2"
+  >
+
+    <!-- ========== Label Text ========== -->
+    @if (label()) {
+      <span class="text-sm font-semibold truncate">
+        {{ label() }}
+
+        <!-- Required Indicator -->
+        @if (required()) {
+          <span class="text-red-500" aria-hidden="true">*</span>
+          <span class="sr-only">(required)</span>
         }
-        @if (hint()) {
-            <small [id]="hintID()" class="text-xs text-slate-500 dark:text-slate-400">{{ hint() }}</small>
-        }
-    </div>
+      </span>
+    }
+
+    <!-- ========== Hint Text ========== -->
+    @if (hint()) {
+      <small
+        [id]="hintID()"
+        class="text-xs text-slate-500 dark:text-slate-400"
+      >
+        {{ hint() }}
+      </small>
+    }
+    <!-- ========== End Hint Text ========== -->
+
+  </label>
 }
+<!-- ================= End Label Wrapper ================= -->

@@ -1,20 +1,24 @@
 import { Component, computed, input, model, output } from '@angular/core';
 import { FormPaletteMap, FormStyle } from '../zformService/zform-service';
+import { Zlabel } from '../zlabel/zlabel';
 
 // date-picker.model.ts
 export type DatePickerType = 'date' | 'datetime-local' | 'month' | 'week' | 'time';
 
 @Component({
   selector: 'ZS-date',
-  imports: [],
+  imports: [Zlabel],
   templateUrl: './zdate.html',
   styleUrl: './zdate.css'
 })
 export class Zdate {
   // Inputs
   readonly id = input<string>(crypto.randomUUID());
-  readonly label = input<string | undefined>(undefined);
-  readonly hint = input<string | undefined>(undefined);
+  readonly name = input<string | null>(null);
+
+  readonly label = input<string | null>(null);
+  readonly hint = input<string | null>(null);
+
   readonly placeholder = input<string>('');
   readonly required = input<boolean>(false);
   readonly disabled = input<boolean>(false);

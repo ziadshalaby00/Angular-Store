@@ -1,76 +1,97 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, ElementRef, input, model, output, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  ElementRef,
+  input,
+  model,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormPaletteMap, FormSize, FormStyle } from '../zformService/zform-service';
 import { Zlabel } from '../zlabel/zlabel';
 
-// ----------------------
+// ==============================================================================
 // Types
-// ----------------------
-export type InputType = 
-| 'text' 
-| 'email' 
-| 'password' 
-| 'number' 
-| 'tel' 
-| 'phone'
-| 'url' 
-| 'search';
+// ==============================================================================
+
+export type InputType =
+  | 'text'
+  | 'email'
+  | 'password'
+  | 'number'
+  | 'tel'
+  | 'phone'
+  | 'url'
+  | 'search';
 
 export type ValidatorFn = (value: string | null) => string[];
 export type FormatterFn = (value: string | null) => string | null;
 
-type sizeClassesType = 'container' | 'field' | 'leftIcon' | 'rightIcon';
+type SizeClassesType = 'container' | 'field' | 'leftIcon' | 'rightIcon';
 
-// ----------------------
+// ==============================================================================
 // Constants & Regex
-// ----------------------
-const sizeClassesMap = new Map<sizeClassesType, Record<FormSize, string>>([
-  ['container', { 
-    sm: 'px-2 py-1 rounded-md', 
-    md: 'px-3 py-2 rounded-lg', 
-    lg: 'px-4 py-3 rounded-lg' 
-  }],
+// ==============================================================================
 
-  ['field', { 
-    sm: 'text-xs', 
-    md: 'text-sm', 
-    lg: 'text-base' 
-  }],
-
-  ['leftIcon', { 
-    sm: 'text-sm mr-1.5', 
-    md: 'text-base mr-2', 
-    lg: 'text-lg mr-2.5' 
-  }],
-
-  ['rightIcon', { 
-    sm: 'text-xs', 
-    md: 'text-sm', 
-    lg: 'text-base' 
-  }]
+const SIZE_CLASSES_MAP = new Map<SizeClassesType, Record<FormSize, string>>([
+  [
+    'container',
+    {
+      sm: 'px-2 py-1 rounded-md',
+      md: 'px-3 py-2 rounded-lg',
+      lg: 'px-4 py-3 rounded-lg',
+    },
+  ],
+  [
+    'field',
+    {
+      sm: 'text-xs',
+      md: 'text-sm',
+      lg: 'text-base',
+    },
+  ],
+  [
+    'leftIcon',
+    {
+      sm: 'text-sm mr-1.5',
+      md: 'text-base mr-2',
+      lg: 'text-lg mr-2.5',
+    },
+  ],
+  [
+    'rightIcon',
+    {
+      sm: 'text-xs',
+      md: 'text-sm',
+      lg: 'text-base',
+    },
+  ],
 ]);
 
-const phoneRegex = /^\+?[0-9\s\-()]{7,20}$/; // يقبل فقط أرقام (7–20) مع + أو () أو - أو مسافات
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_REGEX = /^\+?[0-9\s\-()]{7,20}$/; // Accepts 7–20 digits with optional +, spaces, hyphens, or parentheses
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// ----------------------
-// Component Decorator
-// ----------------------
+// ==============================================================================
+// Component Definition
+// ==============================================================================
+
 @Component({
   selector: 'ZS-input',
   imports: [CommonModule, Zlabel],
   templateUrl: './zinput.html',
-  styleUrl: './zinput.css'
+  styleUrl: './zinput.css',
 })
 export class Zinput {
-  // ----------------------
-  // Inputs (signal-style)
-  // ----------------------
+  // ==============================================================================
+  // Inputs
+  // ==============================================================================
+
   readonly id = input<string>(crypto.randomUUID());
-  readonly name = input.required<string>();
+  readonly name = input<string | null>(null);
   readonly label = input<string | null>(null);
   readonly hint = input<string | null>(null);
-
   readonly placeholder = input<string | null>(null);
   readonly type = input<InputType>('text');
   readonly inputStyle = input<FormStyle>('normal');
@@ -83,7 +104,7 @@ export class Zinput {
 
   readonly icon = input<string | null>(null);
   readonly showSearchIcon = input<boolean>(false);
-  readonly showLoaderIconOnSerachInput = input<boolean>(false);
+  readonly showLoaderIconOnSearchInput = input<boolean>(false);
 
   readonly maxlength = input<number | null>(null);
   readonly minlength = input<number | null>(null);
@@ -99,19 +120,22 @@ export class Zinput {
   readonly searchDebounceDelay = input<number>(300);
   readonly size = input<FormSize>('md');
 
-  // ----------------------
+  // ==============================================================================
   // ViewChild
-  // ----------------------
+  // ==============================================================================
+
   readonly inputEl = viewChild<ElementRef<HTMLInputElement>>('inputEl');
 
-  // ----------------------
+  // ==============================================================================
   // Model
-  // ----------------------
+  // ==============================================================================
+
   readonly value = model<string | null>(null);
 
-  // ----------------------
+  // ==============================================================================
   // Outputs
-  // ----------------------
+  // ==============================================================================
+
   readonly enter = output<void>();
   readonly focus = output<void>();
   readonly blur = output<void>();
@@ -120,53 +144,50 @@ export class Zinput {
   readonly cleared = output<void>();
   readonly keydown = output<KeyboardEvent>();
 
-  // ----------------------
+  // ==============================================================================
   // Internal State (Signals)
-  // ----------------------
-  private readonly touched = signal<boolean>(false); // ✅ لتعقب التفاعل
+  // ==============================================================================
+
+  private readonly touched = signal<boolean>(false); // Tracks if the user has interacted with the input
   readonly showPassword = signal<boolean>(false);
   private searchDebounceTimer?: ReturnType<typeof setTimeout>;
-  readonly LoaderIconOnSerachInput = signal<string | null>(null); 
+  readonly loaderIconOnSearchInput = signal<string | null>(null); // Fixed typo: "Serach" → "Search"
 
-  // ----------------------
+  // ==============================================================================
   // Computed Properties
-  // ----------------------
-  readonly disabledOrReadonly = computed<boolean>(() => (this.disabled() || this.isReadonly()));
+  // ==============================================================================
+
+  readonly disabledOrReadonly = computed<boolean>(() => this.disabled() || this.isReadonly());
 
   readonly containerClasses = computed(() => {
-    const base = 'border transition-all duration-150 focus-within:ring-2';
+    const baseClasses = 'border transition-all duration-150 focus-within:ring-2';
     const hasError = !!this.error();
 
-    let inputStyleEntry = FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('normal');
-
+    let styleConfig = FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('normal')!;
     if (hasError) {
-      inputStyleEntry = FormPaletteMap.get('danger');
+      styleConfig = FormPaletteMap.get('danger')!;
     }
 
-    const disabledCls = this.disabled() ? 'opacity-60' : '';
-    const disabeldOrReadonlyCls = this.disabledOrReadonly()
-      ? 'cursor-not-allowed'
-      : 'cursor-text';
+    const disabledClass = this.disabled() ? 'opacity-60' : '';
+    const interactionClass = this.disabledOrReadonly() ? 'cursor-not-allowed' : 'cursor-text';
 
     return [
-      base,
-      inputStyleEntry?.border,
-      inputStyleEntry?.borderHover,
-      inputStyleEntry?.bg,
-      inputStyleEntry?.text,
-      inputStyleEntry?.ring,
-      disabledCls,
-      disabeldOrReadonlyCls
-    ].filter(Boolean).join(' ');
+      baseClasses,
+      styleConfig.border,
+      styleConfig.borderHover,
+      styleConfig.bg,
+      styleConfig.text,
+      styleConfig.ring,
+      disabledClass,
+      interactionClass,
+    ]
+      .filter(Boolean)
+      .join(' ');
   });
 
-  readonly showClear = computed(() => {
-    return this.type() !== 'password' && !!this.value();
-  });
+  readonly showClear = computed(() => this.type() !== 'password' && !!this.value());
 
   readonly error = computed<string[] | null>(() => {
-    let result = Array();
-
     const val = this.value();
     const type = this.type();
     const required = this.required();
@@ -175,158 +196,160 @@ export class Zinput {
     const min = this.min();
     const max = this.max();
 
-    // ✅ لا يظهر أي خطأ إلا بعد التفاعل
+    // Only validate after user interaction
     if (!this.touched()) return null;
 
-    // 1. required
+    const errors: string[] = [];
+
+    // Required validation
     if (required && !val) {
-      result.push('This field is required');
+      errors.push('This field is required');
     }
 
-    // 2. minlength
+    // Min length
     if (minlength !== null && val && val.length < minlength) {
-      result.push(`The value must be at least ${minlength} characters`);
+      errors.push(`The value must be at least ${minlength} characters`);
     }
 
-    // 3. maxlength
+    // Max length
     if (maxlength !== null && val && val.length > maxlength) {
-      result.push(`The value must be at most ${maxlength} characters`);
+      errors.push(`The value must be at most ${maxlength} characters`);
     }
 
-    // 4. email
-    if (type === 'email' && val) {
-      if (!emailRegex.test(val)) {
-        result.push('Please enter a valid email address');
-      }
+    // Email format
+    if (type === 'email' && val && !EMAIL_REGEX.test(val)) {
+      errors.push('Please enter a valid email address');
     }
 
-    // 5. number (min/max)
+    // Number range & validity
     if (type === 'number' && val) {
       const num = Number(val);
-      if (!Number.isNaN(num)) {
+      if (Number.isNaN(num)) {
+        errors.push('Please enter a valid number');
+      } else {
         if (min !== null && num < min) {
-          result.push(`The value must be at least ${min}`);
+          errors.push(`The value must be at least ${min}`);
         }
         if (max !== null && num > max) {
-          result.push(`The value must be at most ${max}`);
+          errors.push(`The value must be at most ${max}`);
         }
-      } else {
-        result.push('Please enter a valid number');
       }
     }
 
-    // 6. phone
-    if (type === 'phone' && val) {
-      if (!phoneRegex.test(val)) {
-        result.push('Please enter a valid phone number');
-      }
+    // Phone format
+    if (type === 'phone' && val && !PHONE_REGEX.test(val)) {
+      errors.push('Please enter a valid phone number');
     }
 
-    // 7. url
+    // URL validity
     if (type === 'url' && val) {
       try {
-        new URL(val); // يمكنك استخدام هذه الطريقة للتحقق من صحة الرابط
+        new URL(val);
       } catch {
-        result.push('Please enter a valid URL');
+        errors.push('Please enter a valid URL');
       }
     }
 
-    // 8. custom validator
-    result.push(...(this.validateFn()(val) ?? []));
+    // Custom validator
+    const customErrors = this.validateFn()(val) ?? [];
+    errors.push(...customErrors);
 
-    return result.length !== 0 ? result : null;
+    return errors.length > 0 ? errors : null;
   });
 
-  // ----------------------
+  // ==============================================================================
   // Getters
-  // ----------------------
+  // ==============================================================================
+
   get actualType(): string {
     if (this.type() === 'phone') return 'tel';
     if (this.type() === 'search') return 'text';
-    if (this.type() === 'password' && this.showPassword()) {
-      return 'text'; // 👈 لو عايز تظهر الباسورد
-    }
+    if (this.type() === 'password' && this.showPassword()) return 'text';
     return this.type();
   }
 
-  getSize(type: sizeClassesType): string {
-    return sizeClassesMap.get(type)?.[this.size()] ?? '';
+  getSize(type: SizeClassesType): string {
+    return SIZE_CLASSES_MAP.get(type)?.[this.size()] ?? '';
   }
 
-  // ----------------------
+  // ==============================================================================
   // Lifecycle Hooks
-  // ----------------------
+  // ==============================================================================
+
   ngAfterViewInit() {
     if (this.autofocus()) {
       queueMicrotask(() => this.inputEl()?.nativeElement.focus());
     }
   }
 
-  // ----------------------
+  // ==============================================================================
   // Event Handlers
-  // ----------------------
-  onInput(ev: Event) {
+  // ==============================================================================
+
+  onInput(event: Event): void {
     if (this.disabledOrReadonly()) return;
-    const v = (ev.target as HTMLInputElement).value;
-    this.value.set(v);
 
-    // 👇 لو الحقل Search نعمل debounce
+    const value = (event.target as HTMLInputElement).value;
+    this.value.set(value);
+
+    // Handle search input with debounce and loader
     if (this.type() === 'search') {
-      if (this.showLoaderIconOnSerachInput()) 
-        this.LoaderIconOnSerachInput.set('fas fa-spinner fa-spin');
+      if (this.showLoaderIconOnSearchInput()) {
+        this.loaderIconOnSearchInput.set('fas fa-spinner fa-spin');
+      }
 
-      if (this.searchDebounceTimer)
+      if (this.searchDebounceTimer) {
         clearTimeout(this.searchDebounceTimer);
-      
+      }
+
       this.searchDebounceTimer = setTimeout(() => {
-        this.search.emit(this.value()); // ✅ بعد delay
-        this.LoaderIconOnSerachInput.set(null);
+        this.search.emit(this.value());
+        this.loaderIconOnSearchInput.set(null);
       }, this.searchDebounceDelay());
     }
   }
 
-  onEnter() {
+  onEnter(): void {
     if (this.disabledOrReadonly()) return;
     this.enter.emit();
   }
 
-  onFocus() {
+  onFocus(): void {
     this.focus.emit();
   }
 
-  onBlur() {
+  onBlur(): void {
     if (this.disabledOrReadonly()) return;
-    this.touched.set(true); // ✅ المستخدم لمس الحقل
+    this.touched.set(true);
     this.value.set(this.formatFn()(this.value()));
     this.blur.emit();
   }
 
-  onChange() {
+  onChange(): void {
     if (this.disabledOrReadonly()) return;
     this.change.emit(this.value());
   }
 
-  onSearch() {
+  onSearch(): void {
     if (this.disabledOrReadonly()) return;
     this.search.emit(this.value());
   }
 
-  clear() {
+  clear(): void {
     if (this.disabledOrReadonly()) return;
-
     this.value.set(null);
     this.change.emit(null);
     this.search.emit(null);
     this.cleared.emit();
   }
 
-  togglePassword() {
+  togglePassword(): void {
     if (this.disabledOrReadonly()) return;
     this.showPassword.update((v) => !v);
   }
 
-  onKeydown(ev: KeyboardEvent) {
+  onKeydown(event: KeyboardEvent): void {
     if (this.disabledOrReadonly()) return;
-    this.keydown.emit(ev);
+    this.keydown.emit(event);
   }
 }

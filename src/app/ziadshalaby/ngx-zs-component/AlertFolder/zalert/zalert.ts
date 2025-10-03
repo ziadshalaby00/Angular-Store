@@ -1,9 +1,18 @@
+// ==============================================
+// Types
+// ==============================================
+
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal
+} from '@angular/core';
 import { ZalertService } from '../zalertService/zalert-service';
 
-// =================================================================================================
-// =================================================================================================
 export interface Alert {
   id: number | string;
   message: string;
@@ -21,18 +30,42 @@ export interface AlertFullType extends Alert {
   borderColor: string;
 }
 
-export type oldAlertsType = Set<number | string>;
+export type OldAlertsType = Set<number | string>;
 
-export const ALERT_CONFIG: Record<Alert['type'], Omit<AlertFullType, keyof Alert>> = {
-  success:  { icon: 'fas fa-check-circle',          bgColor: 'bg-green-100 dark:bg-green-800',    textColor: 'text-green-800 dark:text-green-100',    borderColor: 'border-green-500 dark:border-green-300' },
-  danger:   { icon: 'fas fa-exclamation-circle',    bgColor: 'bg-red-100 dark:bg-red-800',        textColor: 'text-red-800 dark:text-red-100',        borderColor: 'border-red-500 dark:border-red-300' },
-  warning:  { icon: 'fas fa-exclamation-triangle',  bgColor: 'bg-yellow-100 dark:bg-yellow-800',  textColor: 'text-yellow-800 dark:text-yellow-100',  borderColor: 'border-yellow-500 dark:border-yellow-300' },
-  info:     { icon: 'fas fa-info-circle',           bgColor: 'bg-blue-100 dark:bg-blue-800',      textColor: 'text-blue-800 dark:text-blue-100',      borderColor: 'border-blue-500 dark:border-blue-300' },
+export const ALERT_CONFIG: Record<
+  Alert['type'],
+  Omit<AlertFullType, keyof Alert>
+> = {
+  success: {
+    icon: 'fas fa-check-circle',
+    bgColor: 'bg-green-100 dark:bg-green-800',
+    textColor: 'text-green-800 dark:text-green-100',
+    borderColor: 'border-green-500 dark:border-green-300'
+  },
+  danger: {
+    icon: 'fas fa-exclamation-circle',
+    bgColor: 'bg-red-100 dark:bg-red-800',
+    textColor: 'text-red-800 dark:text-red-100',
+    borderColor: 'border-red-500 dark:border-red-300'
+  },
+  warning: {
+    icon: 'fas fa-exclamation-triangle',
+    bgColor: 'bg-yellow-100 dark:bg-yellow-800',
+    textColor: 'text-yellow-800 dark:text-yellow-100',
+    borderColor: 'border-yellow-500 dark:border-yellow-300'
+  },
+  info: {
+    icon: 'fas fa-info-circle',
+    bgColor: 'bg-blue-100 dark:bg-blue-800',
+    textColor: 'text-blue-800 dark:text-blue-100',
+    borderColor: 'border-blue-500 dark:border-blue-300'
+  }
 };
-// =================================================================================================
-// =================================================================================================
 
-// =============== Component Decorator ===============
+// ==============================================
+// Component Decorator
+// ==============================================
+
 @Component({
   selector: 'ZS-alert',
   imports: [CommonModule],
@@ -41,25 +74,31 @@ export const ALERT_CONFIG: Record<Alert['type'], Omit<AlertFullType, keyof Alert
 })
 export class Zalert {
 
+  // ==============================================
+  // Dependencies
+  // ==============================================
 
-  // =============== Dependencies ===============
-  readonly zalertService: ZalertService = inject(ZalertService)
+  readonly zalertService: ZalertService = inject(ZalertService);
 
+  // ==============================================
+  // Inputs
+  // ==============================================
 
-  // =============== Inputs ===============
   readonly positionClass = input<string>('top-4 right-4'); // e.g., "top-6 left-6", "bottom-4 right-10"
-  readonly defultShowCloseButton = input<boolean>(true);
-  readonly defultAutoClose = input<boolean>(true)
-  readonly defultDuration = input<number>(5000)
+  readonly defaultShowCloseButton = input<boolean>(true);
+  readonly defaultAutoClose = input<boolean>(true);
+  readonly defaultDuration = input<number>(5000);
 
+  // ==============================================
+  // Signals & Computed Properties
+  // ==============================================
 
-  // =============== Signals & Computed ===============
-  private readonly oldAlerts = signal<oldAlertsType>(new Set());
+  private readonly oldAlerts = signal<OldAlertsType>(new Set());
 
   private readonly direction = computed<'top' | 'bottom'>(() => {
-    for (const s of this.positionClass().split(' ')) {
-      if (s.startsWith('bottom-')) return 'bottom';
-      if (s.startsWith('top-')) return 'top';
+    for (const part of this.positionClass().split(' ')) {
+      if (part.startsWith('bottom-')) return 'bottom';
+      if (part.startsWith('top-')) return 'top';
     }
     return 'top';
   });
@@ -71,21 +110,23 @@ export class Zalert {
 
   readonly alertConfig = computed<AlertFullType[]>(() => {
     return this.alerts().map((alert: Alert) => {
-      const config = ALERT_CONFIG[alert.type] || ALERT_CONFIG['info'];
+      const config = ALERT_CONFIG[alert.type] || ALERT_CONFIG.info;
       return {
         ...alert,
-        ...config,
+        ...config
       };
     });
   });
 
+  // ==============================================
+  // Getters
+  // ==============================================
 
-  // =============== Getters ===============
   get maxHeightStyle(): { maxHeight: string } {
     let offsetRem = 0;
 
-    for (const s of this.positionClass().split(' ')) {
-      const match = s.match(/\d+/);
+    for (const part of this.positionClass().split(' ')) {
+      const match = part.match(/\d+/);
       if (match) {
         offsetRem = parseInt(match[0], 10) * 0.25;
       }
@@ -96,12 +137,16 @@ export class Zalert {
     };
   }
 
+  // ==============================================
+  // Private Properties
+  // ==============================================
 
-  // =============== Private Properties ===============
   private activeIntervals = new Map<string | number, number>();
 
+  // ==============================================
+  // Lifecycle & Effects
+  // ==============================================
 
-  // =============== Lifecycle & Effects ===============
   constructor() {
     effect(() => {
       const lastAlert = this.alerts().at(-1);
@@ -116,18 +161,19 @@ export class Zalert {
     this.activeIntervals.clear();
   }
 
+  // ==============================================
+  // Private Methods
+  // ==============================================
 
-  // =============== Private Methods ===============
   private registerAlert(alert: Alert): void {
-    // سجل إن الـ alert اتعالج
-    const set: oldAlertsType = new Set(this.oldAlerts());
-    set.add(alert.id);
-    this.oldAlerts.set(set);
+    // Mark alert as processed
+    const updatedSet = new Set(this.oldAlerts());
+    updatedSet.add(alert.id);
+    this.oldAlerts.set(updatedSet);
 
-    const autoClose = alert.autoClose ?? this.defultAutoClose();
-    const duration = alert.duration ?? this.defultDuration();
+    const autoClose = alert.autoClose ?? this.defaultAutoClose();
+    const duration = alert.duration ?? this.defaultDuration();
 
-    // Auto-close logic
     if (autoClose) {
       let progress = 100;
       const step = 100 / (duration / 100);
@@ -135,9 +181,8 @@ export class Zalert {
       const interval = window.setInterval(() => {
         progress = Math.max(0, progress - step);
 
-        // تحديث progress
         this.zalertService.alerts.update(all =>
-          all.map(a => a.id === alert.id ? { ...a, progress } : a)
+          all.map(a => (a.id === alert.id ? { ...a, progress } : a))
         );
 
         if (progress <= 0) {
@@ -149,23 +194,24 @@ export class Zalert {
     }
   }
 
+  // ==============================================
+  // Public Methods
+  // ==============================================
 
-  // =============== Public Methods ===============
   closeAlert(id: string | number): void {
-    // نظف أي interval شغال
+    // Clear active interval if exists
     const interval = this.activeIntervals.get(id);
     if (interval) {
       clearInterval(interval);
       this.activeIntervals.delete(id);
     }
 
-    // شيل من oldAlerts
-    const set: oldAlertsType = new Set(this.oldAlerts());
-    set.delete(id);
-    this.oldAlerts.set(set);
+    // Remove from processed alerts
+    const updatedSet = new Set(this.oldAlerts());
+    updatedSet.delete(id);
+    this.oldAlerts.set(updatedSet);
 
-    // احذف من الخدمة
+    // Remove from service
     this.zalertService.onAlertClosed(id);
   }
-
 }

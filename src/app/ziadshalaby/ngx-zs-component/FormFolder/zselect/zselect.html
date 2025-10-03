@@ -1,46 +1,84 @@
+<!-- ========================= Label & Hint ========================= -->
 <div class="relative w-full">
-  <!-- Label and Hint -->
-  @if(label() || hint()) {
-    <div class="mb-1 flex items-center gap-2">
-      @if (label()) {
-        <span class="text-sm font-semibold truncate">
-          {{ label() }} @if (required()) { <span class="text-red-500">*</span> }
-        </span>
-      }
-      @if (hint()) {
-        <small class="text-xs text-slate-500 dark:text-slate-400">{{ hint() }}</small>
-      }
-    </div>
-  }
-  
-  <!-- Toggle Button -->
-  <div
+  <ZS-label
+    [label]="label()"
+    [hint]="hint()"
+    [required]="required()"
+    [hintID]="id() + '-hint'"
+    [for]="id() + '-trigger'">
+  </ZS-label>
+
+  <!-- ========================= Trigger Button (Combobox) ========================= -->
+  <button
+    id="{{ id() + '-trigger' }}"
+    type="button"
+    role="combobox"
+    aria-haspopup="listbox"
+    [attr.aria-expanded]="isOpen()"
+    [attr.aria-controls]="id() + '-options'"
+    [attr.aria-describedby]="hint() ? id() + '-hint' : null"
+    [disabled]="disabledOrReadonly()"
     [class]="containerClasses()"
     (click)="toggleDropdown()">
-    @if (selectedItem()) {
-      <span class="truncate">{{ selectedItem()?.name }}</span>
+
+    @if (selectedItems().length) {
+      @if (!multiple()) {
+        <!-- Single Selection -->
+        <span class="truncate">{{ selectedItems()[0].name }}</span>
+      } @else {
+        <!-- Multiple Selection -->
+        <div class="flex flex-wrap gap-2 items-center max-w-full">
+          @for (item of selectedItems().slice(0, 6); track item.id) {
+            <span
+              [ngClass]="showItemsClass()"
+              class="flex gap-1.5 justify-center items-center text-gray-900 dark:text-gray-100 px-2.5 py-1.5 rounded-full text-sm max-w-[140px]">
+              <span class="truncate">{{ item.name }}</span>
+              <button
+                type="button"
+                [attr.aria-label]="'Remove ' + item.name"
+                class="text-gray-950 hover:text-gray-600 dark:text-gray-50 dark:hover:text-gray-300"
+                (click)="selectItem([item]); $event.stopPropagation()">
+                <i class="fas fa-times text-xs"></i>
+              </button>
+            </span>
+          }
+
+          @if (selectedItems().length > 6) {
+            <!-- +More Indicator -->
+            <span class="text-gray-500 text-sm">
+              +{{ selectedItems().length - 6 }} more
+            </span>
+          }
+        </div>
+      }
     } @else {
-      <span class="">{{ placeholder() }}</span>
+      <!-- Placeholder -->
+      <span>{{ placeholder() }}</span>
     }
-    @if(!this.disabledOrReadonly()) {
-      <i class="fas ml-2 " 
-        [class.fa-chevron-down]="!isOpen()" 
-        [class.fa-chevron-up]="isOpen()"></i>
-    }
-  </div>
 
-  <!-- Dropdown Menu -->
+    @if (!disabledOrReadonly()) {
+      <!-- Dropdown Toggle Icon -->
+      <i class="fas ml-2"
+         [class.fa-chevron-down]="!isOpen()"
+         [class.fa-chevron-up]="isOpen()"></i>
+    }
+  </button>
+
+  <!-- ========================= Dropdown Menu ========================= -->
   @if (isOpen()) {
-    <div class="absolute z-[300] w-full mt-1 rounded-lg shadow-lg dark:shadow-gray-400/30 overflow-hidden
-                bg-white border border-gray-300
-                dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
+    <div
+      id="{{ id() + '-options' }}"
+      role="listbox"
+      [attr.aria-multiselectable]="multiple() ? 'true' : null"
+      class="absolute z-[300] w-full mt-1 rounded-lg shadow-lg dark:shadow-gray-400/30 overflow-hidden bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
 
-      <!-- Search Input -->
       @if (showSearch()) {
+        <!-- Search Input -->
         <div class="relative p-2 border-b border-gray-200 dark:border-gray-700">
-
           <ZS-input
-            [name]="'ZS-select-[' + id + ']'"
+            role="searchbox"
+            aria-label="Search options"
+            [name]="'ZS-select-[' + id() + ']'"
             type="search"
             [placeholder]="searchPlaceholder()"
             [value]="searchQuery()"
@@ -49,8 +87,7 @@
             [autofocus]="true"
             [inputStyle]="inputStyle()"
             [searchDebounceDelay]="searchDebounceDelay()"
-            [showLoaderIconOnSerachInput]="showLoaderIconOnSerachInput()"
-          >
+            [showLoaderIconOnSearchInput]="showLoaderIconOnSearchInput()">
           </ZS-input>
         </div>
       }
@@ -58,36 +95,37 @@
       <!-- Options List -->
       <div class="max-h-60 overflow-y-auto">
         @for (item of filteredItems(); track trackByFn($index, item)) {
-          <div 
-            class="px-4 py-2 cursor-pointer flex items-center justify-between transition-colors
-                   hover:bg-gray-200 dark:hover:bg-gray-600
-                   text-gray-900 dark:text-gray-100"
-            [ngClass]="getBgSelectClasses(selectedItem()?.id === item.id)"
-            (click)="selectItem(item); $event.stopPropagation()">
+          <div
+            role="option"
+            [attr.aria-selected]="inSelectItems(item)"
+            class="px-4 py-2 cursor-pointer flex items-center justify-between transition-colors text-gray-900 dark:text-gray-100"
+            [ngClass]="getBgSelectClasses(inSelectItems(item))"
+            (click)="selectItem([item]); $event.stopPropagation()">
             <span class="truncate">{{ item.name }}</span>
-            @if (selectedItem()?.id === item.id) {
-              <i class="fas fa-check text-blue-600 dark:text-blue-400 ml-2"></i>
+            @if (inSelectItems(item)) {
+              <i class="fas fa-check text-gray-950 dark:text-gray-50 ml-2"></i>
             }
           </div>
         }
 
         @if (filteredItems().length === 0) {
+          <!-- No Results Message -->
           <div class="px-4 py-3 text-center text-gray-500 dark:text-gray-400">
             {{ noResultsText() }}
           </div>
         }
       </div>
-
     </div>
   }
 
-  <!-- Clear Selection Button -->
-  @if (selectedItem() && showClearButton() && !this.disabledOrReadonly()) {
-    <button 
+  <!-- ========================= Clear Selection Button ========================= -->
+  @if (selectedItems().length && showClearButton() && !disabledOrReadonly()) {
+    <button
+      type="button"
+      aria-label="Clear all selections"
       [class]="clearClass()"
       (click)="clearSelection()">
       <i class="fas fa-times mr-1"></i> Clear selection
     </button>
   }
-
 </div>

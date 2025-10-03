@@ -10,7 +10,7 @@
         [itemsNumber]="categoryService.categories().length"
         [maxItemsPerBox]="4"
         [itemMinWidth]="256"
-        [autoPlay]="false"
+        [autoPlay]="true"
         [duration]="3500"
         [arrows]="true"
         arrowColorClass="text-blue-700"
@@ -46,8 +46,8 @@
       <ZS-select
         label="Category"
         [items]="categoryService.categories()"
-        [selectItemIdfromParent]="filters.category()"
-        (selectedItemChange)="filters.category.set($event?.id)"
+        [preselectedIds]="[filters.category()]"
+        (selectedItemsChange)="filters.category.set($event.length ? $event[0].id : '')"
         placeholder="Select a category..."
         [inputStyle]="'teal'"
         [searchDebounceDelay]="1"
@@ -60,7 +60,7 @@
       <ZS-select
         label="Brand"
         [items]="brandService.brands()"
-        (selectedItemChange)="filters.brand.set($event?.id)"
+        (selectedItemsChange)="filters.brand.set($event.length ? $event[0].id : null)"
         placeholder="Select a brand..."
         [inputStyle]="'teal'"
         [searchDebounceDelay]="1"
@@ -94,7 +94,7 @@
       <ZS-select
         label="Stock"
         [items]="stockFilters"
-        (selectedItemChange)="filters.stock.set($event?.id)"
+        (selectedItemsChange)="filters.stock.set($event.length ? $event[0].id : null)"
         [inputStyle]="'teal'"
         [showSearch]="false">
       </ZS-select>
@@ -105,7 +105,7 @@
       <ZS-select
         label="Order By"
         [items]="orderingFilters"
-        (selectedItemChange)="filters.ordering.set($event?.id)"
+        (selectedItemsChange)="filters.ordering.set($event.length ? $event[0].id : null)"
         [inputStyle]="'teal'"
         [showSearch]="false">
       </ZS-select>

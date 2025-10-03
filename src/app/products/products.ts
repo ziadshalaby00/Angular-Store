@@ -24,12 +24,12 @@ export class Products {
   configService = inject(Config);
 
   filters = {
-    category: signal<any>(''),
-    brand: signal<any>(''),
-    min_price: signal<any>(''),
-    max_price: signal<any>(''),
-    stock: signal<any>(''),
-    ordering: signal<any>(''),
+    category: signal<number | string>(''),
+    brand: signal<number | string | null>(null),
+    min_price: signal<string>('10'),
+    max_price: signal<string>('1000'),
+    stock: signal<string | number | null>(null),
+    ordering: signal<string | number | null>(null),
     page: signal<number>(1)
   };
 

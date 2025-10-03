@@ -1,23 +1,20 @@
 <!-- date.html -->
 <div class="w-full">
   <!-- Label and Hint -->
-  @if(label() || hint()) {
-    <div class="mb-1 flex items-center gap-2">
-      @if (label()) {
-        <span class="text-sm font-semibold truncate">
-          {{ label() }} @if (required()) { <span class="text-red-500">*</span> }
-        </span>
-      }
-      @if (hint()) {
-        <small class="text-xs text-slate-500 dark:text-slate-400">{{ hint() }}</small>
-      }
-    </div>
-  }
+  <ZS-label
+    [label]="label()"
+    [hint]="hint()"
+    [required]="required()"
+    [hintID]="id() + '-hint'"
+    [for]="id()"
+  >
+  </ZS-label>
 
   <div class="relative rounded-lg shadow-sm w-full px-4 py-2.5 pl-10 pr-4"
   [class]="inputClasses()"
   >
     <input
+      [name]="name()"
       [id]="id()"
       [type]="inputType()"
       [value]="value() ?? ''"
