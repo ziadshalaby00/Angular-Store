@@ -122,7 +122,7 @@ export class Zselect {
     return [
       base,
       styleEntry.border,
-      styleEntry.bg,
+      styleEntry.inputBg,
       styleEntry.text,
       styleEntry.borderHover,
       disabledCls,

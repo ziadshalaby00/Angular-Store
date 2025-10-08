@@ -20,7 +20,9 @@ export class Navbar {
 
   authButtons:AuthButtonsType = {
     showAuthButtons: true,
-    signupBtnColorClass: 'text-white bg-teal-600 hover:bg-teal-700'
+    signup: {
+      btnStyle: 'teal'
+    }
   }
 
   logoUrl: string = 'https://i.postimg.cc/rsCB0PfM/android-chrome-512x512.png';

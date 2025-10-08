@@ -16,7 +16,15 @@ import { Zlabel } from '../zlabel/zlabel';
 // Types
 // ==============================================================================
 
-export type InputType =
+export type DateType =   
+  | 'date' 
+  | 'datetime-local' 
+  | 'month' 
+  | 'week' 
+  | 'time';
+
+export type InputType = 
+  | DateType 
   | 'text'
   | 'email'
   | 'password'
@@ -70,6 +78,18 @@ const SIZE_CLASSES_MAP = new Map<SizeClassesType, Record<FormSize, string>>([
   ],
 ]);
 
+const DATE_ICON_MAP: Record<DateType, string> = {
+  date: 'fas fa-calendar',
+  'datetime-local': 'fas fa-calendar',
+  month: 'fas fa-calendar-days',
+  week: 'fas fa-calendar-week',
+  time: 'fas fa-clock',
+};
+
+const ICONS = {
+  spinner: 'fas fa-spinner fa-spin',
+};
+
 const PHONE_REGEX = /^\+?[0-9\s\-()]{7,20}$/; // Accepts 7–20 digits with optional +, spaces, hyphens, or parentheses
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -109,9 +129,10 @@ export class Zinput {
   readonly maxlength = input<number | null>(null);
   readonly minlength = input<number | null>(null);
   readonly spellcheck = input<boolean>(false);
+
+  readonly min = input<string | number | null>(null);
+  readonly max = input<string | number | null>(null);
   readonly step = input<number | null>(null);
-  readonly min = input<number | null>(null);
-  readonly max = input<number | null>(null);
 
   readonly validateFn = input<ValidatorFn>(() => []);
   readonly formatFn = input<FormatterFn>((val) => val?.trim() ?? null);
@@ -175,7 +196,7 @@ export class Zinput {
       baseClasses,
       styleConfig.border,
       styleConfig.borderHover,
-      styleConfig.bg,
+      styleConfig.inputBg,
       styleConfig.text,
       styleConfig.ring,
       disabledClass,
@@ -183,6 +204,17 @@ export class Zinput {
     ]
       .filter(Boolean)
       .join(' ');
+  });
+
+  // Computed date icon
+  readonly isDate = computed<boolean>(() => {
+    const dateTypes: DateType[] = ['date', 'datetime-local', 'month', 'week', 'time'];
+    return dateTypes.includes(this.type() as DateType);
+  });
+  
+  readonly dateIcon = computed(() => {
+    if (this.icon()) return '';
+    return DATE_ICON_MAP[this.type() as DateType] || 'fas fa-calendar';
   });
 
   readonly showClear = computed(() => this.type() !== 'password' && !!this.value());
@@ -227,12 +259,27 @@ export class Zinput {
       if (Number.isNaN(num)) {
         errors.push('Please enter a valid number');
       } else {
-        if (min !== null && num < min) {
+        if (min !== null && num < Number(min)) {
           errors.push(`The value must be at least ${min}`);
         }
-        if (max !== null && num > max) {
+        if (max !== null && num > Number(max)) {
           errors.push(`The value must be at most ${max}`);
         }
+      }
+    }
+
+    // Date/Time Range Validation
+    if (this.isDate() && val) {
+      const valueTime = new Date(val).getTime();
+
+      const minDate = min ? new Date(min as string).getTime() : null;
+      const maxDate = max ? new Date(max as string).getTime() : null;
+
+      if (minDate !== null && valueTime < minDate) {
+        errors.push(`The date must be on or after ${min}`);
+      }
+      if (maxDate !== null && valueTime > maxDate) {
+        errors.push(`The date must be on or before ${max}`);
       }
     }
 
@@ -256,6 +303,11 @@ export class Zinput {
 
     return errors.length > 0 ? errors : null;
   });
+
+  readonly supportsMinMaxStep = computed<boolean>(() => {
+    const t = this.type();
+    return this.isDate() || ['number'].includes(t);
+  })
 
   // ==============================================================================
   // Getters
@@ -295,7 +347,7 @@ export class Zinput {
     // Handle search input with debounce and loader
     if (this.type() === 'search') {
       if (this.showLoaderIconOnSearchInput()) {
-        this.loaderIconOnSearchInput.set('fas fa-spinner fa-spin');
+        this.loaderIconOnSearchInput.set(ICONS.spinner);
       }
 
       if (this.searchDebounceTimer) {

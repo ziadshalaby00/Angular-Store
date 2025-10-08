@@ -21,12 +21,13 @@
   >
 
     <!-- ========================= Left Icon ========================= -->
-    @if (icon() || loaderIconOnSearchInput()) {
+    @if (icon() || loaderIconOnSearchInput() || isDate()) {
       <i
         [ngClass]="(
           loaderIconOnSearchInput()
             ? loaderIconOnSearchInput()
-            : icon()
+            : 
+            icon() ? icon() : dateIcon()
         ) + ' ' + getSize('leftIcon')"
         aria-hidden="true"
       ></i>
@@ -37,13 +38,13 @@
       #inputEl
       [id]="id()"
       [name]="name()"
-      [attr.type]="actualType"
+      [type]="actualType"
       [attr.placeholder]="placeholder()"
       [value]="value()"
       [disabled]="disabled() ? true : null"
-      [attr.min]="type() === 'number' ? min() : null"
-      [attr.max]="type() === 'number' ? max() : null"
-      [attr.step]="type() === 'number' ? step() : null"
+      [attr.min]="supportsMinMaxStep() ? min() : null"
+      [attr.max]="supportsMinMaxStep() ? max() : null"
+      [attr.step]="supportsMinMaxStep() ? step() : null"
       [attr.required]="required() ? true : null"
       (input)="onInput($event)"
       (keydown.enter)="onEnter()"

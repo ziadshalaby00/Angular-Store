@@ -65,11 +65,13 @@
         [inputStyle]="'teal'"
       ></ZS-input>
     
-      <button
-        (click)="submit()"
-        class="w-full mt-4 bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-lg transition-colors disabled:opacity-50"
+      <ZS-button
+      size="lg"
+      btnStyle="teal"
+      (clicked)="submit()"
+      [type]="'submit'"
       >
         Sign Up
-      </button>
+      </ZS-button>
     </div>
 <!-- </div> -->

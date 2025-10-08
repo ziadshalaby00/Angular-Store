@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, input, output, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ZnavItem, NavbarItem } from '../NavItemFolder/znav-item/znav-item';
+import { ButtonVariant, Zbutton } from '../FormFolder/zbutton/zbutton';
+import { FormSize, FormStyle } from '../FormFolder/zformService/zform-service';
 
 // ==============================================
 // Interfaces & Types
@@ -26,8 +28,18 @@ export interface SiteNameConfigType {
 
 export interface AuthButtonsType {
   showAuthButtons: boolean;
-  loginBtnColorClass?: string;
-  signupBtnColorClass?: string;
+  login?: {
+    btnStyle?: FormStyle,
+    variant?: ButtonVariant,
+    size?: FormSize,
+    icon?: string | null
+  }
+  signup?: {
+    btnStyle?: FormStyle,
+    variant?: ButtonVariant,
+    size?: FormSize,
+    icon?: string | null
+  }
 }
 
 // ==============================================
@@ -36,7 +48,7 @@ export interface AuthButtonsType {
 
 @Component({
   selector: 'ZS-navbar',
-  imports: [RouterModule, CommonModule, ZnavItem],
+  imports: [RouterModule, CommonModule, ZnavItem, Zbutton],
   templateUrl: './znavbar.html',
   styleUrl: './znavbar.css'
 })

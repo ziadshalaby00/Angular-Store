@@ -1,0 +1,18 @@
+<!-- ========================= Button Core Attributes ========================= -->
+<button class="w-full"
+  [attr.type]="type()"
+  [disabled]="disabled()"
+  [class]="baseClasses()"
+
+  [attr.aria-disabled]="disabled()"
+  [attr.aria-label]="icon() ? (icon() + ' button') : undefined"
+  [attr.tabindex]="disabled() ? -1 : 0"
+
+  (click)="onClick($event)"
+>
+  <!-- ========================= Button Content ========================= -->
+  @if (icon()) {
+    <i class="{{ icon() }} mr-2" aria-hidden="true"></i>
+  }
+  <ng-content></ng-content>
+</button>

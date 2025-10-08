@@ -1,45 +1,17 @@
 <!-- Test Component -->
 <div class="min-h-[90vh] p-6 flex items-center justify-evenly">
-    <!-- <div class="flex items-center w-60 justify-center flex-col gap-4">
+    <div class="flex items-center w-60 justify-center flex-col gap-4">
         @for(item of inputStyls; track item) {
-            <ZS-input
-            [required]="true"
-            type="number"
-            name="test"
-            [label]="item"
-            [inputStyle]="item"
-            [validateFn]="validateFn"
-            (valueChange)="valueChange($event)"
-            [icon]="'fa fa-user'"
-            >
-            </ZS-input>
-        }
-    </div> -->
-
-    <div class="flex items-center justify-center mb-46 flex-col gap-4">
-        @for(item of inputStyls; track item) {
-            <ZS-select
-            [multiple]="true"
-            [label]="item"
-            [items]="brandService.brands()"
-            (selectedItemsChange)="onSelect($event)"
-            placeholder="Select a category..."
-            [inputStyle]="item"
-            searchPlaceholder="Search...">
-            </ZS-select>
+           <ZS-button size="lg" [btnStyle]="item" variant="solid" (clicked)="save()">
+            {{ item }}
+            </ZS-button>
         }
     </div>
-
-    <!-- <div class="flex items-center justify-center flex-col gap-4">
+    <div class="flex items-center w-60 justify-center flex-col gap-4">
         @for(item of inputStyls; track item) {
-            <ZS-date
-                hint="request"
-                [required]="true"
-                [label]="item"
-                type="date"
-                (valueChange)="onDateChange($event)"
-                [inputStyle]="item"
-            ></ZS-date>
+           <ZS-button size="lg" [btnStyle]="item" variant="outline" (clicked)="save()">
+            {{ item }}
+            </ZS-button>
         }
-    </div> -->
+    </div>
 </div>

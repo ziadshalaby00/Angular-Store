@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Zdate } from './zdate';
+import { Zbutton } from './zbutton';
 
-describe('Zdate', () => {
-  let component: Zdate;
-  let fixture: ComponentFixture<Zdate>;
+describe('Zbutton', () => {
+  let component: Zbutton;
+  let fixture: ComponentFixture<Zbutton>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Zdate]
+      imports: [Zbutton]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Zdate);
+    fixture = TestBed.createComponent(Zbutton);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

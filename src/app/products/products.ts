@@ -10,10 +10,11 @@ import { Zpagination } from '../ziadshalaby/ngx-zs-component/zpagination/zpagina
 import { Zselect } from '../ziadshalaby/ngx-zs-component/FormFolder/zselect/zselect';
 import { Zspinner } from '../ziadshalaby/ngx-zs-component/zspinner/zspinner';
 import { Zinput } from '../ziadshalaby/ngx-zs-component/FormFolder/zinput/zinput';
+import { Zbutton } from '../ziadshalaby/ngx-zs-component/FormFolder/zbutton/zbutton';
 
 @Component({
   selector: 'app-products',
-  imports: [FormsModule, CommonModule, Zselect, Zpagination, Zcarousel, Zspinner, Zinput],
+  imports: [FormsModule, CommonModule, Zselect, Zpagination, Zcarousel, Zspinner, Zinput, Zbutton],
   templateUrl: './products.html',
   styleUrl: './products.css'
 })

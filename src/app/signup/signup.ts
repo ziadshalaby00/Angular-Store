@@ -1,9 +1,10 @@
 import { Component, computed, signal } from '@angular/core';
 import { Zinput } from '../ziadshalaby/ngx-zs-component/FormFolder/zinput/zinput';
+import { Zbutton } from '../ziadshalaby/ngx-zs-component/FormFolder/zbutton/zbutton';
 
 @Component({
   selector: 'app-signup',
-  imports: [Zinput],
+  imports: [Zinput, Zbutton],
   templateUrl: './signup.html',
   styleUrl: './signup.css'
 })
