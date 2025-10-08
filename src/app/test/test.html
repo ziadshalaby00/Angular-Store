@@ -1,17 +1,15 @@
 <!-- Test Component -->
 <div class="min-h-[90vh] p-6 flex items-center justify-evenly">
-    <div class="flex items-center w-60 justify-center flex-col gap-4">
+    <div class="flex items-center justify-start flex-col gap-4">
         @for(item of inputStyls; track item) {
-           <ZS-button size="lg" [btnStyle]="item" variant="solid" (clicked)="save()">
-            {{ item }}
-            </ZS-button>
-        }
-    </div>
-    <div class="flex items-center w-60 justify-center flex-col gap-4">
-        @for(item of inputStyls; track item) {
-           <ZS-button size="lg" [btnStyle]="item" variant="outline" (clicked)="save()">
-            {{ item }}
-            </ZS-button>
+            <div class="flex gap-3 w-80 items-center justify-start">
+                <ZS-input [inputStyle]="item">
+                    {{ item }}
+                </ZS-input>
+                <ZS-button [btnStyle]="item" variant="solid" (clicked)="save()">
+                    {{ item }}
+                </ZS-button>
+            </div>
         }
     </div>
 </div>

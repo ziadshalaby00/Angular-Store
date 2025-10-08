@@ -45,7 +45,7 @@ export class ZthemeToggle {
   // Outputs
   // ==============================================
 
-  readonly themeChange = output<themeTypes>();
+  readonly themeChangeEv = output<themeTypes>();
 
 
   // ==============================================
@@ -91,7 +91,7 @@ export class ZthemeToggle {
   setTheme(theme: themeTypes): void {
     this.currentTheme.set(theme);
     this.isOpen.set(false);
-    this.themeChange.emit(theme);
+    this.themeChangeEv.emit(theme);
   }
 
 

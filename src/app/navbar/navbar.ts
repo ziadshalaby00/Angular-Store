@@ -83,19 +83,11 @@ export class Navbar {
   ];
 
   onLogin() {
-    console.log('Login clicked');
-    this.isLoggedIn.set(true);
-
-    this.alertService.addAlert({
-      message: 'Logged in successfully',
-      type: 'success',
-      autoClose: false
-    })
+    this.router.navigate(['/login'])
   }
 
   onSignup() {
     this.router.navigate(['/signup'])
-    console.log('Signup clicked');
   }
 
   onSearch(query: string) {

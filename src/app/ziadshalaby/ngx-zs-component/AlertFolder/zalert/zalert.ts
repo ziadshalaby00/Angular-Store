@@ -149,9 +149,15 @@ export class Zalert {
 
   constructor() {
     effect(() => {
-      const lastAlert = this.alerts().at(-1);
-      if (lastAlert && !this.oldAlerts().has(lastAlert.id)) {
-        this.registerAlert(lastAlert);
+      const alerts = this.alerts();
+      const oldIds = this.oldAlerts();
+
+      // استخرج التنبيهات الجديدة فقط
+      const newOnes = alerts.filter(a => !oldIds.has(a.id));
+
+      // سجّل كل تنبيه جديد
+      for (const alert of newOnes) {
+        this.registerAlert(alert);
       }
     });
   }

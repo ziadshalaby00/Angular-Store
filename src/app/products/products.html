@@ -226,7 +226,7 @@
     [totalItems]="productService.totalItems()"
     [totalPages]="productService.totalPages()"
     [currentPage]="productService.currentPage()"
-    (pageChange)="filters.page.set($event)">
+    (pageChangeEv)="filters.page.set($event)">
   </ZS-pagination>
 
 </div>

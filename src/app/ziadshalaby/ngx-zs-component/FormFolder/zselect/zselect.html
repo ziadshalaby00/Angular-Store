@@ -82,7 +82,7 @@
             type="search"
             [placeholder]="searchPlaceholder()"
             [value]="searchQuery()"
-            (search)="searchQuery.set($event)"
+            (searchEv)="searchQuery.set($event)"
             (click)="$event.stopPropagation()"
             [autofocus]="true"
             [inputStyle]="inputStyle()"

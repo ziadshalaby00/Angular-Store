@@ -46,7 +46,7 @@ export class ZnavItem {
 
   readonly item = input.required<NavbarItem>();
   readonly collectionName = input.required<string>();
-  readonly anyItemClicked = output<NavbarItem>();
+  readonly anyItemClickedEv = output<NavbarItem>();
 
   // ==============================================
   // Signals & Computed Properties
@@ -88,7 +88,7 @@ export class ZnavItem {
 
   onItemClick(): void {
     this.item().action?.();
-    this.anyItemClicked.emit(this.item());
+    this.anyItemClickedEv.emit(this.item());
   }
 
   // ==============================================

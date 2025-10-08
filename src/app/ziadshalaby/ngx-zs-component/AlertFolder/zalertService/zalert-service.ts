@@ -26,13 +26,15 @@ export class ZalertService {
   // Public Methods
   // ==============================================
 
-  addAlert(newAlert: NewAlert): void {
-    const alert: Alert = {
-      ...newAlert,
-      id: crypto.randomUUID()
-    };
+  addAlert(newAlert: NewAlert | NewAlert[]): void {
+    const alertsToAdd = Array.isArray(newAlert) ? newAlert : [newAlert];
 
-    this.alerts.update((alerts: Alert[]) => [...alerts, alert]);
+    const newAlerts: Alert[] = alertsToAdd.map((a: NewAlert) => ({
+      ...a,
+      id: crypto.randomUUID(),
+    }));
+
+    this.alerts.update((alerts: Alert[]) => [...alerts, ...newAlerts]);
   }
 
   onAlertClosed(id: string | number): void {

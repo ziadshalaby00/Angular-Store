@@ -49,7 +49,7 @@ export class Zcarousel {
   // Outputs
   // ==============================================
 
-  readonly indexChange = output<number>();
+  readonly indexChangeEv = output<number>();
 
   // ==============================================
   // Model
@@ -137,7 +137,7 @@ export class Zcarousel {
     if (!containerEl) return;
 
     this.currentIndex.set(newIndex);
-    this.indexChange.emit(newIndex);
+    this.indexChangeEv.emit(newIndex);
 
     const containerWidth = containerEl.nativeElement.offsetWidth;
     const newTranslate = -newIndex * containerWidth;

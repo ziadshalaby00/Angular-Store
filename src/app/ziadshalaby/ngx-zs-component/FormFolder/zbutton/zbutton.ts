@@ -47,7 +47,7 @@ export class Zbutton {
   // Outputs
   // ==============================================
 
-  readonly clicked = output<Event>();
+  readonly clickedEv = output<Event>();
 
 
   // ==============================================
@@ -126,7 +126,7 @@ export class Zbutton {
 
   onClick(event: Event): void {
     if (!this.disabled()) {
-      this.clicked.emit(event);
+      this.clickedEv.emit(event);
     }
   }
 }

@@ -39,6 +39,10 @@ export type FormatterFn = (value: string | null) => string | null;
 
 type SizeClassesType = 'container' | 'field' | 'leftIcon' | 'rightIcon';
 
+export interface ChangeEventType {
+  value: string | null;
+  valid: boolean;
+}
 // ==============================================================================
 // Constants & Regex
 // ==============================================================================
@@ -152,24 +156,24 @@ export class Zinput {
   // ==============================================================================
 
   readonly value = model<string | null>(null);
+  readonly touched = model<boolean>(false); // Tracks if the user has interacted with the input
 
   // ==============================================================================
   // Outputs
   // ==============================================================================
 
-  readonly enter = output<void>();
-  readonly focus = output<void>();
-  readonly blur = output<void>();
-  readonly change = output<string | null>();
-  readonly search = output<string | null>();
-  readonly cleared = output<void>();
-  readonly keydown = output<KeyboardEvent>();
+  readonly enterEv = output<void>();
+  readonly focusEv = output<void>();
+  readonly blurEv = output<void>();
+  readonly changedEv = output<ChangeEventType>();
+  readonly searchEv = output<string | null>();
+  readonly clearedEv = output<void>();
+  readonly keydownEv = output<KeyboardEvent>();
 
   // ==============================================================================
   // Internal State (Signals)
   // ==============================================================================
 
-  private readonly touched = signal<boolean>(false); // Tracks if the user has interacted with the input
   readonly showPassword = signal<boolean>(false);
   private searchDebounceTimer?: ReturnType<typeof setTimeout>;
   readonly loaderIconOnSearchInput = signal<string | null>(null); // Fixed typo: "Serach" → "Search"
@@ -355,7 +359,7 @@ export class Zinput {
       }
 
       this.searchDebounceTimer = setTimeout(() => {
-        this.search.emit(this.value());
+        this.searchEv.emit(this.value());
         this.loaderIconOnSearchInput.set(null);
       }, this.searchDebounceDelay());
     }
@@ -363,36 +367,44 @@ export class Zinput {
 
   onEnter(): void {
     if (this.disabledOrReadonly()) return;
-    this.enter.emit();
+    this.enterEv.emit();
   }
 
   onFocus(): void {
-    this.focus.emit();
+    this.focusEv.emit();
   }
 
   onBlur(): void {
     if (this.disabledOrReadonly()) return;
     this.touched.set(true);
     this.value.set(this.formatFn()(this.value()));
-    this.blur.emit();
+    this.blurEv.emit();
   }
 
   onChange(): void {
     if (this.disabledOrReadonly()) return;
-    this.change.emit(this.value());
+    this.touched.set(true);
+
+    const valid = this.error() === null;
+    const value = this.value();
+    this.changedEv.emit({ value , valid });
   }
 
   onSearch(): void {
     if (this.disabledOrReadonly()) return;
-    this.search.emit(this.value());
+    this.searchEv.emit(this.value());
   }
 
   clear(): void {
     if (this.disabledOrReadonly()) return;
     this.value.set(null);
-    this.change.emit(null);
-    this.search.emit(null);
-    this.cleared.emit();
+
+    const valid = this.error() === null;
+    const value = null;
+    this.changedEv.emit({ value, valid });
+
+    this.searchEv.emit(null);
+    this.clearedEv.emit();
   }
 
   togglePassword(): void {
@@ -402,6 +414,6 @@ export class Zinput {
 
   onKeydown(event: KeyboardEvent): void {
     if (this.disabledOrReadonly()) return;
-    this.keydown.emit(event);
+    this.keydownEv.emit(event);
   }
 }

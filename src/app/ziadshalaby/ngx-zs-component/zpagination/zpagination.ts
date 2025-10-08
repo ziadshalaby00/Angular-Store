@@ -55,7 +55,7 @@ export class Zpagination {
   /**
    * Emits the new page number when the user navigates.
    */
-  readonly pageChange = output<number>();
+  readonly pageChangeEv = output<number>();
 
 
   // ========================================================================
@@ -79,7 +79,7 @@ export class Zpagination {
    */
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages()) return;
-    this.pageChange.emit(page);
+    this.pageChangeEv.emit(page);
   }
 
   /**

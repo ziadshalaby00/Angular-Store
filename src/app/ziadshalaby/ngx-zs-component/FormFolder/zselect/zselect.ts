@@ -77,7 +77,7 @@ export class Zselect {
   // =================================================================================================
   // Outputs
   // =================================================================================================
-  readonly selectionCleared = output<void>();
+  readonly selectionClearedEv = output<void>();
 
 
   // =================================================================================================
@@ -210,7 +210,7 @@ export class Zselect {
     if (this.disabledOrReadonly()) return;
 
     this.selectedItems.set([]);
-    this.selectionCleared.emit();
+    this.selectionClearedEv.emit();
   }
 
   inSelectItems(item?: DropdownItem): boolean {

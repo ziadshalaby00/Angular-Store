@@ -7,7 +7,7 @@ import { ZalertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/zaler
   providedIn: 'root'
 })
 export class Category {
-  zalertService = inject(ZalertService)
+  zalertService: ZalertService = inject(ZalertService)
 
   private http = inject(HttpClient);
   private config = inject(Config);

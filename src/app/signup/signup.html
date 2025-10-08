@@ -1,77 +1,114 @@
 <!-- signup.component.html -->
-<!-- <div class="min-h-[85vh] flex items-center justify-center"> -->
-    <div class="flex flex-col mt-18 gap-6 max-w-md mx-auto 
+<div class="min-h-[90vh] flex justify-center items-center m-4">
+  <form (submit)="submit($event)" novalidate 
+    class="flex flex-col gap-4 w-full max-w-md
     border border-teal-300 dark:border-teal-600 hover:border-teal-400 dark:hover:border-teal-500
     p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
       <h2 class="text-2xl text-center font-bold mb-4 text-teal-800 dark:text-teal-300">Sign Up</h2>
-    
+
       <ZS-input
-        [name]="'fullname'"
         [label]="'Full Name'"
         [placeholder]="'Enter your full name'"
-        [icon]="faUserClass"
-        [value]="fullname()"
+        icon="fas fa-user"
+
+        [value]="fields.fullname()"
+        (changedEv)="changeValues($event, 'fullname')"
+        [touched]="markAllTouched()"
+
         [type]="'text'"
-        (change)="fullname.set($event)"
         [required]="true"
         [inputStyle]="'teal'"
       ></ZS-input>
     
       <ZS-input
-        [name]="'username'"
         [label]="'Username'"
         [placeholder]="'Enter your username'"
-        [icon]="faUserClass"
-        [value]="username()"
+        icon="fas fa-user"
+
+        [value]="fields.username()"
+        (changedEv)="changeValues($event, 'username')"
+        [touched]="markAllTouched()"
+
         [type]="'text'"
-        (change)="username.set($event)"
         [required]="true"
         [inputStyle]="'teal'"
       ></ZS-input>
     
       <ZS-input
-        [name]="'email'"
         [label]="'Email'"
         [placeholder]="'Enter your email'"
-        [icon]="faEnvelopeClass"
-        [value]="email()"
+        icon="fas fa-envelope"
+
+        [value]="fields.email()"
+        (changedEv)="changeValues($event, 'email')"
+        [touched]="markAllTouched()"
+
         [type]="'email'"
-        (change)="email.set($event)"
         [required]="true"
         [inputStyle]="'teal'"
       ></ZS-input>
     
       <ZS-input
-        [name]="'pass'"
         [label]="'Password'"
         [placeholder]="'Enter password'"
-        [icon]="faLockClass"
-        [value]="password()"
+        icon="fas fa-lock"
+
+        [value]="fields.password()"
+        (changedEv)="changeValues($event, 'password')"
+        [touched]="markAllTouched()"
+
         [type]="'password'"
-        (change)="password.set($event)"
         [required]="true"
         [inputStyle]="'teal'"
       ></ZS-input>
     
       <ZS-input
-        [name]="'confpass'"
         [label]="'Confirm Password'"
         [placeholder]="'Confirm password'"
-        [icon]="faLockClass"
-        [value]="confirmPassword()"
+        icon="fas fa-lock"
+
+        [value]="fields.confirmPassword()"
+        (changedEv)="changeValues($event, 'confirmPassword')"
+        [touched]="markAllTouched()"
+
+        [validateFn]="confPassValidate"
+
         [type]="'password'"
-        (change)="confirmPassword.set($event)"
         [required]="true"
         [inputStyle]="'teal'"
       ></ZS-input>
-    
-      <ZS-button
+  
+      <ZS-button class="mt-4"
       size="lg"
       btnStyle="teal"
-      (clicked)="submit()"
       [type]="'submit'"
+      [disabled]="this.authService.loading()"
+      [icon]="this.authService.loading() ? 'fa fa-spinner fa-spin' : ''"
       >
         Sign Up
       </ZS-button>
-    </div>
-<!-- </div> -->
+  
+      <ZS-button
+      size="lg"
+      btnStyle="primary"
+      (clicked)="google()"
+      [type]="'button'"
+      icon="fa-brands fa-google"
+      >
+        Sign Up With Google
+      </ZS-button>
+  
+      <div class="flex flex-wrap justify-center items-center gap-1.5">
+        <span class="text-gray-700 dark:text-gray-300 text-sm">
+          You already have an account?
+        </span>
+        <ZS-button
+        variant="outline"
+        size="sm"
+        (clickedEv)="router.navigate(['/login'])"
+        >
+        Login
+        </ZS-button>
+      </div>
+  </form>
+</div>

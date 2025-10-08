@@ -40,7 +40,7 @@
           <ZS-nav-item
             [item]="child"
             [collectionName]="collectionName() + '-' + index()"
-            (anyItemClicked)="anyItemClicked.emit($event)"
+            (anyItemClickedEv)="anyItemClickedEv.emit($event)"
             role="menuitem"
           ></ZS-nav-item>
         }

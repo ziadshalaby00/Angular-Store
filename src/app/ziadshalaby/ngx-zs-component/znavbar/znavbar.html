@@ -43,7 +43,7 @@
           <ZS-nav-item
             [item]="item"
             [collectionName]="'navItems'"
-            (anyItemClicked)="itemClicked($event)"
+            (anyItemClickedEv)="itemClicked($event)"
             role="menuitem"
           />
         }
@@ -70,7 +70,7 @@
                 <ZS-nav-item
                   [item]="item"
                   [collectionName]="'navItems'"
-                  (anyItemClicked)="itemClicked($event)"
+                  (anyItemClickedEv)="itemClicked($event)"
                   role="menuitem"
                 />
               }
@@ -151,7 +151,7 @@
                   <ZS-nav-item
                     [item]="item"
                     [collectionName]="'MenuItems'"
-                    (anyItemClicked)="itemClicked($event)"
+                    (anyItemClickedEv)="itemClicked($event)"
                     role="menuitem"
                   />
                 }
@@ -168,7 +168,7 @@
             [variant]="authButtons().login?.variant ?? 'outline'"
             [size]="authButtons().login?.size ?? 'md'"
             [icon]="authButtons().login?.icon  ?? ''"
-            (clicked)="onLogin()"
+            (clickedEv)="onLogin()"
             >
               Login
             </ZS-button>
@@ -178,7 +178,7 @@
             [variant]="authButtons().signup?.variant ?? 'solid'"
             [size]="authButtons().signup?.size ?? 'md'"
             [icon]="authButtons().signup?.icon  ?? ''"
-            (clicked)="onSignup()"
+            (clickedEv)="onSignup()"
             >
               Sign Up
             </ZS-button>
@@ -220,7 +220,7 @@
             <ZS-nav-item
               [item]="item"
               [collectionName]="'navItems'"
-              (anyItemClicked)="itemClicked($event)"
+              (anyItemClickedEv)="itemClicked($event)"
               role="menuitem"
             />
           }
@@ -268,7 +268,7 @@
             [variant]="authButtons().login?.variant ?? 'outline'"
             [size]="authButtons().login?.size ?? 'md'"
             [icon]="authButtons().login?.icon  ?? ''"
-            (clicked)="onLogin(); isMobileMenuOpen.set(false)"
+            (clickedEv)="onLogin(); isMobileMenuOpen.set(false)"
             >
               Login
             </ZS-button>
@@ -278,7 +278,7 @@
             [variant]="authButtons().signup?.variant ?? 'solid'"
             [size]="authButtons().signup?.size ?? 'md'"
             [icon]="authButtons().signup?.icon  ?? ''"
-            (clicked)="onSignup(); isMobileMenuOpen.set(false)"
+            (clickedEv)="onSignup(); isMobileMenuOpen.set(false)"
             >
               Sign Up
             </ZS-button>

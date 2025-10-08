@@ -80,9 +80,9 @@ export class Znavbar {
   // Outputs
   // ==============================================
 
-  readonly loginClicked = output<void>();
-  readonly signupClicked = output<void>();
-  readonly searchSubmitted = output<string>();
+  readonly loginClickedEv = output<void>();
+  readonly signupClickedEv = output<void>();
+  readonly searchSubmittedEv = output<string>();
 
   // ==============================================
   // Internal State (Signals)
@@ -134,15 +134,15 @@ export class Znavbar {
   // ==============================================
 
   onSearchSubmit(): void {
-    this.searchSubmitted.emit(this.searchValue());
+    this.searchSubmittedEv.emit(this.searchValue());
   }
 
   onLogin(): void {
-    this.loginClicked.emit();
+    this.loginClickedEv.emit();
   }
 
   onSignup(): void {
-    this.signupClicked.emit();
+    this.signupClickedEv.emit();
   }
 
   toggleMobileMenu(): void {

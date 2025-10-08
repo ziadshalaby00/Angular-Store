@@ -1,6 +1,8 @@
-import { Component, computed, signal } from '@angular/core';
-import { Zinput } from '../ziadshalaby/ngx-zs-component/FormFolder/zinput/zinput';
+import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
+import { Zinput, ChangeEventType, ValidatorFn } from '../ziadshalaby/ngx-zs-component/FormFolder/zinput/zinput';
 import { Zbutton } from '../ziadshalaby/ngx-zs-component/FormFolder/zbutton/zbutton';
+import { AuthService } from '../services/auth-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -9,45 +11,52 @@ import { Zbutton } from '../ziadshalaby/ngx-zs-component/FormFolder/zbutton/zbut
   styleUrl: './signup.css'
 })
 export class Signup {
-  readonly faUserClass = 'fas fa-user';        // أو أي كلاس أيقونة لديك
-  readonly faEnvelopeClass = 'fas fa-envelope';
-  readonly faLockClass = 'fas fa-lock';
-
+  authService: AuthService = inject(AuthService)
+  router: Router = inject(Router)
+  
   // Form fields signals
-  readonly fullname = signal<string | null>(null);
-  readonly username = signal<string | null>(null);
-  readonly email = signal<string | null>(null);
-  readonly password = signal<string | null>(null);
-  readonly confirmPassword = signal<string | null>(null);
+  readonly fields = {
+    fullname: signal<string | null>(null),
+    username: signal<string | null>(null),
+    email: signal<string | null>(null),
+    password: signal<string | null>(null),
+    confirmPassword: signal<string | null>(null)
+  }
 
-  readonly errors = signal<string[]>([]);
+  changeValues(event: ChangeEventType, input: keyof typeof this.fields) {
+    const field = this.fields[input]
+    field.set(event.valid ? event.value : null);
+  }
 
-  // Computed to check if form is valid
-  // readonly isFormValid = computed(() => {
-  //   const errs: string[] = [];
+  readonly markAllTouched = signal<boolean>(false)
+  
+  readonly allFieldsFilled = computed(() => {
+    return Object.values(this.fields).every(field => field() !== null);
+  });
 
-  //   if (!this.fullname()) errs.push('Full Name is required');
-  //   if (!this.username()) errs.push('Username is required');
-  //   if (!this.email()) errs.push('Email is required');
-  //   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email()!)) errs.push('Email is invalid');
-  //   if (!this.password()) errs.push('Password is required');
-  //   if (this.password() !== this.confirmPassword()) errs.push('Passwords do not match');
+  submit(event: SubmitEvent) {
+    event.preventDefault();
 
-  //   this.errors.set(errs);
-  //   return errs.length === 0;
-  // });
+    this.markAllTouched.set(true)
+    if(!this.allFieldsFilled()) return
 
-  submit() {
-    // if (this.isFormValid()) {
-      console.log('Form submitted', {
-        fullname: this.fullname(),
-        username: this.username(),
-        email: this.email(),
-        password: this.password(),
-      });
-      alert('Signup successful!');
-    // } else {
-      alert('Please fix the errors first');
-    // }
+    const body = {
+      fullname: this.fields.fullname() ?? '',
+      username: this.fields.username() ?? '',
+      email: this.fields.email() ?? '',
+      password: this.fields.password() ?? '',
+    }
+
+    this.authService.signup(body)
+  }
+
+  confPassValidate: ValidatorFn = (value: string | null) => {
+    if(this.fields.password() !== value)
+      return ['The passwords do not match.']
+    return []
+  }
+
+  google() {
+
   }
 }
