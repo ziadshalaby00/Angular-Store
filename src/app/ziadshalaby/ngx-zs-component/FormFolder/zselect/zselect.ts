@@ -42,7 +42,7 @@ export class Zselect {
   // =================================================================================================
   // Inputs
   // =================================================================================================
-  readonly id = input<string>(crypto.randomUUID());
+  readonly iId = input<string>(crypto.randomUUID());
   readonly items = input.required<DropdownItem[]>();
 
   readonly label = input<string | null>(null);

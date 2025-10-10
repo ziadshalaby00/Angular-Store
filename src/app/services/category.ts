@@ -22,13 +22,10 @@ export class Category {
 
     this.http.get(`${this.config.apiUrl}/api/products/get-categories/`).subscribe({
       next: (data: any) => {
-        console.log(data)
         this.categories.set(data);
         this.loading.set(false)
       },
       error: (err) => {
-        console.log(err)
-
         this.error.set('Failed to load categories');
         this.zalertService.addAlert({
           message: 'Failed to load categories',

@@ -15,8 +15,10 @@ import { FormSize, FormStyle } from '../FormFolder/zformService/zform-service';
 
 export interface UserProfile {
   name: string;
-  imageUrl?: string;
+  username?: string;
   email?: string;
+  imageUrl?: string;
+  [key: string]: any;
 }
 
 export type NavbarItemExport = Omit<NavbarItem, 'childrenOpenWindow'>;

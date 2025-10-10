@@ -143,17 +143,41 @@
             @if (isUserMenuOpen() && userMenuItems().length > 0) {
               <div
                 id="user-menu"
-                class="absolute right-0 mt-2.5 min-w-48 bg-white dark:bg-gray-800 rounded-md
-                       shadow-md-all shadow-md-all-night py-1 z-[900]"
+                class="absolute right-0 mt-2.5 min-w-56 bg-white dark:bg-gray-800 rounded-md
+                      shadow-md-all shadow-md-all-night pt-2 z-[900]"
                 role="menu"
               >
-                @for (item of getUserMenuItems(); track $index) {
-                  <ZS-nav-item
-                    [item]="item"
-                    [collectionName]="'MenuItems'"
-                    (anyItemClickedEv)="itemClicked($event)"
-                    role="menuitem"
-                  />
+                <!-- User Info Section -->
+                <div class="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+                  @if (userProfile()?.name) {
+                    <div class="font-semibold text-gray-900 dark:text-gray-100">
+                      {{ userProfile()?.name }}
+                    </div>
+                  }
+                  @if (userProfile()?.username) {
+                    <div class="text-sm text-gray-600 dark:text-gray-400">
+                      @{{ userProfile()?.username }}
+                    </div>
+                  }
+                  @if (userProfile()?.email) {
+                    <div class="text-sm text-gray-500 dark:text-gray-400">
+                      {{ userProfile()?.email }}
+                    </div>
+                  }
+                </div>
+
+                <!-- Menu Items -->
+                @if (userMenuItems().length > 0) {
+                  <div class="py-1">
+                    @for (item of getUserMenuItems(); track $index) {
+                      <ZS-nav-item
+                        [item]="item"
+                        [collectionName]="'MenuItems'"
+                        (anyItemClickedEv)="itemClicked($event)"
+                        role="menuitem"
+                      />
+                    }
+                  </div>
                 }
               </div>
             }

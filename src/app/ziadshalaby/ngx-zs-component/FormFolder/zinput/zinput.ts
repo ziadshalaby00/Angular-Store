@@ -112,8 +112,8 @@ export class Zinput {
   // Inputs
   // ==============================================================================
 
-  readonly id = input<string>(crypto.randomUUID());
-  readonly name = input<string | null>(null);
+  readonly iId = input<string>(crypto.randomUUID());
+  readonly iName = input<string | null>(null);
   readonly label = input<string | null>(null);
   readonly hint = input<string | null>(null);
   readonly placeholder = input<string | null>(null);

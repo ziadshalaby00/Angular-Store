@@ -4,19 +4,19 @@
     [label]="label()"
     [hint]="hint()"
     [required]="required()"
-    [hintID]="id() + '-hint'"
-    [for]="id() + '-trigger'">
+    [hintID]="iId() + '-hint'"
+    [for]="iId() + '-trigger'">
   </ZS-label>
 
   <!-- ========================= Trigger Button (Combobox) ========================= -->
   <button
-    id="{{ id() + '-trigger' }}"
+    id="{{ iId() + '-trigger' }}"
     type="button"
     role="combobox"
     aria-haspopup="listbox"
     [attr.aria-expanded]="isOpen()"
-    [attr.aria-controls]="id() + '-options'"
-    [attr.aria-describedby]="hint() ? id() + '-hint' : null"
+    [attr.aria-controls]="iId() + '-options'"
+    [attr.aria-describedby]="hint() ? iId() + '-hint' : null"
     [disabled]="disabledOrReadonly()"
     [class]="containerClasses()"
     (click)="toggleDropdown()">
@@ -67,7 +67,7 @@
   <!-- ========================= Dropdown Menu ========================= -->
   @if (isOpen()) {
     <div
-      id="{{ id() + '-options' }}"
+      id="{{ iId() + '-options' }}"
       role="listbox"
       [attr.aria-multiselectable]="multiple() ? 'true' : null"
       class="absolute z-[300] w-full mt-1 rounded-lg shadow-lg dark:shadow-gray-400/30 overflow-hidden bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
@@ -78,7 +78,7 @@
           <ZS-input
             role="searchbox"
             aria-label="Search options"
-            [name]="'ZS-select-[' + id() + ']'"
+            [iName]="'ZS-select-[' + iId() + ']'"
             type="search"
             [placeholder]="searchPlaceholder()"
             [value]="searchQuery()"

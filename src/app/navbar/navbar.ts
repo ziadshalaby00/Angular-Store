@@ -1,7 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ZalertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/zalertService/zalert-service';
 import { Znavbar, NavbarItemExport, UserProfile, SiteNameConfigType, AuthButtonsType } from '../ziadshalaby/ngx-zs-component/znavbar/znavbar';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth-service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,7 +13,8 @@ import { Router } from '@angular/router';
 export class Navbar {
   alertService: ZalertService = inject(ZalertService)
   private router: Router = inject(Router)
-
+  authService: AuthService = inject(AuthService)
+  
   siteNameConfig: SiteNameConfigType = {
     siteName: 'Ziadera',
     siteNameColorClass: 'text-gray-800 hover:text-gray-600 dark:text-gray-100 dark:hover:text-gray-300'
@@ -22,11 +24,13 @@ export class Navbar {
     showAuthButtons: true,
     signup: {
       btnStyle: 'teal'
+    },
+    login: {
+      btnStyle: 'dark'
     }
   }
 
   logoUrl: string = 'https://i.postimg.cc/rsCB0PfM/android-chrome-512x512.png';
-  isLoggedIn = signal<boolean>(false);
 
   navItems: NavbarItemExport[] = [
     { 
@@ -48,10 +52,14 @@ export class Navbar {
     },
   ];
 
-  userProfile: UserProfile = {
-    name: 'Ahmed Mohamed',
-    email: 'ahmed@example.com',
-  };
+  userProfile = computed<UserProfile | null>(() => {
+    const userData = this.authService.userData()
+    return userData ? {
+      name: userData.fullname,
+      email: userData.email,
+      username: userData.username
+    } : null
+  })
 
   userMenuItems: NavbarItemExport[] = [
     { label: 'Profile', routerLink: '/profile', iconClass: 'fa-solid fa-user text-lg'},
@@ -95,12 +103,6 @@ export class Navbar {
   }
 
   logout() {
-    this.isLoggedIn.set(false);
-    console.log('Logged out');
-
-    this.alertService.addAlert({
-      message: 'Logged out successfully',
-      type: 'success'
-    })
+    this.authService.logout()
   }
 }

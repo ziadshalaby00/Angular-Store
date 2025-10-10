@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Config } from './config';
 import { HttpClient } from '@angular/common/http';
+import { ZalertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/zalertService/zalert-service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class Brand {
   private http = inject(HttpClient);
   private config = inject(Config);
+  private zalertService = inject(ZalertService);
 
   brands = signal<any[]>([]);
   error = signal<string | null>(null);
@@ -17,12 +19,15 @@ export class Brand {
     
     this.http.get(`${this.config.apiUrl}/api/products/get-brands/`).subscribe({
       next: (data: any) => {
-        console.log(data)
         this.brands.set(data);
       },
       error: (err) => {
-        console.log(err)
-        this.error.set('Failed to load categories');
+        this.error.set('Failed to load brands');
+        this.zalertService.addAlert({
+          message: 'Failed to load brands',
+          type: 'danger',
+          autoClose: false,
+        })
       }
     });
   }

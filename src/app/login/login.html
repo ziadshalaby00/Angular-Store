@@ -1,1 +1,92 @@
-<p>login works!</p>
+<!-- signup.component.html -->
+<div class="min-h-[90vh] flex justify-center items-center m-4">
+  <form (submit)="submit($event)" novalidate 
+    class="flex flex-col gap-4 w-full max-w-md
+    border border-slate-300 dark:border-slate-600 hover:border-slate-400 dark:hover:border-slate-500
+    p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+      <h2 class="text-2xl text-center font-bold mb-4 text-slate-800 dark:text-slate-300">Login</h2>
+    
+      <ZS-input
+        [label]="'Username'"
+        [placeholder]="'Enter your username'"
+        icon="fas fa-user"
+
+        [value]="fields.username()"
+        (changedEv)="changeValues($event, 'username')"
+        [touched]="markAllTouched()"
+
+        [type]="'text'"
+        [required]="true"
+        [inputStyle]="'dark'"
+      ></ZS-input>
+    
+      <ZS-input
+        [label]="'Password'"
+        [placeholder]="'Enter password'"
+        icon="fas fa-lock"
+
+        [value]="fields.password()"
+        (changedEv)="changeValues($event, 'password')"
+        [touched]="markAllTouched()"
+
+        [type]="'password'"
+        [required]="true"
+        [inputStyle]="'dark'"
+      ></ZS-input>
+    
+      <div class="mt-4 flex flex-col gap-2">
+        <ZS-button
+        size="lg"
+        btnStyle="dark"
+        [type]="'submit'"
+        [disabled]="this.authService.googleLoading() || this.authService.loginLoading()"
+        [icon]="this.authService.loginLoading() ? 'fa fa-spinner fa-spin' : ''"
+        >
+          Login
+        </ZS-button>
+
+        <small class="text-gray-800 dark:text-gray-300 text-center">Or</small>
+
+        <ZS-button
+        size="lg"
+        btnStyle="primary"
+        (clickedEv)="google()"
+        [type]="'button'"
+        icon="fa-brands fa-google"
+        [disabled]="this.authService.googleLoading() || this.authService.loginLoading()"
+        [icon]="this.authService.googleLoading() ? 'fa fa-spinner fa-spin' : 'fa-brands fa-google'"
+        >
+          Login With Google
+        </ZS-button>
+      </div>
+  
+      <div class="flex flex-col gap-1.5  text-sm">
+        <div class="flex flex-wrap justify-center items-center gap-1.5">
+            <span class="text-gray-700 dark:text-gray-300">
+              Forgot
+            </span>
+            <button
+            type="button"
+            class="text-blue-600 dark:text-blue-400"
+            (click)="forgotPass()"
+            >
+            Passowrd?
+            </button>
+        </div>
+
+        <div class="flex flex-wrap justify-center items-center gap-1.5">
+            <span class="text-gray-700 dark:text-gray-300">
+              Don’t have an account?
+            </span>
+            <button
+            type="button"
+            class="text-teal-600 dark:text-teal-400"
+            (click)="router.navigate(['/signup'])"
+            >
+            Sign Up
+            </button>
+        </div>
+      </div>
+
+  </form>
+</div>

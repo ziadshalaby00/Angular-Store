@@ -9,8 +9,8 @@
   [searchPlaceholder]="'Search for a product...'"
   [navItems]="navItems"
 
-  [isLoggedIn]="isLoggedIn()"
-  [userProfile]="userProfile"
+  [isLoggedIn]="authService.isLoggedin()"
+  [userProfile]="userProfile()"
   [userMenuItems]="userMenuItems"
 
   (loginClickedEv)="onLogin()"

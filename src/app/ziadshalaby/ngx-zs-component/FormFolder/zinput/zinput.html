@@ -9,8 +9,8 @@
     [label]="label()"
     [hint]="hint()"
     [required]="required()"
-    [hintID]="id() + '-hint'"
-    [for]="id()"
+    [hintID]="iId() + '-hint'"
+    [for]="iId()"
   >
   </ZS-label>
 
@@ -36,8 +36,8 @@
     <!-- ========================= Input Field ========================= -->
     <input
       #inputEl
-      [id]="id()"
-      [name]="name()"
+      [id]="iId()"
+      [name]="iName()"
       [type]="actualType"
       [attr.placeholder]="placeholder()"
       [value]="value()"
@@ -62,9 +62,9 @@
       class="flex-1 bg-transparent outline-none caret-current w-full"
       [class]="getSize('field')"
       [attr.aria-describedby]="
-        (hint() ? id() + '-hint' : '') +
+        (hint() ? iId() + '-hint' : '') +
         (hint() && error() ? ' ' : '') +
-        (error() ? id() + '-error' : '')
+        (error() ? iId() + '-error' : '')
       "
     />
 
@@ -77,7 +77,7 @@
         type="button"
         (click)="togglePassword()"
         [attr.aria-pressed]="showPassword()"
-        class="ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+        class="ml-1 px-1 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
         [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
       >
         <i
@@ -93,7 +93,7 @@
       <button
         type="button"
         (click)="clear()"
-        class="ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+        class="ml-1 px-1 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
         [attr.aria-label]="'Clear ' + (label() || 'input')"
       >
         <i
@@ -109,7 +109,7 @@
       <button
         type="button"
         (click)="onSearch()"
-        class="ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+        class="ml-1 px-1 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
         aria-label="Search"
       >
         <i
@@ -125,7 +125,7 @@
   <!-- ========================= Error Messages ========================= -->
   @if (error()) {
     <ul
-      [id]="id() + '-error'"
+      [id]="iId() + '-error'"
       class="mt-1 text-xs text-red-500 space-y-1"
       role="status"
       aria-live="polite"

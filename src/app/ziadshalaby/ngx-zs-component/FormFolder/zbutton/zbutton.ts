@@ -34,7 +34,7 @@ export class Zbutton {
   // ==============================================
   // Inputs
   // ==============================================
-
+  readonly iId = input<string>(crypto.randomUUID());
   readonly btnStyle = input<FormStyle>('primary');
   readonly variant = input<ButtonVariant>('solid');
   readonly size = input<BtnSizeType>('md');

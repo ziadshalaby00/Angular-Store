@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
 import { Zinput, ChangeEventType, ValidatorFn } from '../ziadshalaby/ngx-zs-component/FormFolder/zinput/zinput';
 import { Zbutton } from '../ziadshalaby/ngx-zs-component/FormFolder/zbutton/zbutton';
-import { AuthService } from '../services/auth-service';
+import { AuthService, googleClientId } from '../services/auth-service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,6 +14,10 @@ export class Signup {
   authService: AuthService = inject(AuthService)
   router: Router = inject(Router)
   
+  ngAfterViewInit() {
+    this.authService.initCodeClient()
+  }
+
   // Form fields signals
   readonly fields = {
     fullname: signal<string | null>(null),
@@ -47,6 +51,7 @@ export class Signup {
       password: this.fields.password() ?? '',
     }
 
+    this.authService.signupLoading.set(true)
     this.authService.signup(body)
   }
 
@@ -57,6 +62,7 @@ export class Signup {
   }
 
   google() {
-
+    this.authService.googleLoading.set(true)
+    this.authService.startRequestCode()
   }
 }

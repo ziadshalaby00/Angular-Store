@@ -33,7 +33,6 @@ export class Product {
 
     this.http.get(`${this.config.apiUrl}/api/products/get-products/`, { params }).subscribe({
       next: (data: any) => {
-        console.log(data)
         this.products.set(data.results);
 
         this.totalItems.set(data.count);
@@ -53,8 +52,6 @@ export class Product {
         this.loading.set(false)
       },
       error: (err) => {
-        console.log(err)
-
         this.error.set('Failed to load products');
         this.zalertService.addAlert({
           message: 'Failed to load products',
