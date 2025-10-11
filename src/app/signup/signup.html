@@ -11,9 +11,8 @@
         [placeholder]="'Enter your full name'"
         icon="fas fa-user"
 
-        [value]="fields.fullname()"
         (changedEv)="changeValues($event, 'fullname')"
-        [touched]="markAllTouched()"
+        [touched]="form.touched()"
 
         [type]="'text'"
         [required]="true"
@@ -26,9 +25,8 @@
         [placeholder]="'Enter your username'"
         icon="fas fa-user"
 
-        [value]="fields.username()"
         (changedEv)="changeValues($event, 'username')"
-        [touched]="markAllTouched()"
+        [touched]="form.touched()"
 
         [type]="'text'"
         [required]="true"
@@ -41,9 +39,8 @@
         [placeholder]="'Enter your email'"
         icon="fas fa-envelope"
 
-        [value]="fields.email()"
         (changedEv)="changeValues($event, 'email')"
-        [touched]="markAllTouched()"
+        [touched]="form.touched()"
 
         [type]="'email'"
         [required]="true"
@@ -55,9 +52,8 @@
         [placeholder]="'Enter password'"
         icon="fas fa-lock"
 
-        [value]="fields.password()"
         (changedEv)="changeValues($event, 'password')"
-        [touched]="markAllTouched()"
+        [touched]="form.touched()"
 
         [type]="'password'"
         [required]="true"
@@ -69,10 +65,7 @@
         [placeholder]="'Confirm password'"
         icon="fas fa-lock"
 
-        [value]="fields.confirmPassword()"
-        (changedEv)="changeValues($event, 'confirmPassword')"
-        [touched]="markAllTouched()"
-
+        [touched]="form.touched()"
         [validateFn]="confPassValidate"
 
         [type]="'password'"
@@ -112,7 +105,7 @@
         </span>
         <button
         type="button"
-        class="text-blue-600 dark:text-blue-400"
+        class="text-blue-600 hover:text-blue-500 dark:text-blue-400"
         (click)="router.navigate(['/login'])"
         >
         Login

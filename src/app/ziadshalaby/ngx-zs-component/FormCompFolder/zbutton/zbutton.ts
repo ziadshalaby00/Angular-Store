@@ -15,7 +15,7 @@ import {
   computed,
   output,
 } from '@angular/core';
-import { FormPaletteMap, FormStyle, FormSize } from '../zformService/zform-service';
+import { FormPaletteMap, FormStyle, FormSize } from '../zformCompService/zform-comp-service';
 
 
 // ==============================================
@@ -56,10 +56,10 @@ export class Zbutton {
 
   readonly palette = computed(() => FormPaletteMap.get(this.btnStyle())!);
 
-  readonly textColor = computed<string>(() => {
-    if(['primary', 'dark', 'violet'].includes(this.btnStyle())) 
-      return 'text-gray-100'
-    return 'text-gray-800 dark:text-gray-100'
+  readonly solidTextColor = computed<string>(() => {
+    if(['primary', 'dark', 'violet', 'secondary'].includes(this.btnStyle())) 
+      return 'text-slate-100'
+    return 'text-slate-800 dark:text-slate-100'
   });
 
   readonly baseClasses = computed(() => {
@@ -80,7 +80,7 @@ export class Zbutton {
       'shadow-md dark:shadow-slate-800',
       'hover:shadow-lg',
       'active:shadow-sm',
-      this.textColor(),
+      this.solidTextColor(),
     );
 
     const outlineClasses = this.join(

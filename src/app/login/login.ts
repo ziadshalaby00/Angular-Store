@@ -1,12 +1,14 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { Zbutton } from '../ziadshalaby/ngx-zs-component/FormFolder/zbutton/zbutton';
-import { ChangeEventType, Zinput } from '../ziadshalaby/ngx-zs-component/FormFolder/zinput/zinput';
+import { Zbutton } from '../ziadshalaby/ngx-zs-component/FormCompFolder/zbutton/zbutton';
+import { ChangeEventType, Zinput } from '../ziadshalaby/ngx-zs-component/FormCompFolder/zinput/zinput';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth-service';
+import { Zmodal } from '../ziadshalaby/ngx-zs-component/zmodal/zmodal';
+import { Zform } from '../ziadshalaby/ngx-zs-component/zformService/zform-service';
 
 @Component({
   selector: 'app-login',
-  imports: [Zbutton, Zinput],
+  imports: [Zbutton, Zinput, Zmodal],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -18,35 +20,21 @@ export class Login {
     this.authService.initCodeClient()
   }
 
-  readonly fields = {
-    username: signal<string | null>(null),
-    password: signal<string | null>(null),
-  }
+  readonly form = new Zform({
+    username: '',
+    password: ''
+  })
 
-  changeValues(event: ChangeEventType, input: keyof typeof this.fields) {
-    const field = this.fields[input]
-    field.set(event.valid ? event.value : null);
+  changeValues(event: ChangeEventType, key: keyof typeof this.form.fields) {
+    this.form.set(key, event.valid ? event.value : null);
   }
-
-  readonly markAllTouched = signal<boolean>(false)
-  
-  readonly allFieldsFilled = computed(() => {
-    return Object.values(this.fields).every(field => field() !== null);
-  });
 
   submit(event: SubmitEvent) {
     event.preventDefault();
-
-    this.markAllTouched.set(true)
-    if(!this.allFieldsFilled()) return
-
-    const body = {
-      username: this.fields.username() ?? '',
-      password: this.fields.password() ?? '',
-    }
-
-    this.authService.loginLoading.set(true)
-    this.authService.login(body)
+    this.form.submit((values) => {
+      this.authService.loginLoading.set(true)
+      this.authService.login(values)
+    })
   }
 
   google() {
@@ -54,7 +42,21 @@ export class Login {
     this.authService.startRequestCode()
   }
 
-  forgotPass() {
-    console.log('Forgot Password')
+  // Password Reset
+
+  readonly passwordResetModal = signal<boolean>(false)
+  readonly passwordResetForm = new Zform({
+    email: ''
+  })
+
+  chanegEmailValue(event: ChangeEventType) {
+    this.passwordResetForm.set('email', event.valid ? event.value : null);
+  }
+
+  confirmPasswordReset() {
+    this.passwordResetForm.submit((values) => {
+      this.authService.passwordResetLoading.set(true)
+      this.authService.passwordReset(values)
+    })
   }
 }

@@ -1,8 +1,9 @@
 import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
-import { Zinput, ChangeEventType, ValidatorFn } from '../ziadshalaby/ngx-zs-component/FormFolder/zinput/zinput';
-import { Zbutton } from '../ziadshalaby/ngx-zs-component/FormFolder/zbutton/zbutton';
+import { Zinput, ChangeEventType, ValidatorFn } from '../ziadshalaby/ngx-zs-component/FormCompFolder/zinput/zinput';
+import { Zbutton } from '../ziadshalaby/ngx-zs-component/FormCompFolder/zbutton/zbutton';
 import { AuthService, googleClientId } from '../services/auth-service';
 import { Router } from '@angular/router';
+import { Zform } from '../ziadshalaby/ngx-zs-component/zformService/zform-service';
 
 @Component({
   selector: 'app-signup',
@@ -17,48 +18,31 @@ export class Signup {
   ngAfterViewInit() {
     this.authService.initCodeClient()
   }
-
-  // Form fields signals
-  readonly fields = {
-    fullname: signal<string | null>(null),
-    username: signal<string | null>(null),
-    email: signal<string | null>(null),
-    password: signal<string | null>(null),
-    confirmPassword: signal<string | null>(null)
-  }
-
-  changeValues(event: ChangeEventType, input: keyof typeof this.fields) {
-    const field = this.fields[input]
-    field.set(event.valid ? event.value : null);
-  }
-
-  readonly markAllTouched = signal<boolean>(false)
   
-  readonly allFieldsFilled = computed(() => {
-    return Object.values(this.fields).every(field => field() !== null);
-  });
+  // Form fields signals
+  form = new Zform({
+    fullname: '',
+    username: '',
+    email: '',
+    password: '',
+  })
 
-  submit(event: SubmitEvent) {
-    event.preventDefault();
-
-    this.markAllTouched.set(true)
-    if(!this.allFieldsFilled()) return
-
-    const body = {
-      fullname: this.fields.fullname() ?? '',
-      username: this.fields.username() ?? '',
-      email: this.fields.email() ?? '',
-      password: this.fields.password() ?? '',
-    }
-
-    this.authService.signupLoading.set(true)
-    this.authService.signup(body)
+  changeValues(event: ChangeEventType, key: keyof typeof this.form.fields) {
+    this.form.set(key, event.valid ? event.value : null);
   }
 
   confPassValidate: ValidatorFn = (value: string | null) => {
-    if(this.fields.password() !== value)
+    if(this.form.get('password') !== value)
       return ['The passwords do not match.']
     return []
+  }
+
+  submit(event: SubmitEvent) {
+    event.preventDefault();
+    this.form.submit((values) => {
+      this.authService.signupLoading.set(true)
+      this.authService.signup(values)
+    });
   }
 
   google() {

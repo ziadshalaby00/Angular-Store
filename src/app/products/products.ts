@@ -7,10 +7,10 @@ import { Category } from '../services/category';
 import { Brand } from '../services/brand';
 import { Zcarousel } from '../ziadshalaby/ngx-zs-component/zcarousel/zcarousel';
 import { Zpagination } from '../ziadshalaby/ngx-zs-component/zpagination/zpagination';
-import { Zselect } from '../ziadshalaby/ngx-zs-component/FormFolder/zselect/zselect';
+import { Zselect } from '../ziadshalaby/ngx-zs-component/FormCompFolder/zselect/zselect';
 import { Zspinner } from '../ziadshalaby/ngx-zs-component/zspinner/zspinner';
-import { Zinput } from '../ziadshalaby/ngx-zs-component/FormFolder/zinput/zinput';
-import { Zbutton } from '../ziadshalaby/ngx-zs-component/FormFolder/zbutton/zbutton';
+import { Zinput } from '../ziadshalaby/ngx-zs-component/FormCompFolder/zinput/zinput';
+import { Zbutton } from '../ziadshalaby/ngx-zs-component/FormCompFolder/zbutton/zbutton';
 
 @Component({
   selector: 'app-products',

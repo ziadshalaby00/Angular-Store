@@ -9,7 +9,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { FormPaletteMap, FormSize, FormStyle } from '../zformService/zform-service';
+import { FormPaletteMap, FormSize, FormStyle } from '../zformCompService/zform-comp-service';
 import { Zlabel } from '../zlabel/zlabel';
 
 // ==============================================================================
@@ -118,7 +118,7 @@ export class Zinput {
   readonly hint = input<string | null>(null);
   readonly placeholder = input<string | null>(null);
   readonly type = input<InputType>('text');
-  readonly inputStyle = input<FormStyle>('light');
+  readonly inputStyle = input<FormStyle>('secondary');
 
   readonly disabled = input<boolean>(false);
   readonly isReadonly = input<boolean>(false);
@@ -188,7 +188,7 @@ export class Zinput {
     const baseClasses = 'border transition-all duration-150 focus-within:ring-2';
     const hasError = !!this.error();
 
-    let styleConfig = FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('light')!;
+    let styleConfig = FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('secondary')!;
     if (hasError) {
       styleConfig = FormPaletteMap.get('danger')!;
     }

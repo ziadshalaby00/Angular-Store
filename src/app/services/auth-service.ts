@@ -245,6 +245,25 @@ export class AuthService {
     }
   }
 
+  readonly passwordResetLoading = signal<boolean>(false)
+  passwordReset(body: {email: string}) {
+    this.http.post(`${this.config.apiUrl}/api/auth/password-reset/`, body).subscribe({
+      next: (res: any) => {
+        console.log(res)
+        this.zalertService.addAlert({
+          message: res.message,
+          type: 'success'
+        })
+        this.passwordResetLoading.set(false)
+      },
+      error: (err: any) => {
+        console.log(err)
+        this.setErrors(err.error)
+        this.passwordResetLoading.set(false)
+      }
+    })
+  }
+
   setErrors(errorObject: any) {
     const errors = this.zextractErrorsService.extract(errorObject)
     this.error.update((v: string[]) => [...v, ...errors]);

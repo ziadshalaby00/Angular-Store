@@ -6,8 +6,8 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, input, output, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ZnavItem, NavbarItem } from '../NavItemFolder/znav-item/znav-item';
-import { ButtonVariant, Zbutton } from '../FormFolder/zbutton/zbutton';
-import { FormSize, FormStyle } from '../FormFolder/zformService/zform-service';
+import { ButtonVariant, Zbutton } from '../FormCompFolder/zbutton/zbutton';
+import { FormSize, FormStyle } from '../FormCompFolder/zformCompService/zform-comp-service';
 
 // ==============================================
 // Interfaces & Types

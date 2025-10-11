@@ -11,5 +11,7 @@ export const routes: Routes = [
     { path: 'test', component: Test},
     { path: 'login', component: Login},
     { path: 'signup', component: Signup},
-    { path: 'product-detail/:id', component: ProductDetail }
+    { path: 'product-detail/:id', component: ProductDetail },
+    { path: 'reset-password/:param1/:param2', component: Test }
+
 ];

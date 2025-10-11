@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ZformService } from './zform-service';
+import { ZformCompService } from './zform-comp-service';
 
-describe('ZformService', () => {
-  let service: ZformService;
+describe('ZformCompService', () => {
+  let service: ZformCompService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ZformService);
+    service = TestBed.inject(ZformCompService);
   });
 
   it('should be created', () => {

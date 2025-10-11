@@ -8,12 +8,12 @@ export type FormSize = 'sm' | 'md' | 'lg';
 
 export type FormStyle =
   | 'primary'
+  | 'secondary'
   | 'warning'
   | 'success'
   | 'danger'
-  | 'light'
-  | 'info'
   | 'dark'
+  | 'info'
   | 'violet'
   | 'teal';
 
@@ -37,6 +37,19 @@ export interface FormPaletteEntry {
 // ==============================================
 
 export const FormPaletteMap = new Map<FormStyle, FormPaletteEntry>([
+  [
+    'secondary',
+    {
+      border: 'border-slate-300 dark:border-slate-600',
+      borderHover: 'hover:border-slate-500 dark:hover:border-slate-400',
+      inputBg: 'bg-slate-50 dark:bg-slate-900',
+      text: 'text-slate-800 dark:text-slate-300',
+      textHover: 'hover:text-slate-700 dark:hover:text-slate-400',
+      ring: 'focus-within:ring-slate-400 dark:focus-within:ring-slate-600',
+      bgSelect: 'bg-slate-200 dark:bg-slate-800',
+      btnBG: 'bg-slate-500 hover:bg-slate-600 dark:bg-slate-700 dark:hover:bg-slate-600',
+    },
+  ],
   [
     'primary',
     {
@@ -105,27 +118,14 @@ export const FormPaletteMap = new Map<FormStyle, FormPaletteEntry>([
   [
     'dark',
     {
-      border: 'border-slate-400 dark:border-slate-700',
-      borderHover: 'hover:border-slate-700 dark:hover:border-slate-600',
+      border: 'border-slate-900 dark:border-slate-700',
+      borderHover: 'hover:border-gray-500 dark:hover:border-slate-500',
       inputBg: 'bg-slate-300 dark:bg-slate-900',
       text: 'text-slate-900 dark:text-slate-300',
-      textHover: 'hover:text-slate-700 dark:hover:text-slate-200',
-      ring: 'focus-within:ring-slate-500 dark:focus-within:ring-slate-700',
+      textHover: 'hover:text-slate-700 dark:hover:text-slate-400',
+      ring: 'focus-within:ring-slate-700 dark:focus-within:ring-slate-600',
       bgSelect: 'bg-slate-400 dark:bg-slate-800',
-      btnBG: 'bg-slate-800 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-700/60',
-    },
-  ],
-  [
-    'light',
-    {
-      border: 'border-slate-300 dark:border-slate-600',
-      borderHover: 'hover:border-slate-400 dark:hover:border-slate-500',
-      inputBg: 'bg-slate-50 dark:bg-slate-900',
-      text: 'text-slate-800 dark:text-slate-100',
-      textHover: 'hover:text-slate-700 dark:hover:text-slate-200',
-      ring: 'focus-within:ring-slate-400 dark:focus-within:ring-slate-600',
-      bgSelect: 'bg-slate-200 dark:bg-slate-700',
-      btnBG: 'bg-slate-500/60 hover:bg-slate-500/50 dark:bg-slate-600 dark:hover:bg-slate-500/80',
+      btnBG: 'bg-slate-900 hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-700/60',
     },
   ],
   [
@@ -163,4 +163,4 @@ export const FormPaletteMap = new Map<FormStyle, FormPaletteEntry>([
 @Injectable({
   providedIn: 'root',
 })
-export class ZformService {}
+export class ZformCompService {}
