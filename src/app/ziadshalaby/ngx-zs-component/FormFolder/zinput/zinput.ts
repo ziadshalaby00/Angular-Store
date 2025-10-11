@@ -118,7 +118,7 @@ export class Zinput {
   readonly hint = input<string | null>(null);
   readonly placeholder = input<string | null>(null);
   readonly type = input<InputType>('text');
-  readonly inputStyle = input<FormStyle>('normal');
+  readonly inputStyle = input<FormStyle>('light');
 
   readonly disabled = input<boolean>(false);
   readonly isReadonly = input<boolean>(false);
@@ -188,7 +188,7 @@ export class Zinput {
     const baseClasses = 'border transition-all duration-150 focus-within:ring-2';
     const hasError = !!this.error();
 
-    let styleConfig = FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('normal')!;
+    let styleConfig = FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('light')!;
     if (hasError) {
       styleConfig = FormPaletteMap.get('danger')!;
     }
@@ -341,6 +341,10 @@ export class Zinput {
   // ==============================================================================
   // Event Handlers
   // ==============================================================================
+  focusInput(event: MouseEvent): void {
+    const input = (event.currentTarget as HTMLElement).querySelector('input');
+    input?.focus();
+  }
 
   onInput(event: Event): void {
     if (this.disabledOrReadonly()) return;

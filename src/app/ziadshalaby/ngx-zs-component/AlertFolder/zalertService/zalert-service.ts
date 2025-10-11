@@ -6,6 +6,7 @@ import { Injectable, signal } from '@angular/core';
 import { Alert } from '../zalert/zalert';
 
 export interface NewAlert extends Omit<Alert, 'id' | 'progress'> {}
+export interface BulkAlert extends Omit<Alert, 'id' | 'progress' | 'message'> {}
 
 // ==============================================
 // Service
@@ -26,15 +27,23 @@ export class ZalertService {
   // Public Methods
   // ==============================================
 
-  addAlert(newAlert: NewAlert | NewAlert[]): void {
-    const alertsToAdd = Array.isArray(newAlert) ? newAlert : [newAlert];
+  addAlert(newAlert: NewAlert): void {
+    const newAlertToAdd: Alert = {
+      ...newAlert,
+      id: crypto.randomUUID(),
+    };
 
-    const newAlerts: Alert[] = alertsToAdd.map((a: NewAlert) => ({
-      ...a,
+    this.alerts.update((alerts: Alert[]) => [...alerts, newAlertToAdd]);
+  }
+
+  bulkAlert(newAlerts: string[], options: BulkAlert): void {
+    const alertsToAdd: Alert[] = newAlerts.map((message) => ({
+      ...options,
+      message,
       id: crypto.randomUUID(),
     }));
 
-    this.alerts.update((alerts: Alert[]) => [...alerts, ...newAlerts]);
+    this.alerts.update((alerts: Alert[]) => [...alerts, ...alertsToAdd]);
   }
 
   onAlertClosed(id: string | number): void {

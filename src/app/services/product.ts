@@ -2,6 +2,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { Config } from './config';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ZalertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/zalertService/zalert-service';
+import { ZextractErrorsService } from '../ziadshalaby/ngx-zs-component/zextractErrorsService/zextract-errors-service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class Product {
   private http: HttpClient = inject(HttpClient);
   private config: Config = inject(Config);
   private zalertService: ZalertService = inject(ZalertService)
+  private zextractErrorsService: ZextractErrorsService = inject(ZextractErrorsService)
 
   products = signal<any[]>([]);
   error = signal<string | null>(null);

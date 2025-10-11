@@ -52,7 +52,7 @@ export class Zselect {
   readonly disabled = input<boolean>(false);
   readonly isReadonly = input<boolean>(false);
 
-  readonly inputStyle = input<FormStyle>('normal');
+  readonly inputStyle = input<FormStyle>('light');
   readonly placeholder = input<string>('Select an option...');
 
   readonly showSearch = input<boolean>(true);
@@ -112,7 +112,7 @@ export class Zselect {
       rounded-lg shadow-sm
     `.trim();
 
-    const styleEntry = FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('normal')!;
+    const styleEntry = FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('light')!;
 
     const disabledCls = this.disabled() ? 'opacity-60' : '';
     const cursorCls = this.disabledOrReadonly()
@@ -132,7 +132,7 @@ export class Zselect {
 
   readonly clearClass = computed<string>(() => {
     const base = 'mt-2 text-sm flex items-center transition-colors';
-    const styleEntry = FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('normal')!;
+    const styleEntry = FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('light')!;
     return [base, styleEntry.text, styleEntry.textHover].filter(Boolean).join(' ');
   });
 
@@ -146,7 +146,7 @@ export class Zselect {
   // Utility Methods
   // =================================================================================================
   readonly getBgSelectClasses = (selected: boolean): string => {
-    const styleEntry = FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('normal')!;
+    const styleEntry = FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('light')!;
     return selected
       ? `${styleEntry.bgSelect} hover:opacity-80`
       : 'hover:bg-gray-200/50 dark:hover:bg-gray-600/40';

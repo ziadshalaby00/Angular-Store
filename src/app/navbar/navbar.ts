@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { ZalertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/zalertService/zalert-service';
+import { NewAlert, ZalertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/zalertService/zalert-service';
 import { Znavbar, NavbarItemExport, UserProfile, SiteNameConfigType, AuthButtonsType } from '../ziadshalaby/ngx-zs-component/znavbar/znavbar';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth-service';
@@ -11,7 +11,7 @@ import { AuthService } from '../services/auth-service';
   styleUrl: './navbar.css'
 })
 export class Navbar {
-  alertService: ZalertService = inject(ZalertService)
+  zalertService: ZalertService = inject(ZalertService)
   private router: Router = inject(Router)
   authService: AuthService = inject(AuthService)
   
@@ -52,13 +52,13 @@ export class Navbar {
     },
   ];
 
-  userProfile = computed<UserProfile | null>(() => {
+  userProfile = computed<UserProfile | undefined>(() => {
     const userData = this.authService.userData()
     return userData ? {
       name: userData.fullname,
       email: userData.email,
       username: userData.username
-    } : null
+    } : undefined
   })
 
   userMenuItems: NavbarItemExport[] = [
@@ -103,6 +103,13 @@ export class Navbar {
   }
 
   logout() {
-    this.authService.logout()
+    this.authService.logout(
+      (message?: string) => { 
+        this.zalertService.addAlert({
+          message: message ?? '',
+          type: 'success'
+        });
+      }
+    )
   }
 }

@@ -13,4 +13,12 @@
     [defaultAutoClose]="true"
     [defaultDuration]="6000"
 ></ZS-alert>
-
+@if(authService.verifyloading()) {
+    <ZS-spinner
+    type="bars"
+    [isFloating]='true'
+    color="indigo"
+    size="lg"
+    >
+    </ZS-spinner>
+}

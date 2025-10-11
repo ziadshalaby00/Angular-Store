@@ -31,12 +31,12 @@
           @for (item of selectedItems().slice(0, 6); track item.id) {
             <span
               [ngClass]="showItemsClass()"
-              class="flex gap-1.5 justify-center items-center text-gray-900 dark:text-gray-100 px-2.5 py-1.5 rounded-full text-sm max-w-[140px]">
+              class="flex gap-1 justify-center items-center text-gray-900 dark:text-gray-100 px-2.5 py-1.5 rounded-full text-sm max-w-[140px]">
               <span class="truncate">{{ item.name }}</span>
               <button
                 type="button"
                 [attr.aria-label]="'Remove ' + item.name"
-                class="text-gray-950 hover:text-gray-600 dark:text-gray-50 dark:hover:text-gray-300"
+                class="px-1 text-gray-950 hover:text-gray-600 dark:text-gray-50 dark:hover:text-gray-300"
                 (click)="selectItem([item]); $event.stopPropagation()">
                 <i class="fas fa-times text-xs"></i>
               </button>
@@ -70,7 +70,7 @@
       id="{{ iId() + '-options' }}"
       role="listbox"
       [attr.aria-multiselectable]="multiple() ? 'true' : null"
-      class="absolute z-[300] w-full mt-1 rounded-lg shadow-lg dark:shadow-gray-400/30 overflow-hidden bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
+      class="absolute z-[300] w-full mt-1 rounded-lg shadow-lg dark:shadow-gray-400/30 overflow-hidden bg-white border border-gray-300 dark:bg-gray-900 dark:border-gray-600 dark:text-gray-100">
 
       @if (showSearch()) {
         <!-- Search Input -->

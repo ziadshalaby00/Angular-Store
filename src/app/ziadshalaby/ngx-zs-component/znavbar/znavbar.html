@@ -188,7 +188,7 @@
         @else if (authButtons().showAuthButtons && !isLoggedIn()) {
           <div class="hidden lg:flex items-center space-x-3" role="group" aria-label="Authentication">
             <ZS-button
-            [btnStyle]="authButtons().login?.btnStyle ?? 'normal'"
+            [btnStyle]="authButtons().login?.btnStyle ?? 'light'"
             [variant]="authButtons().login?.variant ?? 'outline'"
             [size]="authButtons().login?.size ?? 'md'"
             [icon]="authButtons().login?.icon  ?? ''"
@@ -288,7 +288,7 @@
             aria-label="Authentication (mobile)"
           >
             <ZS-button
-            [btnStyle]="authButtons().login?.btnStyle ?? 'normal'"
+            [btnStyle]="authButtons().login?.btnStyle ?? 'light'"
             [variant]="authButtons().login?.variant ?? 'outline'"
             [size]="authButtons().login?.size ?? 'md'"
             [icon]="authButtons().login?.icon  ?? ''"
