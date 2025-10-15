@@ -3,7 +3,7 @@
 // ==============================================
 
 import { Component, computed, ElementRef, input, model, output, signal, viewChild } from '@angular/core';
-import { FormPaletteMap, FormStyle } from '../FormCompFolder/zformCompService/zform-comp-service';
+import { FormPaletteMap, FormSize, FormStyle } from '../zpaletteService/zform-comp-service';
 import { Zbutton, ButtonVariant } from '../FormCompFolder/zbutton/zbutton';
 
 
@@ -14,10 +14,12 @@ import { Zbutton, ButtonVariant } from '../FormCompFolder/zbutton/zbutton';
 export interface BtnType {
   show?: boolean;
   text?: string;
-  icon?: string | null;
-  style?: FormStyle;
-  disabled?: boolean;
+
+  btnStyle?: FormStyle;
   variant?: ButtonVariant;
+  size?: FormSize;
+  icon?: string | null
+  disabled?: boolean;
 }
 export type BtnTypeDefault = Required<BtnType>;
 export type Position = 'left top' | 'left bot' | 'right top' | 'right bot' | 'center'
@@ -78,18 +80,22 @@ export class Zmodal {
   readonly cancelConfigDefault: BtnTypeDefault = {
     show: true,
     text: 'Cancel',
+
+    btnStyle: 'secondary',
+    variant: 'solid',
+    size: 'md',
     icon: null,
-    style: 'secondary',
-    disabled: false,
-    variant: 'solid'
+    disabled: false
   }
   readonly confirmConfigDefault: BtnTypeDefault = {
     show: true,
     text: 'Confirm',
+
+    btnStyle: 'primary',
+    variant: 'solid',
+    size: 'md',
     icon: null,
-    style: 'primary',
-    disabled: false,
-    variant: 'solid'
+    disabled: false
   }
   configMerged = (type: 'confirm' | 'cancel'): BtnTypeDefault => {
     const def = type === 'confirm' ? this.confirmConfigDefault : this.cancelConfigDefault;
@@ -105,9 +111,9 @@ export class Zmodal {
   // Outputs
   // ==============================================
 
-  confirm = output<void>();
-  cancel = output<void>();
-  closed = output<void>();
+  confirmEv = output<void>();
+  cancelEv = output<void>();
+  closedEv = output<void>();
 
 
   // ==============================================
@@ -125,7 +131,7 @@ export class Zmodal {
 
   close() {
     this.open.set(false);
-    this.closed.emit();
+    this.closedEv.emit();
   }
 
   onOverlayClick(event: MouseEvent) {

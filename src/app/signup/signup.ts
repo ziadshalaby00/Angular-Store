@@ -4,10 +4,11 @@ import { Zbutton } from '../ziadshalaby/ngx-zs-component/FormCompFolder/zbutton/
 import { AuthService, googleClientId } from '../services/auth-service';
 import { Router } from '@angular/router';
 import { Zform } from '../ziadshalaby/ngx-zs-component/zformService/zform-service';
+import { Zcard } from '../ziadshalaby/ngx-zs-component/zcard/zcard';
 
 @Component({
   selector: 'app-signup',
-  imports: [Zinput, Zbutton],
+  imports: [Zinput, Zbutton, Zcard],
   templateUrl: './signup.html',
   styleUrl: './signup.css'
 })
@@ -28,11 +29,11 @@ export class Signup {
   })
 
   changeValues(event: ChangeEventType, key: keyof typeof this.form.fields) {
-    this.form.set(key, event.valid ? event.value : null);
+    this.form.set(key, event.value, event.valid);
   }
 
   confPassValidate: ValidatorFn = (value: string | null) => {
-    if(this.form.get('password') !== value)
+    if(this.form.get('password').value !== value)
       return ['The passwords do not match.']
     return []
   }

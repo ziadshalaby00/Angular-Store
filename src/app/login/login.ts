@@ -5,10 +5,11 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth-service';
 import { Zmodal } from '../ziadshalaby/ngx-zs-component/zmodal/zmodal';
 import { Zform } from '../ziadshalaby/ngx-zs-component/zformService/zform-service';
+import { Zcard } from '../ziadshalaby/ngx-zs-component/zcard/zcard';
 
 @Component({
   selector: 'app-login',
-  imports: [Zbutton, Zinput, Zmodal],
+  imports: [Zbutton, Zinput, Zmodal, Zcard],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -26,7 +27,7 @@ export class Login {
   })
 
   changeValues(event: ChangeEventType, key: keyof typeof this.form.fields) {
-    this.form.set(key, event.valid ? event.value : null);
+    this.form.set(key, event.value, event.valid );
   }
 
   submit(event: SubmitEvent) {
@@ -50,13 +51,13 @@ export class Login {
   })
 
   chanegEmailValue(event: ChangeEventType) {
-    this.passwordResetForm.set('email', event.valid ? event.value : null);
+    this.passwordResetForm.set('email', event.value, event.valid);
   }
 
   confirmPasswordReset() {
     this.passwordResetForm.submit((values) => {
       this.authService.passwordResetLoading.set(true)
-      this.authService.passwordReset(values)
+      this.authService.passwordReset(values, () => { this.passwordResetModal.set(false) })
     })
   }
 }

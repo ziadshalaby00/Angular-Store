@@ -1,0 +1,8 @@
+<div #cardRef [class]="classList()"
+role="group"
+tabindex="0"
+[attr.aria-label]="clickable() ? 'Interactive card' : 'Information card'"
+[attr.aria-pressed]="clickable() ? 'false' : null"
+>
+    <ng-content></ng-content>
+</div>

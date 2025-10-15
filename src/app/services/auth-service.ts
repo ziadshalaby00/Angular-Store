@@ -175,7 +175,7 @@ export class AuthService {
         this.resetDataLogout()
         this.stopRefreshEventLoop()
       },
-      error: (err: any) => {}
+      error: (err: any) => { if(logoutAction) logoutAction() }
     })
   }
 
@@ -192,9 +192,11 @@ export class AuthService {
         this.getUserData(
           () => {
             this.isLoggedin.set(true)
+
             this.verifyloading.set(false)
             this.refreshEventLoop(this.config.accessTokenExpire)
-          }
+          },
+          () => { this.verifyloading.set(false) }
         )
       },
       error: (err: any) => {
@@ -214,7 +216,8 @@ export class AuthService {
             this.isLoggedin.set(true)
             this.verifyloading.set(false)
             this.refreshEventLoop(this.config.accessTokenExpire)
-          }
+          },
+          () => { this.verifyloading.set(false) }
         )
       },
       error: (err: any) => {
@@ -246,7 +249,7 @@ export class AuthService {
   }
 
   readonly passwordResetLoading = signal<boolean>(false)
-  passwordReset(body: {email: string}) {
+  passwordReset(body: {email: string}, fn: () => void) {
     this.http.post(`${this.config.apiUrl}/api/auth/password-reset/`, body).subscribe({
       next: (res: any) => {
         console.log(res)
@@ -255,11 +258,32 @@ export class AuthService {
           type: 'success'
         })
         this.passwordResetLoading.set(false)
+        fn()
       },
       error: (err: any) => {
         console.log(err)
         this.setErrors(err.error)
         this.passwordResetLoading.set(false)
+      }
+    })
+  }
+
+  readonly passwordResetConfirmLoading = signal<boolean>(false)
+  passwordResetConfirm(body: any) {
+    this.http.post(`${this.config.apiUrl}/api/auth/password-reset-confirm/`, body).subscribe({
+      next: (res: any) => {
+        console.log(res)
+        this.zalertService.addAlert({
+          message: res.message,
+          type: 'success'
+        })
+        this.router.navigate(['/login'])
+        this.passwordResetConfirmLoading.set(false)
+      },
+      error: (err: any) => {
+        console.log(err)
+        this.setErrors(err.error)
+        this.passwordResetConfirmLoading.set(false)
       }
     })
   }

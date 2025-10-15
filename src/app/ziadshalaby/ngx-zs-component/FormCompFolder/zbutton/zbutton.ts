@@ -15,7 +15,7 @@ import {
   computed,
   output,
 } from '@angular/core';
-import { FormPaletteMap, FormStyle, FormSize } from '../zformCompService/zform-comp-service';
+import { FormPaletteMap, FormStyle, FormSize } from '../../zpaletteService/zform-comp-service';
 
 
 // ==============================================
@@ -77,9 +77,10 @@ export class Zbutton {
     const solidClasses = this.join(
       p.btnBG,
       'border border-transparent',
-      'shadow-md dark:shadow-slate-800',
+      'shadow-md dark:shadow-slate-700/50',
       'hover:shadow-lg',
       'active:shadow-sm',
+      ['dark'].includes(this.btnStyle()) ? 'dark:hover:shadow-sm' : '',
       this.solidTextColor(),
     );
 

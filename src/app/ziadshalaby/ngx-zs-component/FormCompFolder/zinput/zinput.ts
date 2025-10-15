@@ -9,7 +9,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { FormPaletteMap, FormSize, FormStyle } from '../zformCompService/zform-comp-service';
+import { FormPaletteMap, FormSize, FormStyle } from '../../zpaletteService/zform-comp-service';
 import { Zlabel } from '../zlabel/zlabel';
 
 // ==============================================================================
@@ -419,5 +419,15 @@ export class Zinput {
   onKeydown(event: KeyboardEvent): void {
     if (this.disabledOrReadonly()) return;
     this.keydownEv.emit(event);
+  }
+
+  /** Forces the input to trigger a manual change event */
+  public forceChange(): void {
+    // يطبق نفس منطق التغيير الطبيعي
+    this.touched.set(true);
+    this.value.set(this.formatFn()(this.value()));
+    const valid = this.error() === null;
+    const value = this.value();
+    this.changedEv.emit({ value, valid });
   }
 }

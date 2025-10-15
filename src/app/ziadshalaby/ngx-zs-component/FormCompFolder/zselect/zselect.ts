@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
 
 import { Zinput } from '../zinput/zinput';
 import { Zlabel } from '../zlabel/zlabel';
-import { FormPaletteMap, FormStyle } from '../zformCompService/zform-comp-service';
+import { FormPaletteMap, FormStyle } from '../../zpaletteService/zform-comp-service';
 
 
 // =================================================================================================

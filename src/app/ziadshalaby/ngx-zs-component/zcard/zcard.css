@@ -1,0 +1,54 @@
+:host {
+  display: block;
+}
+
+/* We stop the animation initially */
+[class*='animate-from-'] {
+  opacity: 0;
+  transform: translate(0, 0);
+}
+
+/* Activate animation only when element appears */
+.animate-visible[class*='animate-from-'] {
+  animation: fadeInMove 0.5s ease-out forwards;
+}
+
+/* Directions */
+.animate-from-top {
+  transform: translateY(-30px);
+}
+
+.animate-from-bottom {
+  transform: translateY(30px);
+}
+
+.animate-from-left {
+  transform: translateX(-30px);
+}
+
+.animate-from-right {
+  transform: translateX(30px);
+}
+
+.animate-from-top-left {
+  transform: translate(-30px, -30px);
+}
+
+.animate-from-top-right {
+  transform: translate(30px, -30px);
+}
+
+.animate-from-bottom-left {
+  transform: translate(-30px, 30px);
+}
+
+.animate-from-bottom-right {
+  transform: translate(30px, 30px);
+}
+
+@keyframes fadeInMove {
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}

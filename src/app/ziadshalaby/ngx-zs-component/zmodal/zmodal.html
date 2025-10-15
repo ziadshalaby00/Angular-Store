@@ -1,7 +1,7 @@
 <!-- ========================= Overlay ========================= -->
 @if (isOpen()) {
   <div #modalRef
-    class="fixed inset-0 flex z-[999] bg-black/50 dark:bg-black/70 transition-all duration-300"
+    class="fixed inset-0 flex z-[900] bg-black/50 dark:bg-black/70 transition-all duration-300"
     [class]="positionClass()"
     (click)="onOverlayClick($event)"
     role="presentation"
@@ -54,12 +54,13 @@
             >
                 @if (configMerged('cancel').show) {
                     <ZS-button
-                    [btnStyle]="configMerged('cancel').style"
+                    [btnStyle]="configMerged('cancel').btnStyle"
                     variant="solid"
                     type="button"
-                    (clickedEv)="cancel.emit()"
+                    (clickedEv)="cancelEv.emit()"
                     [icon]="configMerged('cancel').icon"
                     [disabled]="configMerged('cancel').disabled"
+                    [size]="configMerged('cancel').size"
                     [variant]="configMerged('cancel').variant"
                     aria-label="Cancel"
                     >
@@ -69,10 +70,11 @@
                 @if (configMerged('confirm').show) {
                     <ZS-button
                     type="button"
-                    [btnStyle]="configMerged('confirm').style"
-                    (clickedEv)="confirm.emit()"
+                    [btnStyle]="configMerged('confirm').btnStyle"
+                    (clickedEv)="confirmEv.emit()"
                     [icon]="configMerged('confirm').icon"
                     [disabled]="configMerged('confirm').disabled"
+                    [size]="configMerged('confirm').size"
                     [variant]="configMerged('confirm').variant"
                     aria-label="Confirm"
                     >
