@@ -1,15 +1,15 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { Zbutton } from '../ziadshalaby/ngx-zs-component/FormCompFolder/zbutton/zbutton';
-import { ChangeEventType, Zinput } from '../ziadshalaby/ngx-zs-component/FormCompFolder/zinput/zinput';
+import { Button } from '../ziadshalaby/ngx-zs-component/FormCompFolder/button/button';
+import { ChangeEventType, Input } from '../ziadshalaby/ngx-zs-component/FormCompFolder/input/input';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth-service';
-import { Zmodal } from '../ziadshalaby/ngx-zs-component/zmodal/zmodal';
-import { Zform } from '../ziadshalaby/ngx-zs-component/zformService/zform-service';
-import { Zcard } from '../ziadshalaby/ngx-zs-component/zcard/zcard';
+import { Form } from '../ziadshalaby/ngx-zs-component/form-service/form-service';
+import { Card } from '../ziadshalaby/ngx-zs-component/card/card';
+import { Modal } from '../ziadshalaby/ngx-zs-component/modal/modal';
 
 @Component({
   selector: 'app-login',
-  imports: [Zbutton, Zinput, Zmodal, Zcard],
+  imports: [Button, Input, Modal, Card],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -21,7 +21,7 @@ export class Login {
     this.authService.initCodeClient()
   }
 
-  readonly form = new Zform({
+  readonly form = new Form({
     username: '',
     password: ''
   })
@@ -46,7 +46,7 @@ export class Login {
   // Password Reset
 
   readonly passwordResetModal = signal<boolean>(false)
-  readonly passwordResetForm = new Zform({
+  readonly passwordResetForm = new Form({
     email: ''
   })
 

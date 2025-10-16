@@ -1,0 +1,16 @@
+<!-- ========================= Error Messages ========================= -->
+@if (extractedErrors().length) {
+    <ul
+        [id]="iId() + '-error'"
+        class="mt-1 text-xs text-red-500 space-y-1"
+        role="status"
+        aria-live="polite"
+    >
+        @for (err of extractedErrors(); track $index) {
+            <li class="flex items-center gap-2">
+                <i class="fa fa-circle text-[6px]" aria-hidden="true"></i>
+                <span>{{ err }}</span>
+            </li>
+        }
+    </ul>
+}

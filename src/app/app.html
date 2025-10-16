@@ -1,9 +1,11 @@
 <div class="min-h-screen">
-    <app-navbar></app-navbar>
+    <app-navbar [(isMobileMenuOpen)]="isMobileMenuOpen"></app-navbar>
     <router-outlet></router-outlet>
 </div>
 
-<ZS-theme-toggle></ZS-theme-toggle>
+@if(!isMobileMenuOpen()) {
+    <ZS-theme-toggle></ZS-theme-toggle>
+}
 
 <ZS-scroll-to-top></ZS-scroll-to-top>
 
@@ -13,12 +15,12 @@
     [defaultAutoClose]="true"
     [defaultDuration]="6000"
 ></ZS-alert>
-@if(authService.verifyloading()) {
-    <ZS-spinner
-    type="bars"
-    [isFloating]='true'
-    color="indigo"
-    size="lg"
-    >
-    </ZS-spinner>
-}
+
+<ZS-spinner
+[loading]='authService.verifyloading()'
+type="bars"
+[isFloating]='true'
+color="indigo"
+size="lg"
+>
+</ZS-spinner>

@@ -5,17 +5,17 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Category } from '../services/category';
 import { Brand } from '../services/brand';
-import { Zcarousel } from '../ziadshalaby/ngx-zs-component/zcarousel/zcarousel';
-import { Zpagination } from '../ziadshalaby/ngx-zs-component/zpagination/zpagination';
-import { Zselect } from '../ziadshalaby/ngx-zs-component/FormCompFolder/zselect/zselect';
-import { Zspinner } from '../ziadshalaby/ngx-zs-component/zspinner/zspinner';
-import { Zinput } from '../ziadshalaby/ngx-zs-component/FormCompFolder/zinput/zinput';
-import { Zbutton } from '../ziadshalaby/ngx-zs-component/FormCompFolder/zbutton/zbutton';
-import { Zcard } from '../ziadshalaby/ngx-zs-component/zcard/zcard';
+import { Carousel } from '../ziadshalaby/ngx-zs-component/carousel/carousel';
+import { Pagination } from '../ziadshalaby/ngx-zs-component/pagination/pagination';
+import { Select } from '../ziadshalaby/ngx-zs-component/FormCompFolder/select/select';
+import { Spinner } from '../ziadshalaby/ngx-zs-component/spinner/spinner';
+import { Input } from '../ziadshalaby/ngx-zs-component/FormCompFolder/input/input';
+import { Button } from '../ziadshalaby/ngx-zs-component/FormCompFolder/button/button';
+import { Card } from '../ziadshalaby/ngx-zs-component/card/card';
 
 @Component({
   selector: 'app-products',
-  imports: [FormsModule, CommonModule, Zselect, Zpagination, Zcarousel, Zspinner, Zinput, Zbutton, Zcard],
+  imports: [FormsModule, CommonModule, Select, Pagination, Carousel, Spinner, Input, Button, Card],
   templateUrl: './products.html',
   styleUrl: './products.css'
 })

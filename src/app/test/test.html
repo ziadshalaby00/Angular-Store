@@ -1,11 +1,14 @@
 <!-- Test Component -->
 <div class="min-h-[90vh] p-6 flex flex-col items-center justify-evenly gap-4">
     @for(item of inputStyls; track item) {
-        <ZS-card
-        [cardStyle]="item"
-        animation="top-left"
-        >
-            <h1 class="p-6">Ziad Ahmed Shalaby</h1>
-        </ZS-card>
+      <ZS-select
+        [required]="true"
+        [inputStyle]="item"
+        [label]="item"
+        [items]="brandService.brands()"
+        placeholder="Select a brand..."
+        [searchDebounceDelay]="1"
+        searchPlaceholder="Search brands...">
+      </ZS-select>
     }
 </div>

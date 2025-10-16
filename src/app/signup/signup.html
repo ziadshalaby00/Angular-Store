@@ -48,7 +48,7 @@
           [inputStyle]="'teal'"
         ></ZS-input>
       
-        <ZS-input
+        <ZS-input #password
           [label]="'Password'"
           [placeholder]="'Enter password'"
           icon="fas fa-lock"
@@ -61,13 +61,14 @@
           [inputStyle]="'teal'"
         ></ZS-input>
       
-        <ZS-input
+        <ZS-input #conf_password
           [label]="'Confirm Password'"
           [placeholder]="'Confirm password'"
           icon="fas fa-lock"
   
+          (changedEv)="changeValues($event, 'conf_password')"
           [touched]="form.touched()"
-          [validateFn]="confPassValidate"
+          [validateFns]="[confPassValidate]"
   
           [type]="'password'"
           [required]="true"

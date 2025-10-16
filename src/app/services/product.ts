@@ -1,8 +1,7 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Config } from './config';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ZalertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/zalertService/zalert-service';
-import { ZextractErrorsService } from '../ziadshalaby/ngx-zs-component/zextractErrorsService/zextract-errors-service';
+import { AlertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/alert-service/alert-service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +9,7 @@ import { ZextractErrorsService } from '../ziadshalaby/ngx-zs-component/zextractE
 export class Product {
   private http: HttpClient = inject(HttpClient);
   private config: Config = inject(Config);
-  private zalertService: ZalertService = inject(ZalertService)
-  private zextractErrorsService: ZextractErrorsService = inject(ZextractErrorsService)
+  private alertService = inject(AlertService);
 
   products = signal<any[]>([]);
   error = signal<string | null>(null);
@@ -55,7 +53,7 @@ export class Product {
       },
       error: (err) => {
         this.error.set('Failed to load products');
-        this.zalertService.addAlert({
+        this.alertService.addAlert({
           message: 'Failed to load products',
           type: 'danger',
           autoClose: false,

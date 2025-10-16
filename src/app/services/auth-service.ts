@@ -1,9 +1,9 @@
-import { computed, inject, Injectable, linkedSignal, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Config } from './config';
 import { HttpClient } from '@angular/common/http';
-import { ZalertService, NewAlert } from '../ziadshalaby/ngx-zs-component/AlertFolder/zalertService/zalert-service';
 import { Router } from '@angular/router';
-import { ZextractErrorsService } from '../ziadshalaby/ngx-zs-component/zextractErrorsService/zextract-errors-service';
+import { AlertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/alert-service/alert-service';
+import { ExtractorService } from '../ziadshalaby/ngx-zs-component/extractor-service/extractor-service';
 
 declare const google: any;
 export const googleClientId: string = 
@@ -25,8 +25,8 @@ export interface logBody {
   providedIn: 'root'
 })
 export class AuthService {
-  private zalertService: ZalertService = inject(ZalertService)
-  private zextractErrorsService: ZextractErrorsService = inject(ZextractErrorsService)
+  private alertService: AlertService = inject(AlertService)
+  private extractorService: ExtractorService = inject(ExtractorService)
   private http: HttpClient= inject(HttpClient);
   private config: Config = inject(Config);
   router: Router = inject(Router)
@@ -46,7 +46,7 @@ export class AuthService {
     this.http.post(`${this.config.apiUrl}/api/auth/register/`, body).subscribe({
       next: (res: any) => {
         this.signupLoading.set(false)
-        this.zalertService.addAlert({
+        this.alertService.addAlert({
           message: res.message,
           type: 'success'
         })
@@ -67,7 +67,7 @@ export class AuthService {
         this.getUserData(
           () => {
             this.loginLoading.set(false)
-            this.zalertService.addAlert({
+            this.alertService.addAlert({
               message: res.message,
               type: 'success'
             })
@@ -103,7 +103,7 @@ export class AuthService {
   startRequestCode() {
     const client = this.codeClient();
     if (!client) {
-      this.zalertService.addAlert({
+      this.alertService.addAlert({
         message: 'Google authentication not initialized.',
         type: 'danger'
       });
@@ -131,7 +131,7 @@ export class AuthService {
         this.getUserData(
           () => {
             this.googleLoading.set(false)
-            this.zalertService.addAlert({
+            this.alertService.addAlert({
               message: res.message,
               type: 'success'
             })
@@ -253,7 +253,7 @@ export class AuthService {
     this.http.post(`${this.config.apiUrl}/api/auth/password-reset/`, body).subscribe({
       next: (res: any) => {
         console.log(res)
-        this.zalertService.addAlert({
+        this.alertService.addAlert({
           message: res.message,
           type: 'success'
         })
@@ -273,7 +273,7 @@ export class AuthService {
     this.http.post(`${this.config.apiUrl}/api/auth/password-reset-confirm/`, body).subscribe({
       next: (res: any) => {
         console.log(res)
-        this.zalertService.addAlert({
+        this.alertService.addAlert({
           message: res.message,
           type: 'success'
         })
@@ -289,8 +289,8 @@ export class AuthService {
   }
 
   setErrors(errorObject: any) {
-    const errors = this.zextractErrorsService.extract(errorObject)
+    const errors = this.extractorService.extract(errorObject)
     this.error.update((v: string[]) => [...v, ...errors]);
-    this.zalertService.bulkAlert(errors, { type: 'danger' });
+    this.alertService.bulkAlert(errors, { type: 'danger' });
   }
 }

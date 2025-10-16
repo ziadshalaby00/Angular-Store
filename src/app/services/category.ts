@@ -1,13 +1,13 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Config } from './config';
 import { HttpClient } from '@angular/common/http';
-import { ZalertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/zalertService/zalert-service';
+import { AlertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/alert-service/alert-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Category {
-  zalertService: ZalertService = inject(ZalertService)
+  private alertService = inject(AlertService);
 
   private http = inject(HttpClient);
   private config = inject(Config);
@@ -27,7 +27,7 @@ export class Category {
       },
       error: (err) => {
         this.error.set('Failed to load categories');
-        this.zalertService.addAlert({
+        this.alertService.addAlert({
           message: 'Failed to load categories',
           type: 'danger',
           autoClose: false,

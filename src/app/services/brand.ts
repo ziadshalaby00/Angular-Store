@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Config } from './config';
 import { HttpClient } from '@angular/common/http';
-import { ZalertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/zalertService/zalert-service';
+import { AlertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/alert-service/alert-service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ import { ZalertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/zaler
 export class Brand {
   private http = inject(HttpClient);
   private config = inject(Config);
-  private zalertService = inject(ZalertService);
+  private alertService = inject(AlertService);
 
   brands = signal<any[]>([]);
   error = signal<string | null>(null);
@@ -23,7 +23,7 @@ export class Brand {
       },
       error: (err) => {
         this.error.set('Failed to load brands');
-        this.zalertService.addAlert({
+        this.alertService.addAlert({
           message: 'Failed to load brands',
           type: 'danger',
           autoClose: false,

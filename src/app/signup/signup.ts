@@ -1,14 +1,14 @@
-import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
-import { Zinput, ChangeEventType, ValidatorFn } from '../ziadshalaby/ngx-zs-component/FormCompFolder/zinput/zinput';
-import { Zbutton } from '../ziadshalaby/ngx-zs-component/FormCompFolder/zbutton/zbutton';
-import { AuthService, googleClientId } from '../services/auth-service';
+import { Component, inject, viewChild } from '@angular/core';
+import { Input, ChangeEventType, ValidatorFn } from '../ziadshalaby/ngx-zs-component/FormCompFolder/input/input';
+import { Button } from '../ziadshalaby/ngx-zs-component/FormCompFolder/button/button';
+import { AuthService } from '../services/auth-service';
 import { Router } from '@angular/router';
-import { Zform } from '../ziadshalaby/ngx-zs-component/zformService/zform-service';
-import { Zcard } from '../ziadshalaby/ngx-zs-component/zcard/zcard';
+import { Form } from '../ziadshalaby/ngx-zs-component/form-service/form-service';
+import { Card } from '../ziadshalaby/ngx-zs-component/card/card';
 
 @Component({
   selector: 'app-signup',
-  imports: [Zinput, Zbutton, Zcard],
+  imports: [Input, Button, Card],
   templateUrl: './signup.html',
   styleUrl: './signup.css'
 })
@@ -20,16 +20,32 @@ export class Signup {
     this.authService.initCodeClient()
   }
   
+  readonly pass = viewChild<Input>('password')
+  readonly conf_pass = viewChild<Input>('conf_password')
+
   // Form fields signals
-  form = new Zform({
+  form = new Form({
     fullname: '',
     username: '',
     email: '',
     password: '',
+    conf_password: ''
   })
 
   changeValues(event: ChangeEventType, key: keyof typeof this.form.fields) {
     this.form.set(key, event.value, event.valid);
+
+    if (event.fromForce) return;
+    
+    if (key === 'password') {
+      const conf = this.conf_pass();
+      if (conf) conf.forceChange();
+    }
+
+    if (key === 'conf_password') {
+      const pass = this.pass();
+      if (pass) pass.forceChange();
+    }
   }
 
   confPassValidate: ValidatorFn = (value: string | null) => {

@@ -1,19 +1,21 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { NewAlert, ZalertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/zalertService/zalert-service';
-import { Znavbar, NavbarItemExport, UserProfile, SiteNameConfigType, AuthButtonsType } from '../ziadshalaby/ngx-zs-component/znavbar/znavbar';
+import { Component, computed, inject, model, signal } from '@angular/core';
+import { NavbarItemExport, UserProfile, SiteNameConfigType, AuthButtonsType, Navbar } from '../ziadshalaby/ngx-zs-component/navbar/navbar';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth-service';
+import { AlertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/alert-service/alert-service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [Znavbar],
+  imports: [Navbar],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
-export class Navbar {
-  zalertService: ZalertService = inject(ZalertService)
+export class NavbarComp {
+  alertService: AlertService = inject(AlertService)
   private router: Router = inject(Router)
   authService: AuthService = inject(AuthService)
+
+  readonly isMobileMenuOpen = model<boolean>(false)
   
   siteNameConfig: SiteNameConfigType = {
     siteName: 'Ziadera',
@@ -98,14 +100,14 @@ export class Navbar {
     this.router.navigate(['/signup'])
   }
 
-  onSearch(query: string) {
+  onSearch(query: string | null) {
     console.log('Search for:', query);
   }
 
   logout() {
     this.authService.logout(
       (message?: string) => { 
-        this.zalertService.addAlert({
+        this.alertService.addAlert({
           message: message ?? '',
           type: 'success'
         });
