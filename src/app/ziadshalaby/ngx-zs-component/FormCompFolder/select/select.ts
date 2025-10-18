@@ -13,7 +13,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { Input } from '../input/input';
+import { ChangeEventType, Input, ValidatorFn } from '../input/input';
 import { Label } from '../label/label';
 import { FormPaletteEntry, FormPaletteMap, FormStyle } from '../../palette-service/palette-service';
 import { InputErrors } from '../input-errors/input-errors';
@@ -27,8 +27,6 @@ export interface DropdownItem {
   name: string;
   [key: string]: any;
 }
-export type ValidatorFn = (value: DropdownItem[]) => string[];
-
 
 // =================================================================================================
 // Component Declaration
@@ -68,7 +66,7 @@ export class Select {
 
   readonly preselectedIds = input<(number | string)[]>([]);
   readonly multiple = input<boolean>(false);
-  readonly validateFns = input<ValidatorFn[]>([]);
+  readonly validateFns = input<ValidatorFn<DropdownItem[]>[]>([]);
 
   // =================================================================================================
   // Model (Two-way Binding)
@@ -80,6 +78,7 @@ export class Select {
   // =================================================================================================
   // Outputs
   // =================================================================================================
+  readonly selectedItemsEv = output<ChangeEventType<DropdownItem[]>>();
   readonly selectionClearedEv = output<void>();
 
 
@@ -237,7 +236,9 @@ export class Select {
       this.isOpen.set(false);
       this.searchQuery.set(null);
     }
+
     this.touched.set(true)
+    this.emitChangeValue(this.selectedItems(), false);
   }
 
   clearSelection(): void {
@@ -254,5 +255,17 @@ export class Select {
 
   trackByFn(_index: number, item: DropdownItem): number | string {
     return item.id;
+  }
+
+  /** Forces the input to trigger a manual change event */
+  public forceChange(fromForce: boolean = true): void {
+    // Applies the same logic as natural change.
+    this.touched.set(true);
+    this.emitChangeValue(this.selectedItems(), fromForce);
+  }
+
+  emitChangeValue(value: DropdownItem[], fromForce: boolean = true): void {
+    const valid = this.error().length === 0;
+    this.selectedItemsEv.emit({ value, valid, fromForce });
   }
 }

@@ -35,13 +35,13 @@ export type InputType =
   | 'url'
   | 'search';
 
-export type ValidatorFn = (value: string | null) => string[];
+export type ValidatorFn<T = string | null> = (value: T) => string[];
 export type FormatterFn = (value: string | null) => string | null;
 
 type SizeClassesType = 'container' | 'field' | 'leftIcon' | 'rightIcon';
 
-export interface ChangeEventType {
-  value: string | null;
+export interface ChangeEventType<T = string | null> {
+  value: T;
   valid: boolean;
   fromForce: boolean;
 }
@@ -140,7 +140,7 @@ export class Input {
   readonly max = input<string | number | null>(null);
   readonly step = input<number | null>(null);
 
-  readonly validateFns = input<ValidatorFn[]>([]);
+  readonly validateFns = input<ValidatorFn<string | null>[]>([]);
   readonly formatFn = input<FormatterFn>((val) => val?.trim() ?? null);
 
   readonly autofocus = input<boolean>(false);
@@ -167,7 +167,7 @@ export class Input {
   readonly enterEv = output<void>();
   readonly focusEv = output<void>();
   readonly blurEv = output<void>();
-  readonly changedEv = output<ChangeEventType>();
+  readonly changedEv = output<ChangeEventType<string | null>>();
   readonly searchEv = output<string | null>();
   readonly clearedEv = output<void>();
   readonly keydownEv = output<KeyboardEvent>();
@@ -393,10 +393,7 @@ export class Input {
     if (this.disabledOrReadonly()) return;
     this.touched.set(true);
 
-    const valid = this.error() === null;
-    const value = this.value();
-    const fromForce = false
-    this.changedEv.emit({ value, valid, fromForce});
+    this.emitChangeValue(this.value(), false);
   }
 
   onSearch(): void {
@@ -408,10 +405,7 @@ export class Input {
     if (this.disabledOrReadonly()) return;
     this.value.set(null);
 
-    const valid = this.error() === null;
-    const value = null;
-    const fromForce = false
-    this.changedEv.emit({ value, valid, fromForce});
+    this.emitChangeValue(null, false);
 
     this.searchEv.emit(null);
     this.clearedEv.emit();
@@ -432,8 +426,12 @@ export class Input {
     // Applies the same logic as natural change.
     this.touched.set(true);
     this.value.set(this.formatFn()(this.value()));
-    const valid = this.error() === null;
-    const value = this.value();
+
+    this.emitChangeValue(this.value(), fromForce);
+  }
+
+  emitChangeValue(value: string | null, fromForce: boolean = true): void {
+    const valid = this.error().length === 0;
     this.changedEv.emit({ value, valid, fromForce });
   }
 }

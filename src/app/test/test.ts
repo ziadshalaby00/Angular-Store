@@ -4,12 +4,12 @@ import { FormStyle } from '../ziadshalaby/ngx-zs-component/palette-service/palet
 import { ActivatedRoute } from '@angular/router';
 import { LoaderType } from '../ziadshalaby/ngx-zs-component/spinner/spinner';
 import { Range } from '../ziadshalaby/ngx-zs-component/FormCompFolder/range/range';
-import { Select } from '../ziadshalaby/ngx-zs-component/FormCompFolder/select/select';
+import { DropdownItem, Select } from '../ziadshalaby/ngx-zs-component/FormCompFolder/select/select';
 import { Brand } from '../services/brand';
 
 @Component({
   selector: 'app-test',
-  imports: [CommonModule, Range, Select],
+  imports: [CommonModule],
   templateUrl: './test.html',
   styleUrl: './test.css'
 })
@@ -20,22 +20,8 @@ export class Test {
   // ============ Example ============
   readonly inputStyls: FormStyle[] = ['primary', 'secondary', 'danger', 'warning', 'info', 'success', 'dark', 'teal', 'violet']
   readonly spinners: LoaderType[] = ['spinner', 'pro', 'double', 'gear', 'fan', 'pulse', 'dots', 'bars']
-  save() {
-    console.log('saved')
-  }
-
-  readonly isOpen = signal<boolean>(true)
-
-  onConfirm() {
-    console.log('Confirm!');
-  }
-
-  onCancel() {
-    console.log('Cancelled!');
-    this.isOpen.set(false)
-  }
-
-  onClosed() {
-    console.log('Modal closed');
+  
+  onRangeChange(value: number): void {
+    console.log('Range value changed:', value);
   }
 }
