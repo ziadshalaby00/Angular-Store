@@ -9,7 +9,7 @@ import { Brand } from '../services/brand';
 
 @Component({
   selector: 'app-test',
-  imports: [CommonModule],
+  imports: [CommonModule, Range],
   templateUrl: './test.html',
   styleUrl: './test.css'
 })

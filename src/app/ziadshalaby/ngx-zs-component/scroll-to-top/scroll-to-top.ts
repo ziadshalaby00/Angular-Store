@@ -4,6 +4,7 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, computed, input, signal } from '@angular/core';
+import { BaseColors, ColorMapping } from '../palette-service/palette-service';
 
 
 // ========================================================================
@@ -38,12 +39,12 @@ export class ScrollToTop {
   /**
    * Tailwind CSS class for the circle's color (background ring).
    */
-  readonly circleColorClass = input<string>('text-gray-400/80');
+  readonly circleColorClass = input<string>('text-gray-400/60 dark:text-gray-300/60 group-hover:brightness-110');
 
   /**
-   * Tailwind CSS class for the arrow and progress indicator color.
+   * BaseColors class for the arrow and progress indicator color.
    */
-  readonly arrowProgressColorClass = input<string>('text-blue-600');
+  readonly arrowProgressColor = input<BaseColors>('blue');
 
 
   // ========================================================================
@@ -64,6 +65,7 @@ export class ScrollToTop {
   // ========================================================================
   // Computed Properties
   // ========================================================================
+  readonly arrowProgressColorClass = computed<string>(() => ColorMapping.get(this.arrowProgressColor())?.text ?? 'text-blue-600')
 
   /**
    * Computes the stroke-dashoffset for the progress circle based on scroll position.

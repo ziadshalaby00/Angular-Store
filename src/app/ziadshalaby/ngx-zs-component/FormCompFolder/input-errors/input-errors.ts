@@ -12,13 +12,22 @@ import { ExtractorService } from '../../extractor-service/extractor-service';
   styleUrl: './input-errors.css'
 })
 export class InputErrors {
-  extractorService: ExtractorService = inject(ExtractorService)
+  // ==============================================================================
+  // Service
+  // ==============================================================================
+  readonly  extractorService: ExtractorService = inject(ExtractorService)
+
+
   // ==============================================================================
   // Inputs
   // ==============================================================================
 
   readonly iId = input<string>(crypto.randomUUID());
   readonly errors = input<(string[])[]>([]);
+
+  // ==============================================================================
+  // Computed Signals
+  // ==============================================================================
 
   readonly extractedErrors = computed<string[]>(() => this.extractorService.extract(this.errors()))
 }

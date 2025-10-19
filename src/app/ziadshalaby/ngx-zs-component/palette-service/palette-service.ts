@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 
-// ==============================================
-// Types
-// ==============================================
-
-export type FormSize = 'sm' | 'md' | 'lg';
+export type BaseSize = 'sm' | 'md' | 'lg';
 
 export type FormStyle =
   | 'primary'
@@ -17,10 +13,6 @@ export type FormStyle =
   | 'violet'
   | 'teal';
 
-// ==============================================
-// Interfaces
-// ==============================================
-
 export interface FormPaletteEntry {
   border: string;
   borderHover: string;
@@ -31,10 +23,6 @@ export interface FormPaletteEntry {
   textHover: string;
   ring: string;
 }
-
-// ==============================================
-// Constants
-// ==============================================
 
 export const FormPaletteMap = new Map<FormStyle, FormPaletteEntry>([
   [
@@ -125,7 +113,7 @@ export const FormPaletteMap = new Map<FormStyle, FormPaletteEntry>([
       textHover: 'hover:text-slate-700 dark:hover:text-slate-400',
       ring: 'focus-within:ring-slate-700 dark:focus-within:ring-slate-600',
       bgSelect: 'bg-slate-400 dark:bg-slate-800',
-      btnBG: 'bg-slate-900 hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-700/60',
+      btnBG: 'bg-slate-900 hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600',
     },
   ],
   [
@@ -154,6 +142,43 @@ export const FormPaletteMap = new Map<FormStyle, FormPaletteEntry>([
       btnBG: 'bg-teal-500 hover:bg-teal-600 dark:bg-teal-700 dark:hover:bg-teal-600',
     },
   ],
+]);
+
+// ==================================================================================
+// ==================================================================================
+
+export type BaseColors =
+  | 'slate' | 'gray'   | 'zinc'    | 'neutral' | 'stone'
+  | 'red'   | 'orange' | 'amber'   | 'yellow'  | 'rose'
+  | 'lime'  | 'green'  | 'emerald' | 'teal'
+  | 'cyan'  | 'sky'    | 'blue'    | 'indigo'
+  | 'violet'| 'purple' | 'fuchsia' | 'pink';
+
+export type BaseColorPrefixes = 'text' | 'bg' | 'border';
+
+export const ColorMapping: Map<BaseColors, Record<BaseColorPrefixes, string>> = new Map([
+  ['slate',   { text: 'text-slate-600',   bg: 'bg-slate-600',   border: 'border-slate-600' }],
+  ['gray',    { text: 'text-gray-600',    bg: 'bg-gray-600',    border: 'border-gray-600' }],
+  ['zinc',    { text: 'text-zinc-600',    bg: 'bg-zinc-600',    border: 'border-zinc-600' }],
+  ['neutral', { text: 'text-neutral-600', bg: 'bg-neutral-600', border: 'border-neutral-600' }],
+  ['stone',   { text: 'text-stone-600',   bg: 'bg-stone-600',   border: 'border-stone-600' }],
+  ['red',     { text: 'text-red-600',     bg: 'bg-red-600',     border: 'border-red-600' }],
+  ['orange',  { text: 'text-orange-600',  bg: 'bg-orange-600',  border: 'border-orange-600' }],
+  ['amber',   { text: 'text-amber-600',   bg: 'bg-amber-600',   border: 'border-amber-600' }],
+  ['yellow',  { text: 'text-yellow-600',  bg: 'bg-yellow-600',  border: 'border-yellow-600' }],
+  ['lime',    { text: 'text-lime-600',    bg: 'bg-lime-600',    border: 'border-lime-600' }],
+  ['green',   { text: 'text-green-600',   bg: 'bg-green-600',   border: 'border-green-600' }],
+  ['emerald', { text: 'text-emerald-600', bg: 'bg-emerald-600', border: 'border-emerald-600' }],
+  ['teal',    { text: 'text-teal-600',    bg: 'bg-teal-600',    border: 'border-teal-600' }],
+  ['cyan',    { text: 'text-cyan-600',    bg: 'bg-cyan-600',    border: 'border-cyan-600' }],
+  ['sky',     { text: 'text-sky-600',     bg: 'bg-sky-600',     border: 'border-sky-600' }],
+  ['blue',    { text: 'text-blue-600',    bg: 'bg-blue-600',    border: 'border-blue-600' }],
+  ['indigo',  { text: 'text-indigo-600',  bg: 'bg-indigo-600',  border: 'border-indigo-600' }],
+  ['violet',  { text: 'text-violet-600',  bg: 'bg-violet-600',  border: 'border-violet-600' }],
+  ['purple',  { text: 'text-purple-600',  bg: 'bg-purple-600',  border: 'border-purple-600' }],
+  ['fuchsia', { text: 'text-fuchsia-600', bg: 'bg-fuchsia-600', border: 'border-fuchsia-600' }],
+  ['pink',    { text: 'text-pink-600',    bg: 'bg-pink-600',    border: 'border-pink-600' }],
+  ['rose',    { text: 'text-rose-600',    bg: 'bg-rose-600',    border: 'border-rose-600' }],
 ]);
 
 // ==============================================

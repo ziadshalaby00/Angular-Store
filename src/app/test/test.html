@@ -1,14 +1,40 @@
 <!-- Test Component -->
 <div class="min-h-[90vh] p-6 flex items-center justify-evenly gap-4">
-    <!-- <div class="w-72">
+    <div class="w-72">
+      @for(item of inputStyls; track item) {
+        <ZS-range
+        [label]="item"
+        [inputStyle]="item"
+        (valueChange)="onRangeChange($event)"
+        size="sm"
+        [disabled]="true"
+        >
+        </ZS-range>
+      }
+    </div>
+
+    <div class="w-72">
       @for(item of inputStyls; track item) {
         <ZS-range
         [label]="item"
         [inputStyle]="item"
         (valueChange)="onRangeChange($event)"
         size="md"
+        [isReadonly]="true"
         >
         </ZS-range>
       }
-    </div> -->
+    </div>
+
+    <div class="w-72">
+      @for(item of inputStyls; track item) {
+        <ZS-range
+        [label]="item"
+        [inputStyle]="item"
+        (valueChange)="onRangeChange($event)"
+        size="lg"
+        >
+        </ZS-range>
+      }
+    </div>
 </div>

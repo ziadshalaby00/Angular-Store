@@ -8,7 +8,8 @@
   ></ZS-label>
 
   <!-- ========================= Slider Container ========================= -->
-  <div class="flex gap-2 items-center">
+  <div class="flex items-center"
+  [class]="gapCLasses()">
     
     <!-- ========================= Track ========================= -->
     <div
@@ -19,14 +20,14 @@
       
       <!-- ========================= Track Background ========================= -->
       <div
-        class="absolute inset-0 bg-gradient-to-r from-gray-200 to-gray-300 transition-all duration-300 group-hover:brightness-110"
+        class="absolute inset-0 rounded-full bg-gradient-to-r from-gray-200 to-gray-300 transition-all duration-300 group-hover:brightness-110"
         [ngClass]="['secondary', 'dark'].includes(inputStyle()) ? 'dark:from-gray-500 dark:to-gray-600' : 'dark:from-gray-700 dark:to-gray-800'"
         [class.cursor-not-allowed]="disabledOrReadonly()"
       ></div>
 
       <!-- ========================= Fill (Progress) ========================= -->
       <div
-        class="absolute left-0 top-0 h-full transition-all duration-200 ease-out shadow-sm"
+        class="absolute left-0 rounded-full top-0 h-full transition-all duration-200 ease-out shadow-sm"
         [style.width.%]="percent()"
         [class]="palette().btnBG"
         [class.cursor-not-allowed]="disabledOrReadonly()"
@@ -54,7 +55,7 @@
         [attr.aria-describedby]="hint() ? iId() + '-hint' : null"
         aria-orientation="horizontal"
       >
-        <i class="fa-solid fa-circle text-[8px] text-white"></i>
+        <i class="fa-solid fa-circle text-white" [class]="dotCLasses()"></i>
       </div>
     </div>
 

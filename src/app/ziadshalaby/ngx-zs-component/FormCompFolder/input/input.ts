@@ -9,7 +9,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { FormPaletteMap, FormSize, FormStyle } from '../../palette-service/palette-service';
+import { FormPaletteMap, BaseSize, FormStyle } from '../../palette-service/palette-service';
 import { Label } from '../label/label';
 import { InputErrors } from '../input-errors/input-errors';
 
@@ -49,7 +49,7 @@ export interface ChangeEventType<T = string | null> {
 // Constants & Regex
 // ==============================================================================
 
-const SIZE_CLASSES_MAP = new Map<SizeClassesType, Record<FormSize, string>>([
+const SIZE_CLASSES_MAP = new Map<SizeClassesType, Record<BaseSize, string>>([
   [
     'container',
     {
@@ -145,7 +145,7 @@ export class Input {
 
   readonly autofocus = input<boolean>(false);
   readonly searchDebounceDelay = input<number>(300);
-  readonly size = input<FormSize>('md');
+  readonly size = input<BaseSize>('md');
 
   // ==============================================================================
   // ViewChild

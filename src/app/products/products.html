@@ -13,7 +13,7 @@
         [autoPlay]="true"
         [duration]="3500"
         [arrows]="true"
-        arrowColorClass="text-blue-700"
+        arrowColor="violet"
       >
         @for (item of categoryService.categories(); track item.id) {
           <div carousel-item (click)="filters.category.set(item.id)" class="flex items-center justify-center">

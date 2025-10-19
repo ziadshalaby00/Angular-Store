@@ -1,13 +1,13 @@
 <!-- ========================= Scroll-to-Top Container ========================= -->
 <div
   [ngClass]="positionClass()"
-  class="fixed bottom-4 z-[500] transition-opacity duration-300"
+  class="fixed group bottom-4 z-[500] transition-opacity duration-300"
   [style.opacity]="scrollY() > 200 ? 1 : 0"
 >
   <!-- ========================= Scroll Button ========================= -->
   <button
     (click)="scrollToTop()"
-    class="w-12 h-12 rounded-full flex items-center justify-center relative overflow-hidden focus:outline-none"
+    class="w-12 h-12 group-hover:scale-105 rounded-full flex items-center justify-center relative overflow-hidden focus:outline-none"
     type="button"
     role="button"
     aria-label="Scroll to top"

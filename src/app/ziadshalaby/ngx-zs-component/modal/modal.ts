@@ -3,7 +3,7 @@
 // ==============================================
 
 import { Component, computed, ElementRef, input, model, output, signal, viewChild } from '@angular/core';
-import { FormPaletteMap, FormSize, FormStyle } from '../palette-service/palette-service';
+import { FormPaletteMap, BaseSize, FormStyle } from '../palette-service/palette-service';
 import { Button, ButtonVariant } from '../FormCompFolder/button/button';
 
 
@@ -17,7 +17,7 @@ export interface BtnType {
 
   btnStyle?: FormStyle;
   variant?: ButtonVariant;
-  size?: FormSize;
+  size?: BaseSize;
   icon?: string | null
   disabled?: boolean;
 }

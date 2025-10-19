@@ -3,7 +3,7 @@
 // ==============================================
 
 export type ButtonVariant = 'solid' | 'outline';
-export type BtnSizeType = FormSize | 'xl'
+export type BtnSizeType = BaseSize | 'xl'
 
 // ==============================================
 // Imports
@@ -15,7 +15,7 @@ import {
   computed,
   output,
 } from '@angular/core';
-import { FormPaletteMap, FormStyle, FormSize } from '../../palette-service/palette-service';
+import { FormPaletteMap, FormStyle, BaseSize } from '../../palette-service/palette-service';
 
 
 // ==============================================

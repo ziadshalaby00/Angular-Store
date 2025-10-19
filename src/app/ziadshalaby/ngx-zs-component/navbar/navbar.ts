@@ -7,7 +7,7 @@ import { Component, computed, input, model, output, signal } from '@angular/core
 import { RouterModule } from '@angular/router';
 import { NavItem, NavbarItem } from '../NavItemFolder/nav-item/nav-item';
 import { ButtonVariant, Button } from '../FormCompFolder/button/button';
-import { FormSize, FormStyle } from '../palette-service/palette-service';
+import { BaseSize, FormStyle } from '../palette-service/palette-service';
 
 // ==============================================
 // Interfaces & Types
@@ -33,13 +33,13 @@ export interface AuthButtonsType {
   login?: {
     btnStyle?: FormStyle,
     variant?: ButtonVariant,
-    size?: FormSize,
+    size?: BaseSize,
     icon?: string | null
   }
   signup?: {
     btnStyle?: FormStyle,
     variant?: ButtonVariant,
-    size?: FormSize,
+    size?: BaseSize,
     icon?: string | null
   }
 }

@@ -12,7 +12,7 @@ import {
   viewChild,
   effect,
 } from '@angular/core';
-import { FormPaletteMap, FormSize, FormStyle } from '../../palette-service/palette-service';
+import { FormPaletteMap, BaseSize, FormStyle } from '../../palette-service/palette-service';
 import { Label } from '../label/label';
 import { CommonModule } from '@angular/common';
 
@@ -35,12 +35,12 @@ export class Range {
   readonly label = input<string | null>(null);
   readonly hint = input<string | null>(null);
 
-  readonly min = input(1);
-  readonly max = input(100);
-  readonly step = input(1);
+  readonly min = input(10);
+  readonly max = input(400);
+  readonly step = input(10);
 
   readonly inputStyle = input<FormStyle>('secondary');
-  readonly size = input<FormSize>('md');
+  readonly size = input<BaseSize>('md');
 
   readonly disabled = input<boolean>(false);
   readonly isReadonly = input<boolean>(false);
@@ -50,7 +50,7 @@ export class Range {
   // ==============================================
   // Model
   // ==============================================
-  readonly value = model<number>(50);
+  readonly value = model<number>(200);
   readonly touched = model<boolean>(false); // Tracks if the user has interacted with the input
 
   // ==============================================
@@ -74,24 +74,41 @@ export class Range {
   });
 
   rangeSizeClasses = (type: 'size' | 'height'): string => {
-    const sizeClasses: Record<'size' | 'height', Record<FormSize, string>> = {
+    const sizeClasses: Record<'size' | 'height', Record<BaseSize, string>> = {
       height: {
-        sm: 'h-2',
-        md: 'h-4',
-        lg: 'h-6',
+        sm: 'h-1.5',
+        md: 'h-2.5',
+        lg: 'h-3.5',
       },
       size: {
-        sm: 'size-2',
-        md: 'size-4',
-        lg: 'size-6',
+        sm: 'size-3.5',
+        md: 'size-5',
+        lg: 'size-7',
       }
     }
-
     return sizeClasses[type][this.size()]
   }
 
+  readonly dotCLasses = computed<string>(() => {
+    const sizeClasses: Record<BaseSize, string> = {
+      sm: 'text-[6px]',
+      md: 'text-[10px]',
+      lg: 'text-[14px]',
+    }
+    return sizeClasses[this.size()]
+  })
+
+  readonly gapCLasses = computed<string>(() => {
+    const sizeClasses: Record<BaseSize, string> = {
+      sm: 'gap-2',
+      md: 'gap-4',
+      lg: 'gap-6',
+    }
+    return sizeClasses[this.size()]
+  })
+
   readonly rangeClasses = computed<string>(() => {
-    const base = 'relative w-full rounded-full cursor-pointer overflow-hidden';
+    const base = 'relative w-full rounded-full cursor-pointer';
     const sizeClasses = this.rangeSizeClasses('height');
     const disabledClass = this.disabled() ? 'opacity-60' : '';
     const interactionClass = !this.disabledOrReadonly() ? 'group' : '';
@@ -147,21 +164,20 @@ export class Range {
   calcThumbPosition(): string {
     const p = this.percent();
     const track = this.trackRef()?.nativeElement;
-    if (!track) return '0%';
+    if (!track) return `${p}%`;
 
-    const trackWidth = track.offsetWidth;
-    const thumbSizes = {
-      sm: 8,
-      md: 16,
-      lg: 24
-    }
-    const thumbSize = thumbSizes[this.size()];
-    const thumbHalf = thumbSize / 2;
-    const center = (p / 100) * trackWidth;
-    const left = center - thumbHalf;
-    const clamped = Math.min(Math.max(left, 0), trackWidth - thumbSize);
+    const trackWidth = track.offsetWidth; // عرض الشريط بالبكسل
+    const displacementSizes = {
+      sm: 6,
+      md: 10,
+      lg: 14,
+    };
 
-    return `${(clamped / trackWidth) * 100}%`;
+    const displacementPx = displacementSizes[this.size()];
+    const displacementPercent = (displacementPx / trackWidth) * 100;
+
+    const displacement = p - displacementPercent;
+    return `${displacement}%`;
   }
 
   // ==============================================

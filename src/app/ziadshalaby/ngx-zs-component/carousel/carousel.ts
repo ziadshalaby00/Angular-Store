@@ -18,6 +18,7 @@ export type ItemShapeType = 'rect' | 'circle';
 
 import { Component, input, output, model, viewChild, ElementRef, computed, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BaseColors, ColorMapping } from '../palette-service/palette-service';
 
 @Component({
   selector: 'ZS-carousel',
@@ -34,7 +35,7 @@ export class Carousel {
   readonly itemsNumber = input.required<number>();
 
   readonly arrows = input<boolean>(true);                    // Show/hide navigation arrows
-  readonly arrowColorClass = input<string>('text-gray-700'); // Arrow color CSS class
+  readonly arrowColor = input<BaseColors>('gray'); // Arrow color CSS class
 
   readonly showIndicators = input<boolean>(true);
 
@@ -77,7 +78,8 @@ export class Carousel {
   // ==============================================
   // Computed Properties
   // ==============================================
-
+  readonly arrowColorClass = computed<string>(() => ColorMapping.get(this.arrowColor())?.text ?? 'text-gray-600')
+  
   readonly itemsPerBoxWidth = computed<string>(() => `${100 / this.itemsPerBox()}%`);
 
   readonly totalBoxes = computed<number>(() =>
