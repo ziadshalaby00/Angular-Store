@@ -42,7 +42,7 @@ export class Select {
   // =================================================================================================
   // Inputs
   // =================================================================================================
-  readonly iId = input<string>(crypto.randomUUID());
+  readonly Id = input<string>(crypto.randomUUID());
   readonly items = input.required<DropdownItem[]>();
 
   readonly label = input<string | null>(null);

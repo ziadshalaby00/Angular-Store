@@ -22,7 +22,7 @@ export class InputErrors {
   // Inputs
   // ==============================================================================
 
-  readonly iId = input<string>(crypto.randomUUID());
+  readonly Id = input<string>(crypto.randomUUID());
   readonly errors = input<(string[])[]>([]);
 
   // ==============================================================================

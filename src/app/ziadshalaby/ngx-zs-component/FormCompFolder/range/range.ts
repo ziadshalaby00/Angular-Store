@@ -31,7 +31,7 @@ export class Range {
   // ==============================================
   // Inputs
   // ==============================================
-  readonly iId = input<string>(crypto.randomUUID());
+  readonly Id = input<string>(crypto.randomUUID());
   readonly label = input<string | null>(null);
   readonly hint = input<string | null>(null);
 
@@ -51,7 +51,6 @@ export class Range {
   // Model
   // ==============================================
   readonly value = model<number>(200);
-  readonly touched = model<boolean>(false); // Tracks if the user has interacted with the input
 
   // ==============================================
   // References & Internal State
@@ -100,7 +99,7 @@ export class Range {
 
   readonly gapCLasses = computed<string>(() => {
     const sizeClasses: Record<BaseSize, string> = {
-      sm: 'gap-2',
+      sm: 'gap-3.5',
       md: 'gap-4',
       lg: 'gap-6',
     }
@@ -123,6 +122,15 @@ export class Range {
       interactionClass
     ].join(' ');
   });
+
+  readonly ThumbClasses = computed<string>(() => {
+    return [
+      this.palette().btnBG,
+      this.palette().btnBGHover,
+      this.dragging() ? 'scale-110 shadow-lg' : '',
+      this.rangeSizeClasses('size')
+    ].join(' ')
+  })
 
   // ==============================================
   // Event Handlers
@@ -167,7 +175,7 @@ export class Range {
     if (!track) return `${p}%`;
 
     const trackWidth = track.offsetWidth; // عرض الشريط بالبكسل
-    const displacementSizes = {
+    const displacementSizes: Record<BaseSize, number> = {
       sm: 6,
       md: 10,
       lg: 14,

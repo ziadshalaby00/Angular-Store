@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class ExtractorService {
   /**
    * Extract all error messages recursively from any structure
-   * @param input - could be string | string[] | object | | Error | null | undefined
+   * @param input - could be string | Array | object | | Error | null | undefined
    * @returns string[] - flattened array of all messages
    */
   extract(input: unknown): string[] {

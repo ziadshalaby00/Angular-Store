@@ -5,12 +5,13 @@
 <div class="w-full block">
 
   <!-- ========================= Label & Hint ========================= -->
-  <ZS-label
+  <ZS-label class="mb-1"
     [label]="label()"
     [hint]="hint()"
     [required]="required()"
-    [hintID]="iId() + '-hint'"
-    [for]="iId()"
+    [hintId]="Id() + '-hint'"
+    [size]="size()"
+    [for]="Id()"
   >
   </ZS-label>
 
@@ -37,7 +38,7 @@
     <!-- ========================= Input Field ========================= -->
     <input
       #inputEl
-      [id]="iId()"
+      [id]="Id()"
       [name]="iName()"
       [type]="actualType"
       [attr.placeholder]="placeholder()"
@@ -63,9 +64,9 @@
       class="flex-1 bg-transparent outline-none caret-current w-full"
       [class]="getSize('field')"
       [attr.aria-describedby]="
-        (hint() ? iId() + '-hint' : '') +
+        (hint() ? Id() + '-hint' : '') +
         (hint() && error() ? ' ' : '') +
-        (error() ? iId() + '-error' : '')
+        (error() ? Id() + '-error' : '')
       "
     />
 
@@ -125,7 +126,7 @@
 
   <!-- ========================= Error Messages ========================= -->
   <ZS-input-errors
-  [iId]="iId()"
+  [Id]="Id()"
   [errors]="[error()]"
   >
   </ZS-input-errors>

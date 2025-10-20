@@ -34,7 +34,7 @@ export class Button {
   // ==============================================
   // Inputs
   // ==============================================
-  readonly iId = input<string>(crypto.randomUUID());
+  readonly Id = input<string>(crypto.randomUUID());
   readonly btnStyle = input<FormStyle>('primary');
   readonly variant = input<ButtonVariant>('solid');
   readonly size = input<BtnSizeType>('md');
@@ -76,6 +76,7 @@ export class Button {
 
     const solidClasses = this.join(
       p.btnBG,
+      p.btnBGHover,
       'border border-transparent',
       'shadow-md dark:shadow-slate-700/50',
       'hover:shadow-lg',

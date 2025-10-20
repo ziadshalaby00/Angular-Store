@@ -1,10 +1,11 @@
 <!-- ========================= Label ========================= -->
 <div class="flex flex-col w-full select-none">
-  <ZS-label
-    [label]="label()"
-    [hint]="hint()"
-    [hintID]="iId() + '-hint'"
-    [for]="iId()"
+  <ZS-label class="mb-1"
+  [label]="label()"
+  [hint]="hint()"
+  [hintId]="Id() + '-hint'"
+  [size]="size()"
+  [for]="Id()"
   ></ZS-label>
 
   <!-- ========================= Slider Container ========================= -->
@@ -29,7 +30,7 @@
       <div
         class="absolute left-0 rounded-full top-0 h-full transition-all duration-200 ease-out shadow-sm"
         [style.width.%]="percent()"
-        [class]="palette().btnBG"
+        [ngClass]="palette().btnBG + ' ' + palette().btnBGHover"
         [class.cursor-not-allowed]="disabledOrReadonly()"
       ></div>
 
@@ -38,21 +39,17 @@
         class="absolute top-1/2 rounded-full flex items-center justify-center -translate-y-1/2 transition-all duration-200 ease-out shadow-md group-hover:scale-110"
         [style.left]="calcThumbPosition()"
         [class.cursor-not-allowed]="disabledOrReadonly()"
-        [class]="[
-          palette().btnBG,
-          dragging() ? 'scale-110 shadow-lg' : '',
-          rangeSizeClasses('size')
-        ].join(' ')"
+        [ngClass]="ThumbClasses()"
         role="slider"
         tabindex="0"
-        [attr.id]="iId()"
+        [attr.id]="Id()"
         [attr.aria-valuemin]="min()"
         [attr.aria-valuemax]="max()"
         [attr.aria-valuenow]="value()"
         [attr.aria-disabled]="disabledOrReadonly() || null"
         [attr.aria-readonly]="isReadonly() || null"
-        [attr.aria-labelledby]="iId() + '-label'"
-        [attr.aria-describedby]="hint() ? iId() + '-hint' : null"
+        [attr.aria-labelledby]="Id() + '-label'"
+        [attr.aria-describedby]="hint() ? Id() + '-hint' : null"
         aria-orientation="horizontal"
       >
         <i class="fa-solid fa-circle text-white" [class]="dotCLasses()"></i>
