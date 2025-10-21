@@ -15,7 +15,7 @@
 
     <!-- ===================== Custom Accessible Checkbox ===================== -->
     <span
-      role="checkbox"
+      role="shape() === 'toggle' ? 'switch' : 'checkbox'"
       tabindex="0"
       [attr.aria-checked]="isChecked()"
       [attr.aria-disabled]="disabledOrReadonly()"

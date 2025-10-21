@@ -8,10 +8,12 @@ import { DropdownItem, Select } from '../ziadshalaby/ngx-zs-component/FormCompFo
 import { Brand } from '../services/brand';
 import { Checkbox } from '../ziadshalaby/ngx-zs-component/FormCompFolder/checkbox/checkbox';
 import { Button } from "../ziadshalaby/ngx-zs-component/FormCompFolder/button/button";
+import { Input } from "../ziadshalaby/ngx-zs-component/FormCompFolder/input/input";
+import { FileInput } from '../ziadshalaby/ngx-zs-component/FormCompFolder/file/file';
 
 @Component({
   selector: 'app-test',
-  imports: [CommonModule, Checkbox],
+  imports: [CommonModule, FileInput],
   templateUrl: './test.html',
   styleUrl: './test.css'
 })

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Toggle } from './toggle';
+import { FileInput } from './file';
 
-describe('Toggle', () => {
-  let component: Toggle;
-  let fixture: ComponentFixture<Toggle>;
+describe('FileInput', () => {
+  let component: FileInput;
+  let fixture: ComponentFixture<FileInput>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Toggle]
+      imports: [FileInput]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Toggle);
+    fixture = TestBed.createComponent(FileInput);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,103 @@
+<div
+  class="flex flex-col gap-2 w-full"
+  [class.opacity-60]="disabled()"
+>
+    <!-- ========================= Label & Hint ========================= -->
+    <ZS-label class="mb-1"
+        [label]="label()"
+        [hint]="hint()"
+        [required]="required()"
+        [hintId]="Id() + '-hint'"
+        [size]="size()"
+        [for]="Id()"
+    >
+    </ZS-label>
+
+  <!-- ================= Input ================= -->
+  <div
+    [class]="[
+      'relative rounded-xl flex flex-col justify-center items-center gap-2 border-2 border-dashed cursor-pointer transition-all duration-200',
+      palette().border,
+      palette().ring, 
+      palette().borderHover,
+      palette().inputBg
+    ].join(' ')"
+    [class.cursor-not-allowed]="disabledOrReadonly()"
+  >
+    <input 
+      #fileInput
+      type="file" 
+      [id]="Id()"
+      [attr.accept]="accept()"
+      [attr.multiple]="multiple() ? '' : null"
+      class="absolute inset-0 opacity-0 cursor-pointer"
+      [disabled]="disabledOrReadonly()"
+      (change)="handleFileChange($event)"
+    />
+
+    <div class="flex flex-col items-center justify-center text-center py-6">
+      <i class="fa-solid fa-upload text-3xl mb-2" [ngClass]="palette().text"></i>
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        {{ placeholder() }}
+      </p>
+    </div>
+  </div>
+
+  <!-- ================= Files Preview ================= -->
+  @if (hasFiles()) {
+    <div class="flex flex-col gap-2 mt-3">
+      @for (entry of files().entries(); track entry[0]) {
+        <div
+          class="flex flex-col gap-1 p-2 rounded-lg border"
+          [ngClass]="[palette().border, palette().inputBg]"
+        >
+          <div class="flex items-center gap-2">
+            
+            <span class="text-sm font-medium truncate">{{ entry[1].name }}</span>
+          </div>
+
+          <div class="flex items-center justify-between gap-4">
+            <div class="flex items-center gap-1">
+                <i class="text-lg fa-solid fa-file" [ngClass]="palette().text"></i>
+                <span class="text-xs text-gray-500">
+                    {{ formatSize(entry[1].size) }}
+                </span>
+            </div>
+
+            <div class="flex gap-2">
+                @if (allowPreview() && entry[1].url?.startsWith('blob:')) {
+                    <ZS-button 
+                    type="button"
+                    (clickedEv)="preview(entry[1].url)"
+                    [btnStyle]="inputStyle()"
+                    size="sm"
+                    >
+                    Preview
+                    </ZS-button>
+                }
+        
+                @if (!disabledOrReadonly()) {
+                    <ZS-button 
+                    type="button"
+                    variant="outline"
+                    btnStyle="danger"
+                    (clickedEv)="removeFile(entry[0])"
+                    icon="fa-solid fa-trash"
+                    >
+                    </ZS-button>
+                }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- ========================= Error Messages ========================= -->
+  <ZS-input-errors
+  [Id]="Id()"
+  [errors]="[error()]"
+  >
+  </ZS-input-errors>
+
+</div>

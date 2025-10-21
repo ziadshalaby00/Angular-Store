@@ -4,7 +4,7 @@
   class="w-full"
   [attr.type]="type()"
   [disabled]="disabled()"
-  [class]="baseClasses()"
+  [class]="['flex gap-2', baseClasses()].join(' ')"
 
   [attr.aria-disabled]="disabled()"
   [attr.aria-label]="icon() ? (icon() + ' button') : undefined"
@@ -14,7 +14,7 @@
 >
   <!-- ========================= Button Content ========================= -->
   @if (icon()) {
-    <i class="{{ icon() }} mr-2" aria-hidden="true"></i>
+    <i [class]="icon()" aria-hidden="true"></i>
   }
   <ng-content></ng-content>
 </button>

@@ -1,0 +1,7 @@
+:host {
+  @apply block w-full;
+}
+
+input[type='file']:disabled {
+  @apply cursor-not-allowed opacity-60;
+}

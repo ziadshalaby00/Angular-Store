@@ -8,7 +8,7 @@ import { Label } from '../label/label';
 // ==============================================
 
 export type VariantType = 'solid' | 'regular'
-export type ShapeType = 'square' | 'circle'
+export type ShapeType = 'square' | 'circle' | 'toggle'
 
 
 // ==============================================
@@ -46,12 +46,15 @@ export class Checkbox {
 
 
   // ==============================================
-  // Computed Styles
+  // Computed Signals
   // ==============================================
 
   readonly palette = computed(() => FormPaletteMap.get(this.inputStyle()) ?? FormPaletteMap.get('secondary')!);
 
   readonly iconClasses = computed<string>(() => {
+    const v: VariantType = this.variant()
+    const s: ShapeType = this.shape()
+
     const variantClass: Record<'true' | 'false', Record<VariantType, string>> = {
       true: {
         solid: 'fa-solid',
@@ -64,10 +67,12 @@ export class Checkbox {
     }
     const shapeClass: Record<'true' | 'false', Record<ShapeType, string>> = {
       true: {
+        toggle: 'fa-toggle-on',
         square: 'fa-square-check',
         circle: 'fa-circle-check'
       },
       false: {
+        toggle: 'fa-toggle-off',
         square: 'fa-square',
         circle: 'fa-circle'
       },
@@ -78,8 +83,8 @@ export class Checkbox {
 
     const state = this.value() ? 'true' : 'false' as ('true' | 'false');
     return [
-      variantClass[state][this.variant()], 
-      shapeClass[state][this.shape()],
+      s === 'toggle' ? variantClass.true.solid : variantClass[state][v], 
+      shapeClass[state][s],
       disabledClass,
       interactionClass
     ].join(' ')
@@ -87,9 +92,9 @@ export class Checkbox {
 
   readonly sizeClass = computed<string>(() => {
     const sizeClasses: Record<BaseSize, string> = {
-      sm: 'text-[14px]',
-      md: 'text-[24px]',
-      lg: 'text-[30px]'
+      sm: 'text-[20px]',
+      md: 'text-[30px]',
+      lg: 'text-[45px]'
     }
     return sizeClasses[this.size()]
   });
@@ -104,7 +109,7 @@ export class Checkbox {
 
   toggleChecked() {
     if (this.disabledOrReadonly()) return;
-    this.value.set(!this.value());
+    this.value.update(v => !v);
   }
 
   onKeyDown(event: KeyboardEvent) {
