@@ -14,5 +14,4 @@ export const routes: Routes = [
     { path: 'signup', component: Signup},
     { path: 'product-detail/:id', component: ProductDetail },
     { path: 'reset-password/:uid/:token', component: ResetPassword }
-
 ];

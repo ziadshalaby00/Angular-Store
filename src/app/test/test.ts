@@ -23,16 +23,4 @@ export class Test {
 
   // ============ Example ============
   readonly inputStyls: FormStyle[] = ['primary', 'secondary', 'danger', 'warning', 'info', 'success', 'dark', 'teal', 'violet']
-  readonly spinners: LoaderType[] = ['spinner', 'pro', 'double', 'gear', 'fan', 'pulse', 'dots', 'bars']
-  
-  onValueChange(value: number): void {
-    console.log('Check Box:', value);
-  }
-
-  readonly value = signal<boolean>(false)
-  constructor() {
-    effect(() => {
-      console.log(this.value())
-    })
-  }
 }

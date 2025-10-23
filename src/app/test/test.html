@@ -2,16 +2,7 @@
 <div class="min-h-[90vh] p-6 flex items-center justify-evenly gap-4">
   <div class="w-72 flex flex-col gap-4">
     @for(item of inputStyls; track item) {
-      <ZS-file
-      [label]="'File'"
-      placeholder="ziad 123"
-      [hint]="'ziad shalaby'"
-      [inputStyle]="item"
-      accept=".pdf"
-      [multiple]="true"
-      [required]="true"
-      >
-      </ZS-file>
+
     }
   </div>
 </div>

@@ -53,6 +53,7 @@
     <!-- ========================= Leaf Item (No Children) ========================= -->
     <a
       [routerLink]="item().routerLink"
+      [routerLinkActive]="item().routerLinkActive ?? ''"
       [ngClass]="getItemClasses(item())"
       class="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium md:text-base"
       (click)="onItemClick()"

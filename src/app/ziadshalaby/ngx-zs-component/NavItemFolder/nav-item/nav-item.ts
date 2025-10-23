@@ -5,6 +5,7 @@
 export interface NavbarItem {
   label: string;
   routerLink?: string;
+  routerLinkActive?: string;
   action?: () => void;
   children?: NavbarItem[];
   iconClass?: string;

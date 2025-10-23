@@ -22,6 +22,10 @@ export interface UserProfile {
 }
 
 export type NavbarItemExport = Omit<NavbarItem, 'childrenOpenWindow'>;
+export interface navItemsType {
+  routerLinkActive?: string;
+  navItems: NavbarItemExport[];
+}
 
 export interface SiteNameConfigType {
   siteName: string;
@@ -69,7 +73,7 @@ export class Navbar {
   readonly showUserSection = input<boolean>(true);
   readonly showSearchBar = input<boolean>(false);
 
-  readonly navItems = input<NavbarItemExport[]>([]);
+  readonly navItems = input<navItemsType>();
 
   readonly isLoggedIn = input<boolean>(false);
   readonly userProfile = input<UserProfile | undefined>();
@@ -105,19 +109,19 @@ export class Navbar {
   // ==============================================
 
   readonly visibleNavItems = computed<NavbarItem[]>(() => {
-    const items = this.navItems();
+    const items = this.navItems()?.navItems ?? [];
     const limit = this.showSearchBar() ? 2 : 5;
     return items.slice(0, limit).map(item => this.toNavbarItem(item, true));
   });
 
   readonly moreNavItems = computed<NavbarItem[]>(() => {
-    const items = this.navItems();
+    const items = this.navItems()?.navItems ?? [];
     const start = this.showSearchBar() ? 2 : 5;
     return items.slice(start).map(item => this.toNavbarItem(item, true));
   });
 
   readonly mobileNavItems = computed<NavbarItem[]>(() =>
-    this.navItems().map(item => this.toNavbarItem(item, false))
+    (this.navItems()?.navItems ?? []).map(item => this.toNavbarItem(item, false))
   );
 
   readonly getUserMenuItems = computed<NavbarItem[]>(() =>
@@ -129,8 +133,11 @@ export class Navbar {
   // ==============================================
 
   private toNavbarItem(item: NavbarItemExport, childrenOpenWindow = false): NavbarItem {
+    const routerLinkActive = this.navItems()?.routerLinkActive;
+    
     return {
       ...item,
+      routerLinkActive,
       childrenOpenWindow,
       children: item.children?.map(child => this.toNavbarItem(child, childrenOpenWindow)) ?? []
     };

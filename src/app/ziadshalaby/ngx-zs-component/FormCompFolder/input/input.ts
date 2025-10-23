@@ -430,7 +430,7 @@ export class Input {
     this.emitChangeValue(this.value(), fromForce);
   }
 
-  emitChangeValue(value: string | null, fromForce: boolean = true): void {
+  private emitChangeValue(value: string | null, fromForce: boolean = true): void {
     const valid = this.error().length === 0;
     this.changedEv.emit({ value, valid, fromForce });
   }

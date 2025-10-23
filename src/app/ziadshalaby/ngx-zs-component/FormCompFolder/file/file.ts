@@ -1,70 +1,31 @@
-import { Component, computed, ElementRef, input, model, signal, viewChild } from '@angular/core';
+// ==============================================================================
+// Imports
+// ==============================================================================
+
+import { Component, computed, ElementRef, input, model, output, signal, viewChild } from '@angular/core';
 import { BaseSize, FormPaletteMap, FormStyle } from '../../palette-service/palette-service';
-import { ValidatorFn } from '../input/input';
+import { ChangeEventType, ValidatorFn } from '../input/input';
 import { Label } from '../label/label';
 import { InputErrors } from '../input-errors/input-errors';
 import { CommonModule } from '@angular/common';
 import { Button } from '../button/button';
+
+// ==============================================================================
+// Types & Interfaces
+// ==============================================================================
 
 export interface FileData {
   name: string;
   size: number;
   type: string;
   url?: string;
-};
+}
+
 export type FilesType = Map<string, FileData>;
-export type AcceptType =
-  // Generic wildcards
-  | 'image/*'
-  | 'video/*'
-  | 'audio/*'
-  | 'text/*'
-  | 'application/*'
 
-  // الصور
-  | '.jpg' | '.jpeg' | '.png' | '.gif' | '.webp' | '.svg' | '.bmp' | '.tiff' | '.ico' | '.heic' | '.heif'
-
-  // الفيديو
-  | '.mp4' | '.mov' | '.avi' | '.mkv' | '.webm' | '.flv' | '.wmv' | '.m4v' | '.3gp' | '.mpeg' | '.mpg'
-
-  // الصوت
-  | '.mp3' | '.wav' | '.ogg' | '.flac' | '.aac' | '.m4a' | '.wma' | '.opus' | '.aiff' | '.mid'
-
-  // النصوص والمستندات
-  | '.txt' | '.pdf' | '.doc' | '.docx' | '.rtf' | '.odt' | '.pages'
-
-  // جداول البيانات والعروض التقديمية
-  | '.xls' | '.xlsx' | '.csv' | '.ods' | '.numbers'
-  | '.ppt' | '.pptx' | '.key' | '.odp'
-
-  // البرمجة والبيانات
-  | '.json' | '.xml' | '.yaml' | '.yml' | '.html' | '.htm' | '.xhtml'
-  | '.js' | '.ts' | '.jsx' | '.tsx' | '.css' | '.scss' | '.sass'
-  | '.sql' | '.sqlite' | '.db' | '.log'
-
-  // الأرشيف والضغط
-  | '.zip' | '.rar' | '.7z' | '.tar' | '.gz' | '.bz2' | '.xz' | '.dmg' | '.iso'
-
-  // تنسيقات أخرى شائعة
-  | '.epub' | '.mobi' | '.azw' | '.psd' | '.ai' | '.fig' | '.sketch'
-  | '.dwg' | '.dxf' | '.stl' | '.obj' | '.fbx' | '.glb' | '.gltf'
-
-  // MIME Types مباشرة (اختياري لكن شائع)
-  | 'application/pdf'
-  | 'application/json'
-  | 'application/zip'
-  | 'application/x-rar-compressed'
-  | 'application/octet-stream'
-  | 'text/plain'
-  | 'text/csv'
-  | 'text/html'
-  | 'image/jpeg'
-  | 'image/png'
-  | 'video/mp4'
-  | 'audio/mpeg'
-
-  // السماح بأي سلسلة نصية مخصصة
-  | string;
+// ==============================================================================
+// Component Metadata
+// ==============================================================================
 
 @Component({
   selector: 'ZS-file',
@@ -73,6 +34,7 @@ export type AcceptType =
   styleUrl: './file.css'
 })
 export class FileInput {
+
   // ==============================================================================
   // Inputs
   // ==============================================================================
@@ -84,58 +46,59 @@ export class FileInput {
   readonly placeholder = input<string | null>(null);
   readonly inputStyle = input<FormStyle>('secondary');
 
+  readonly autofocus = input<boolean>(false);
   readonly disabled = input<boolean>(false);
   readonly isReadonly = input<boolean>(false);
   readonly required = input<boolean>(false);
+  readonly validateFns = input<ValidatorFn<FileData[]>[]>([]);
 
-  readonly validateFns = input<ValidatorFn<FilesType>[]>([]);
-
-  readonly autofocus = input<boolean>(false);
-  readonly size = input<BaseSize>('md');
-
-  readonly accept = input<string>('image/*');
+  readonly accept = input<string>('');
   readonly multiple = input<boolean>(false);
-  readonly maxSize = input<number>((5 * 1024 * 1024) / (1024 * 1024)); // 5MB
+  readonly maxSize = input<number>(5 * 1024 * 1024); // 5MB
   readonly allowPreview = input<boolean>(true);
+  readonly maxFiles = input<number | 'infinity'>('infinity');
 
-  //TODO: maxFiles
+  // ==============================================================================
+  // Outputs
+  // ==============================================================================
+
+  readonly changeEv = output<ChangeEventType<FileData[]>>();
 
   // ==============================================================================
   // Model
   // ==============================================================================
 
-  readonly files = model<FilesType>(new Map([
-    [
-      '🛒 Ordering Cycle - Detailed Specification.pdf_368885_application/pdf',
-      {
-        name: '🛒 Ordering Cycle - Detailed Specification.pdf',
-        size: 368885,
-        type: 'application/pdf',
-        url: 'blob:http://localhost:4200/8d9dc3bf-db30-4b83-a3f8-921160d7c5af'
-      }
-    ]
-  ]));
+  readonly files = model<FilesType>(new Map());
   readonly touched = model<boolean>(false); // Tracks if the user has interacted with the input
+
+  // ==============================================================================
+  // ViewChild
+  // ==============================================================================
 
   readonly fileInputRef = viewChild<ElementRef<HTMLInputElement>>('fileInput');
 
-  // ============================================================================
-  // Signals & Computed
-  // ============================================================================
+  // ==============================================================================
+  // Computed Properties
+  // ==============================================================================
+
   readonly palette = computed(() => FormPaletteMap.get(this.inputStyle())!);
 
   readonly hasFiles = computed(() => this.files().size > 0);
 
   readonly totalSize = computed(() =>
-    [...this.files().values()].reduce((sum, f) => sum + f.size, 0)
+    this.filesMapToList().reduce((sum, f) => sum + f.size, 0)
   );
 
   readonly disabledOrReadonly = computed<boolean>(() => this.disabled() || this.isReadonly());
 
   readonly error = computed<string[]>(() => {
-    const hasFiles = this.hasFiles()
+    const hasFiles = this.hasFiles();
     const files = this.files();
     const required = this.required();
+    const totalSize = this.totalSize();
+    const maxSize = this.maxSize();
+    const maxFiles = this.maxFiles();
+    const accept = this.accept();
 
     // Only validate after user interaction
     if (!this.touched()) return [];
@@ -147,28 +110,48 @@ export class FileInput {
       errors.push('This field is required');
     }
 
-    if(this.totalSize() > this.maxSize()) {
-      errors.push(`Total file size exceeds ${this.formatSize(this.maxSize())}`);
+    // Max size validation
+    if (totalSize > maxSize) {
+      errors.push(`Total file size exceeds ${this.formatSize(maxSize)}`);
     }
 
-    // Custom validator
+    // Max files validation
+    if (maxFiles !== 'infinity' && files.size > maxFiles) {
+      errors.push(`Total number of files exceeds ${maxFiles}`);
+    }
+
+    // Accept (file type) validation
+    const invalidFiles = this.filesMapToList().filter(f => !this.matchesAccept(f, accept));
+    if (invalidFiles.length > 0) {
+      const names = invalidFiles.map(f => f.name).join(', ');
+      errors.push(`Some files have unsupported types: ${names}`);
+    }
+
+    // Custom validators
     for (const fn of this.validateFns()) {
-      const result = fn(files);
+      const result = fn(this.filesMapToList());
       if (Array.isArray(result)) errors.push(...result);
     }
 
     return errors.length > 0 ? errors : [];
   });
-  // ============================================================================
-  // Methods
-  // ============================================================================
-  handleFileChange(event: Event) {
+
+  readonly filesMapToList = computed(() => {
+    const files = this.files();
+    return files.size ? Array.from(files.values()) : [];
+  });
+
+  // ==============================================================================
+  // Event Handlers
+  // ==============================================================================
+
+  handleFileChange(event: Event): void {
     if (this.disabledOrReadonly()) return;
 
     const input = event.target as HTMLInputElement;
     if (!input.files) return;
 
-    const selected: FileData[] = Array.from(input.files).map((f) => ({
+    const selected: FileData[] = Array.from(input.files).map(f => ({
       name: f.name,
       size: f.size,
       type: f.type,
@@ -185,49 +168,111 @@ export class FileInput {
 
       return next;
     });
+
     this.touched.set(true);
+    this.emitChangeValue(this.filesMapToList(), false);
 
-    // ✅ Reset native <input> value to allow re-selecting same file again
+    // Reset native <input> value to allow re-selecting the same file
     input.value = '';
-
-    console.log(this.files())
-    console.log(input?.files)
   }
 
-  removeFile(id: string) {
+  removeFile(id: string): void {
     if (this.isReadonly() || this.disabled()) return;
 
     this.files.update((prev: FilesType) => {
-      const next: FilesType = new Map(prev)
-      next.delete(id)
+      const next = new Map(prev);
+      const file = prev.get(id);
 
+      if (file?.url?.startsWith('blob:')) {
+        URL.revokeObjectURL(file.url);
+      }
+
+      next.delete(id);
       return next;
-    })
+    });
 
-    // Reset native <input type="file">
+    this.emitChangeValue(this.filesMapToList(), false);
+
+    // Reset native file input
     const inputEl = this.fileInputRef()?.nativeElement;
     if (inputEl) {
       inputEl.value = '';
     }
+  }
 
-    console.log(this.files())
-    console.log(inputEl?.files)
+  // ==============================================================================
+  // Public Methods
+  // ==============================================================================
+
+  /** Forces the input to trigger a manual change event */
+  public forceChange(fromForce: boolean = true): void {
+    this.touched.set(true);
+    this.emitChangeValue(this.filesMapToList(), fromForce);
+  }
+
+
+  // ==============================================================================
+  // Private Helpers
+  // ==============================================================================
+
+  formatSize(size: number): string {
+    if (size < 1024) return `${size} B`;
+    if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)} KB`;
+    return `${(size / 1024 / 1024).toFixed(1)} MB`;
+  }
+
+  preview(url: string | undefined): void {
+    if (!url) return;
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 
   private fileKey(f: FileData): string {
     return `${f.name}_${f.size}_${f.type}`;
   }
 
-  formatSize(size: number | undefined) {
-    if (!size) return 'Unknown'
-
-    if (size < 1024) return `${size} B`;
-    if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)} KB`;
-    return `${(size / 1024 / 1024).toFixed(1)} MB`;
+  private emitChangeValue(value: FileData[], fromForce: boolean = true): void {
+    const valid = this.error().length === 0;
+    this.changeEv.emit({ value, valid, fromForce });
   }
 
-  preview(url: string | undefined) {
-    if (!url) return;
-    window.open(url, '_blank', 'noopener,noreferrer');
+  private matchesAccept(file: FileData, accept: string): boolean {
+    if (!accept) return true;
+
+    const types = accept.split(',').map(t => t.trim().toLowerCase());
+
+    return types.some(type => {
+      if (type === '*/*') return true;
+
+      // Wildcard MIME types (e.g., image/*)
+      if (type.endsWith('/*')) {
+        const baseType = type.split('/')[0];
+        return file.type.startsWith(`${baseType}/`);
+      }
+
+      // Exact MIME type match
+      if (type.includes('/') && !type.startsWith('.')) {
+        return file.type === type;
+      }
+
+      // File extension match (e.g., .jpg)
+      if (type.startsWith('.')) {
+        return file.name.toLowerCase().endsWith(type);
+      }
+
+      // Fallback: partial match in MIME type
+      return file.type.includes(type);
+    });
+  }
+
+  // ==============================================================================
+  // Lifecycle Hooks
+  // ==============================================================================
+
+  ngOnDestroy(): void {
+    this.files().forEach(f => {
+      if (f.url?.startsWith('blob:')) {
+        URL.revokeObjectURL(f.url);
+      }
+    });
   }
 }
