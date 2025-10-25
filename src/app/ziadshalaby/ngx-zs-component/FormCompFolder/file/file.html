@@ -6,8 +6,7 @@
   [attr.aria-describedby]="Id() + '-hint ' + Id() + '-error'"
 >
   <!-- ========================= Label & Hint ========================= -->
-  <ZS-label
-    class="mb-1"
+  <ZS-label [class]="(label() || hint()) ? 'mb-1' : ''"
     [label]="label()"
     [hint]="hint()"
     [required]="required()"

@@ -4,14 +4,21 @@
 
 export interface NavbarItem {
   label: string;
+
   routerLink?: string;
   routerLinkActive?: string;
+
   action?: () => void;
+
   children?: NavbarItem[];
+  childrenOpenWindow?: boolean;
+  closeMenuAfterClick?: boolean
+
+  icon?: string;
   iconClass?: string;
+
   colorClass?: string;
   useDefaultColorClass?: 'text' | 'bg';
-  childrenOpenWindow?: boolean;
 }
 
 // ==============================================
@@ -88,8 +95,24 @@ export class NavItem {
   }
 
   onItemClick(): void {
-    this.item().action?.();
+    const item = this.item();
+
+    item.action?.();
+    if(this.item().closeMenuAfterClick){
+      this.toggle()
+    }
+
     this.anyItemClickedEv.emit(this.item());
+  }
+
+  handleChildClick(child: NavbarItem) {
+    // أعد إرسال الحدث لأعلى (لو فيه levels أكثر)
+    this.anyItemClickedEv.emit(child);
+
+    // إن كان الطفل يريد غلق القائمة، أغلق نفسي
+    if (child.closeMenuAfterClick) {
+      this.toggle();
+    }
   }
 
   // ==============================================

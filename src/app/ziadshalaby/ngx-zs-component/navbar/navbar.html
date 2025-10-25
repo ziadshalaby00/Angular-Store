@@ -1,7 +1,7 @@
 <!-- ========================= Fixed Navbar Container ========================= -->
 
 <nav
-  class="bg-white dark:bg-[#18202F] top-0 left-0 right-0 z-[800] shadow-md dark:shadow-gray-400/30"
+  class="bg-white dark:bg-[#18202F] top-0 left-0 right-0 z-800 shadow-md dark:shadow-gray-400/30"
   [class.fixed]="fixed()"
   [class.relative]="!fixed()"
   role="navigation"
@@ -14,8 +14,8 @@
       <div class="flex items-center">
         @if (logoUrl() || siteNameConfig()) {
           <a
-            [routerLink]="['/']"
-            class="flex-shrink-0 flex items-center space-x-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            [routerLink]="[siteNameConfig()?.routerLink ?? '/']"
+            class="shrink-0 flex items-center space-x-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             aria-label="Homepage"
           >
             @if (logoUrl()) {
@@ -63,7 +63,7 @@
             <div
               id="more-menu"
               [ngClass]="{ 'block': isMoreOpen(), 'hidden': !isMoreOpen() }"
-              class="absolute bg-white dark:bg-[#18202F] shadow-md-all shadow-md-all-night rounded-md mt-1 py-1 min-w-48 z-[300]"
+              class="absolute bg-white dark:bg-[#18202F] shadow-md-all shadow-md-all-night rounded-md mt-1 py-1 min-w-48 z-300"
               role="menu"
             >
               @for (item of moreNavItems(); track $index) {
@@ -144,7 +144,7 @@
               <div
                 id="user-menu"
                 class="absolute right-0 mt-2.5 min-w-56 bg-white dark:bg-gray-800 rounded-md
-                      shadow-md-all shadow-md-all-night pt-2 z-[400]"
+                      shadow-md-all shadow-md-all-night pt-2 z-400"
                 role="menu"
               >
                 <!-- User Info Section -->
@@ -321,7 +321,7 @@
 <!-- ========================= Overlay for Menu Closing ========================= -->
 @if (isMobileMenuOpen()) {
   <div
-    class="fixed inset-0 bg-black bg-opacity-25 z-[700] lg:bg-opacity-0"
+    class="fixed inset-0 bg-black bg-opacity-25 z-700 lg:bg-opacity-0"
     (click)="closeAllMenus()"
     aria-hidden="true"
   ></div>

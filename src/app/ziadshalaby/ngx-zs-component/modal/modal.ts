@@ -22,7 +22,7 @@ export interface BtnType {
   disabled?: boolean;
 }
 export type BtnTypeDefault = Required<BtnType>;
-export type Position = 'left top' | 'left bot' | 'right top' | 'right bot' | 'center'
+export type Position = 'left top' | 'left bot' | 'right top' | 'right bot' | 'center' | 'top' | 'bot'
 
 // ==============================================
 // Maps
@@ -33,6 +33,8 @@ const positionMap: Record<Position, string> = {
   'left bot': 'justify-start items-end',
   'right top': 'justify-end items-start',
   'right bot': 'justify-end items-end',
+  'top': 'justify-center items-start',
+  'bot': 'justify-center items-end',
   'center': 'justify-center items-center',
 };
 

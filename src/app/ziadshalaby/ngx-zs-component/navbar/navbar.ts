@@ -24,12 +24,14 @@ export interface UserProfile {
 export type NavbarItemExport = Omit<NavbarItem, 'childrenOpenWindow'>;
 export interface navItemsType {
   routerLinkActive?: string;
+  colorClass?: string;
   navItems: NavbarItemExport[];
 }
 
 export interface SiteNameConfigType {
   siteName: string;
   siteNameColorClass?: string;
+  routerLink?: string;
 }
 
 export interface AuthButtonsType {
@@ -89,6 +91,7 @@ export class Navbar {
   readonly loginClickedEv = output<void>();
   readonly signupClickedEv = output<void>();
   readonly searchSubmittedEv = output<string | null>();
+  readonly anyItemClickedEv = output<NavbarItem>();
 
   // ==============================================
   // Models
@@ -134,10 +137,12 @@ export class Navbar {
 
   private toNavbarItem(item: NavbarItemExport, childrenOpenWindow = false): NavbarItem {
     const routerLinkActive = this.navItems()?.routerLinkActive;
-    
+    const colorClass = this.navItems()?.colorClass;
+
     return {
       ...item,
-      routerLinkActive,
+      colorClass: item.colorClass ?? colorClass,
+      routerLinkActive: item.routerLinkActive ?? routerLinkActive,
       childrenOpenWindow,
       children: item.children?.map(child => this.toNavbarItem(child, childrenOpenWindow)) ?? []
     };
@@ -174,6 +179,7 @@ export class Navbar {
   }
 
   itemClicked(event: NavbarItem): void {
+    this.anyItemClickedEv.emit(event)
     this.closeAllMenus();
   }
 

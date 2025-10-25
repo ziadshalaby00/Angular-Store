@@ -22,8 +22,8 @@ import { InputErrors } from '../input-errors/input-errors';
 // =================================================================================================
 // Interfaces
 // =================================================================================================
-export interface DropdownItem {
-  id: number | string;
+export interface DropdownItem<T> {
+  id: T;
   name: string;
   [key: string]: any;
 }
@@ -37,13 +37,13 @@ export interface DropdownItem {
   templateUrl: './select.html',
   styleUrl: './select.css'
 })
-export class Select {
+export class Select<T> {
 
   // =================================================================================================
   // Inputs
   // =================================================================================================
   readonly Id = input<string>(crypto.randomUUID());
-  readonly items = input.required<DropdownItem[]>();
+  readonly items = input.required<DropdownItem<T>[]>();
 
   readonly label = input<string | null>(null);
   readonly hint = input<string | null>(null);
@@ -66,19 +66,19 @@ export class Select {
 
   readonly preselectedIds = input<(number | string)[]>([]);
   readonly multiple = input<boolean>(false);
-  readonly validateFns = input<ValidatorFn<DropdownItem[]>[]>([]);
+  readonly validateFns = input<ValidatorFn<DropdownItem<T>[]>[]>([]);
 
   // =================================================================================================
   // Model (Two-way Binding)
   // =================================================================================================
-  readonly selectedItems = model<DropdownItem[]>([]);
+  readonly selectedItems = model<DropdownItem<T>[]>([]);
   readonly touched = model<boolean>(false); // Tracks if the user has interacted with the input
 
 
   // =================================================================================================
   // Outputs
   // =================================================================================================
-  readonly selectedItemsEv = output<ChangeEventType<DropdownItem[]>>();
+  readonly selectedItemsEv = output<ChangeEventType<DropdownItem<T>[]>>();
   readonly selectionClearedEv = output<void>();
 
 
@@ -107,7 +107,7 @@ export class Select {
     () => this.disabled() || this.isReadonly()
   );
 
-  readonly filteredItems = computed<DropdownItem[]>(() => {
+  readonly filteredItems = computed<DropdownItem<T>[]>(() => {
     const query = this.searchQuery();
     if (!query) return this.items();
 
@@ -190,12 +190,12 @@ export class Select {
   constructor() {
     effect(() => {
       const ids = this.preselectedIds();
-      const items: DropdownItem[] = ids
+      const items: DropdownItem<T>[] = ids
         ?.map(id => this.items().find(item => item.id === id))
-        .filter((item): item is DropdownItem => item !== undefined) ?? [];
+        .filter((item): item is DropdownItem<T> => item !== undefined) ?? [];
 
       if (items.length > 0) {
-        this.selectItem(items);
+        this.selectItem(items, true);
       } else if (ids.length === 0) {
         this.clearSelection();
       }
@@ -216,7 +216,7 @@ export class Select {
     if (!this.isOpen())  this.touched.set(true)
   }
 
-  selectItem(items: DropdownItem[]): void {
+  selectItem(items: DropdownItem<T>[], isPreselectedIds: boolean = false): void {
     if (!items?.length || !items[0]) return;
 
     if (this.multiple()) {
@@ -237,6 +237,7 @@ export class Select {
       this.searchQuery.set(null);
     }
 
+    if(isPreselectedIds) return;
     this.touched.set(true)
     this.emitChangeValue(this.selectedItems(), false);
   }
@@ -248,12 +249,12 @@ export class Select {
     this.selectionClearedEv.emit();
   }
 
-  inSelectItems(item?: DropdownItem): boolean {
+  inSelectItems(item?: DropdownItem<T>): boolean {
     if (!item) return false;
     return this.selectedItems()?.some(i => i?.id === item.id) ?? false;
   }
 
-  trackByFn(_index: number, item: DropdownItem): number | string {
+  trackByFn(_index: number, item: DropdownItem<T>): T {
     return item.id;
   }
 
@@ -264,7 +265,7 @@ export class Select {
     this.emitChangeValue(this.selectedItems(), fromForce);
   }
 
-  emitChangeValue(value: DropdownItem[], fromForce: boolean = true): void {
+  emitChangeValue(value: DropdownItem<T>[], fromForce: boolean = true): void {
     const valid = this.error().length === 0;
     this.selectedItemsEv.emit({ value, valid, fromForce });
   }

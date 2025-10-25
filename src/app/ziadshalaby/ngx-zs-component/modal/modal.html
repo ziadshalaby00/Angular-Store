@@ -1,7 +1,7 @@
 <!-- ========================= Overlay ========================= -->
 @if (isOpen()) {
   <div #modalRef
-    class="fixed inset-0 flex z-[900] bg-black/50 dark:bg-black/70 transition-all duration-300"
+    class="fixed inset-0 flex z-900 bg-black/50 dark:bg-black/70 transition-all duration-300"
     [class]="positionClass()"
     (click)="onOverlayClick($event)"
     role="presentation"

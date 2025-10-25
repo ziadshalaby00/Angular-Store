@@ -51,7 +51,7 @@
           <div 
             [class]="'animate-spin rounded-full border-solid ' +
                      spinnerSizePulseClass() + ' ' +
-                     borderColor() + ' border-t-transparent'" 
+                     borderColor() + ' border-t-transparent!'" 
             aria-hidden="true"
           ></div>
           <span class="sr-only">Loading...</span>
@@ -108,13 +108,13 @@
             <div 
               [class]="'animate-spin rounded-full border-solid ' +
                        spinnerSizeDoubleClass(1) + ' ' +
-                       borderColor() + ' border-t-transparent'"
+                       borderColor() + ' border-t-transparent!'"
             ></div>
             <!-- Inner ring (reversed animation) -->
             <div 
               [class]="'animate-spin opacity-75 rounded-full border-solid absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ' +
                        spinnerSizeDoubleClass(2) + ' ' +
-                       borderColor() + ' border-b-transparent'"
+                       borderColor() + ' border-b-transparent!'"
               style="animation-direction: reverse;"
             ></div>
           </div>

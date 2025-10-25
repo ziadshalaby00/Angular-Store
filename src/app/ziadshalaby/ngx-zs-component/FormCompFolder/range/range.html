@@ -1,6 +1,6 @@
 <!-- ========================= Label ========================= -->
 <div class="flex flex-col w-full select-none">
-  <ZS-label class="mb-1"
+  <ZS-label [class]="(label() || hint()) ? 'mb-1' : ''"
   [label]="label()"
   [hint]="hint()"
   [hintId]="Id() + '-hint'"

@@ -38,6 +38,7 @@ export class Card {
   readonly variant = input<VariantType>();
   readonly clickable = input<boolean>(false);
   readonly animation = input<AnimationType>('none');
+  readonly bodyClass = input<string>('bg-gray-100 dark:bg-gray-800')
 
   // ==========================================================================
   // Local State
@@ -73,9 +74,9 @@ export class Card {
     const clickable = this.clickable();
     const animation = this.animation();
     const visible = this.isVisible();
+    const bodyClass = this.bodyClass();
 
     const palette = FormPaletteMap.get(style) ?? {
-      inputBg: '',
       border: '',
       borderHover: '',
       ring: '',
@@ -118,9 +119,9 @@ export class Card {
     // ---------------------
     return [
       base,
-      palette.inputBg,
       border,
       hoverBorder,
+      bodyClass,
       shadowClasses,
       clickEffects,
       animationClass,
