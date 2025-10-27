@@ -3,8 +3,9 @@
 // ========================================================================
 
 import { CommonModule } from '@angular/common';
-import { Component, computed, input, signal } from '@angular/core';
-import { BaseColors, ColorMapping } from '../palette-service/palette-service';
+import { Component, computed, HostListener, inject, input, signal } from '@angular/core';
+import { BaseColors, ColorMapping } from '../palette-service';
+import { zIndices, ZIndicesType } from '../z-index';
 
 
 // ========================================================================
@@ -25,7 +26,8 @@ export type PositionType = 'left' | 'right';
   styleUrl: './scroll-to-top.css',
 })
 export class ScrollToTop {
-
+    readonly zIndices: ZIndicesType = zIndices;
+  
   // ========================================================================
   // Inputs
   // ========================================================================
@@ -39,7 +41,7 @@ export class ScrollToTop {
   /**
    * Tailwind CSS class for the circle's color (background ring).
    */
-  readonly circleColorClass = input<string>('text-gray-400/60 dark:text-gray-300/60 group-hover:brightness-110');
+  readonly circleColorClass = input<string>('text-gray-400/60 dark:text-gray-600/70 group-hover:brightness-110');
 
   /**
    * BaseColors class for the arrow and progress indicator color.
@@ -89,24 +91,15 @@ export class ScrollToTop {
   // ========================================================================
   // Lifecycle Hooks
   // ========================================================================
-
-  ngOnInit() {
-    window.addEventListener('scroll', this.onScroll);
-  }
-
-  ngOnDestroy() {
-    window.removeEventListener('scroll', this.onScroll);
+  @HostListener('window:scroll', ['$event'])
+  onScroll(event: Event) {
+    this.scrollY.set(window.scrollY);
   }
 
 
   // ========================================================================
   // Event Handlers
   // ========================================================================
-
-  private readonly onScroll = () => {
-    this.scrollY.set(window.scrollY);
-  };
-
   scrollToTop() {
     window.scrollTo({
       top: 0,

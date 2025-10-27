@@ -1,5 +1,5 @@
 import { Component, computed, inject, model, signal } from '@angular/core';
-import { NavbarItemExport, UserProfile, SiteNameConfigType, AuthButtonsType, Navbar } from '../ziadshalaby/ngx-zs-component/navbar/navbar';
+import { NavbarItemExport, UserProfile, SiteNameConfigType, AuthButtonsType, Navbar, navItemsType } from '../ziadshalaby/ngx-zs-component/navbar/navbar';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth-service';
 import { AlertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/alert-service/alert-service';
@@ -34,25 +34,27 @@ export class NavbarComp {
 
   logoUrl: string = 'https://i.postimg.cc/rsCB0PfM/android-chrome-512x512.png';
 
-  navItems: NavbarItemExport[] = [
-    { 
-      label: 'Test', 
-      routerLink: '/test', 
-      iconClass: 'fa-solid fa-vial text-lg', 
-      colorClass: `text-green-600 hover:text-green-700 dark:hover:text-green-500`, 
-    },
-    { label: 'Products', routerLink: '/products', iconClass: 'fas fa-tag text-lg'},
-    { label: 'Cart', routerLink: '/cart', iconClass: 'fas fa-shopping-cart text-blue-700 dark:text-blue-500 text-lg'},
-    { label: 'About Us', routerLink: '/about'},
-    { label: 'Contact Us', routerLink: '/contact'},
-    {
-      label: 'Legal Pages',
-      children: [
-        { label: 'Privacy Policy', routerLink: '/privacyPolicy', useDefaultColorClass: 'bg' },
-        { label: 'Terms & Conditions', routerLink: '/termsConditions', useDefaultColorClass: 'bg'},
-      ]
-    },
-  ];
+  navItems: navItemsType = {
+    navItems: [
+      { 
+        label: 'Test', 
+        routerLink: '/test', 
+        iconClass: 'fa-solid fa-vial text-lg', 
+        colorClass: `text-green-600 hover:text-green-700 dark:hover:text-green-500`, 
+      },
+      { label: 'Products', routerLink: '/products', iconClass: 'fas fa-tag text-lg'},
+      { label: 'Cart', routerLink: '/cart', iconClass: 'fas fa-shopping-cart text-blue-700 dark:text-blue-500 text-lg'},
+      { label: 'About Us', routerLink: '/about'},
+      { label: 'Contact Us', routerLink: '/contact'},
+      {
+        label: 'Legal Pages',
+        children: [
+          { label: 'Privacy Policy', routerLink: '/privacyPolicy', useDefaultColorClass: 'bg' },
+          { label: 'Terms & Conditions', routerLink: '/termsConditions', useDefaultColorClass: 'bg'},
+        ]
+      },
+    ]
+  }
 
   userProfile = computed<UserProfile | undefined>(() => {
     const userData = this.authService.userData()

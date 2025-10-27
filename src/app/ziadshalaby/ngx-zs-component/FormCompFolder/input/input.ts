@@ -9,7 +9,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { FormPaletteMap, BaseSize, FormStyle } from '../../palette-service/palette-service';
+import { FormPaletteMap, BaseSize, FormStyle } from '../../palette-service';
 import { Label } from '../label/label';
 import { InputErrors } from '../input-errors/input-errors';
 

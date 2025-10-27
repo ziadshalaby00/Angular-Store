@@ -1,0 +1,52 @@
+<div class="flex items-center justify-start w-full select-none">
+  <!-- ===================== Checkbox Wrapper ===================== -->
+  <div
+    class="cursor-pointer group leading-none"
+  >
+    <!-- ===================== Hidden Input (Native for screen readers) ===================== -->
+    <input
+      type="checkbox"
+      class="hidden"
+      [id]="Id()"
+      [checked]="isChecked()"
+      [disabled]="disabledOrReadonly()"
+      (change)="toggleChecked()"
+    />
+
+    <!-- ===================== Custom Accessible Toggle ===================== -->
+    <button
+    (click)="value.set(!value())"
+    class="relative rounded-full border-2 flex items-center transition-all duration-500 ease-in-out overflow-hidden"
+    [ngClass]="[
+        toggleClasses(),
+        colorClasses('border'),
+        value() ? colorClasses('bg') : '', 
+        value() ? '' : 'bg-gray-100 dark:bg-gray-700',
+        btnSize(),
+    ]"
+    >
+      <div
+          class="absolute left-1 top-1/2 -translate-1/2 rounded-full flex items-center justify-center transition-all duration-500 ease-in-out shadow-md"
+          [ngClass]="[
+              value() ? '' : colorClasses('bg'),
+              value() ? colorClasses('text') : 'text-gray-100 dark:text-gray-300',
+              value() ? 'bg-gray-100 dark:bg-gray-300' : '',
+              wrapperSize(),
+              value() ? transSize() : 'translate-x-0',
+          ]"
+      >
+          <i [class]="icon()"></i>
+      </div>
+    </button>
+  </div>
+
+  <!-- ===================== Label (ZS-label component) ===================== -->
+  <ZS-label [class]="(label() || hint()) ? 'ml-1' : ''"
+    [id]="Id() + '-label'"
+    [label]="label()"
+    [hint]="hint()"
+    [size]="size()"
+    [hintId]="Id() + '-hint'"
+    [for]="Id()"
+  ></ZS-label>
+</div>

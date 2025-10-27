@@ -1,4 +1,4 @@
-<div class="flex items-center justify-start gap-2 w-full select-none">
+<div class="flex items-center justify-start w-full select-none">
   <!-- ===================== Checkbox Wrapper ===================== -->
   <div
     class="cursor-pointer group leading-none"
@@ -15,7 +15,7 @@
 
     <!-- ===================== Custom Accessible Checkbox ===================== -->
     <span
-      role="shape() === 'toggle' ? 'switch' : 'checkbox'"
+      role="'checkbox'"
       tabindex="0"
       [attr.aria-checked]="isChecked()"
       [attr.aria-disabled]="disabledOrReadonly()"
@@ -35,7 +35,7 @@
   </div>
 
   <!-- ===================== Label (ZS-label component) ===================== -->
-  <ZS-label
+  <ZS-label [class]="(label() || hint()) ? 'ml-1' : ''"
     [id]="Id() + '-label'"
     [label]="label()"
     [hint]="hint()"

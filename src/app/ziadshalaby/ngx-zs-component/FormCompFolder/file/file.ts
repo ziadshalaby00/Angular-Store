@@ -3,7 +3,7 @@
 // ==============================================================================
 
 import { Component, computed, ElementRef, input, model, output, signal, viewChild } from '@angular/core';
-import { BaseSize, FormPaletteMap, FormStyle } from '../../palette-service/palette-service';
+import { FormPaletteMap, FormStyle } from '../../palette-service';
 import { ChangeEventType, ValidatorFn } from '../input/input';
 import { Label } from '../label/label';
 import { InputErrors } from '../input-errors/input-errors';

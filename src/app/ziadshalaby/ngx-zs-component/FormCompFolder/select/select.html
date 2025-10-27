@@ -70,7 +70,7 @@
       id="{{ Id() + '-options' }}"
       role="listbox"
       [attr.aria-multiselectable]="multiple() ? 'true' : null"
-      class="absolute z-300 w-full mt-1 rounded-lg shadow-lg dark:shadow-gray-400/30 overflow-hidden bg-white border border-gray-300 dark:bg-gray-900 dark:border-gray-600 dark:text-gray-100">
+      class="absolute {{ zIndices.selectDropdown }} w-full mt-1 rounded-lg shadow-lg dark:shadow-gray-400/30 overflow-hidden bg-white border border-gray-300 dark:bg-gray-900 dark:border-gray-600 dark:text-gray-100">
 
       @if (showSearch()) {
         <!-- Search Input -->

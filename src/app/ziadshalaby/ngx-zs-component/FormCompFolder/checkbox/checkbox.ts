@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, input, model } from '@angular/core';
-import { BaseSize, FormPaletteMap, FormStyle } from '../../palette-service/palette-service';
+import { Component, computed, inject, input, model } from '@angular/core';
+import { BaseSize, FormPaletteMap, FormStyle } from '../../palette-service';
 import { Label } from '../label/label';
 
 // ==============================================
@@ -8,7 +8,7 @@ import { Label } from '../label/label';
 // ==============================================
 
 export type VariantType = 'solid' | 'regular'
-export type ShapeType = 'square' | 'circle' | 'toggle'
+export type ShapeType = 'square' | 'circle'
 
 
 // ==============================================
@@ -67,12 +67,10 @@ export class Checkbox {
     }
     const shapeClass: Record<'true' | 'false', Record<ShapeType, string>> = {
       true: {
-        toggle: 'fa-toggle-on',
         square: 'fa-square-check',
         circle: 'fa-circle-check'
       },
       false: {
-        toggle: 'fa-toggle-off',
         square: 'fa-square',
         circle: 'fa-circle'
       },
@@ -83,7 +81,7 @@ export class Checkbox {
 
     const state = this.value() ? 'true' : 'false' as ('true' | 'false');
     return [
-      s === 'toggle' ? variantClass.true.solid : variantClass[state][v], 
+      variantClass[state][v],
       shapeClass[state][s],
       disabledClass,
       interactionClass

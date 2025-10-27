@@ -15,7 +15,7 @@ import {
   computed,
   output,
 } from '@angular/core';
-import { FormPaletteMap, FormStyle, BaseSize } from '../../palette-service/palette-service';
+import { FormPaletteMap, FormStyle, BaseSize } from '../../palette-service';
 
 
 // ==============================================
@@ -69,16 +69,15 @@ export class Button {
 
     const sizes: Record<BtnSizeType, string> = {
       xs: 'text-[10px] px-2 py-1',
-      sm: 'text-xs px-3 py-1.5',
-      md: 'text-sm px-4 py-2',
-      lg: 'text-base px-4.5 py-2.5',
-      xl: 'text-lg px-5 py-3',
+      sm: 'text-xs px-3.5 py-1.75',
+      md: 'text-sm px-5 py-2.5',
+      lg: 'text-base px-6.5 py-3.25',
+      xl: 'text-lg px-8 py-4',
     };
 
     const solidClasses = this.join(
       p.btnBG,
       p.btnBGHover,
-      'border border-transparent',
       'shadow-md dark:shadow-slate-700/50',
       'hover:shadow-lg',
       'active:shadow-sm',
@@ -103,19 +102,19 @@ export class Button {
         'active:scale-[0.97]',
         'transition-[background-color,color,border-color,box-shadow,opacity]',
         'duration-200',
-        'ease-in-out'
+        'ease-in-out',
       )
 
     return this.join(
       'inline-flex items-center justify-center',
+      ['xl'].includes(size) ? 'rounded-xl' : 'rounded-lg',
+      'focus-visible:ring-2',
+      'select-none',
+      'outline-none',
       sizes[size],
       variant === 'solid' ? solidClasses : outlineClasses,
       stateClasses,
-      'rounded-lg',
-      'focus-visible:ring-2',
       p.ring,
-      'select-none',
-      'outline-none'
     )
   });
 

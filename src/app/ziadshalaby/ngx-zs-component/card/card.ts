@@ -1,5 +1,5 @@
 import { Component, computed, effect, ElementRef, inject, input, signal, viewChild } from '@angular/core';
-import { FormPaletteMap, FormStyle } from '../palette-service/palette-service';
+import { FormPaletteMap, FormStyle } from '../palette-service';
 
 // ==============================================================================
 // Types

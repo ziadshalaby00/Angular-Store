@@ -29,6 +29,7 @@ import { Component, computed, effect, inject, input, output, signal } from '@ang
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NavItemService } from '../nav-item-service/nav-item-service';
+import { zIndices, ZIndicesType } from '../../z-index';
 
 // ==============================================
 // Component Metadata
@@ -41,11 +42,11 @@ import { NavItemService } from '../nav-item-service/nav-item-service';
   styleUrl: './nav-item.css'
 })
 export class NavItem {
+  readonly zIndices: ZIndicesType = zIndices;
 
   // ==============================================
   // Injection & Services
   // ==============================================
-
   private readonly znavItemService = inject(NavItemService);
 
   // ==============================================
@@ -133,4 +134,10 @@ export class NavItem {
       ? defaultBgClass
       : defaultTextClass;
   };
+
+  labelLineClass(item: NavbarItem) {
+    return item.label.length > 60 ? 'text-xs' 
+    : item.label.length > 40 ? 'text-sm' 
+    : ''
+  }
 }

@@ -1,7 +1,7 @@
 <!-- ========================= Fixed Navbar Container ========================= -->
 
 <nav
-  class="bg-white dark:bg-[#18202F] top-0 left-0 right-0 z-800 shadow-md dark:shadow-gray-400/30"
+  class="bg-white dark:bg-[#18202F] top-0 left-0 right-0 {{ zIndices.navbar }} shadow-md dark:shadow-gray-400/30"
   [class.fixed]="fixed()"
   [class.relative]="!fixed()"
   role="navigation"
@@ -63,7 +63,7 @@
             <div
               id="more-menu"
               [ngClass]="{ 'block': isMoreOpen(), 'hidden': !isMoreOpen() }"
-              class="absolute bg-white dark:bg-[#18202F] shadow-md-all shadow-md-all-night rounded-md mt-1 py-1 min-w-48 z-300"
+              class="absolute bg-white dark:bg-[#18202F] shadow-md-all shadow-md-all-night rounded-md mt-1 py-1 min-w-48 z-200"
               role="menu"
             >
               @for (item of moreNavItems(); track $index) {

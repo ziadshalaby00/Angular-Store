@@ -12,7 +12,7 @@ import {
   viewChild,
   effect,
 } from '@angular/core';
-import { FormPaletteMap, BaseSize, FormStyle } from '../../palette-service/palette-service';
+import { FormPaletteMap, BaseSize, FormStyle } from '../../palette-service';
 import { Label } from '../label/label';
 import { CommonModule } from '@angular/common';
 

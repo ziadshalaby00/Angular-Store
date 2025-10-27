@@ -15,13 +15,17 @@
         [attr.aria-expanded]="isOpen()"
         [attr.aria-controls]="'submenu-' + index()"
       >
-        <div class="flex items-center gap-2">
+        <div class="flex items-center">
           @if (item().icon) {
-            <i [ngClass]="[item().icon, item().iconClass]" aria-hidden="true"></i>
+            <i [ngClass]="[
+              item().icon, 
+              item().iconClass ?? '',
+              (item().icon && item().label) ? 'mr-2' : ''
+            ]" aria-hidden="true"></i>
           }
-          <span class="wrap-break-word">{{ item().label }}</span>
+          <span class="wrap-break-word" [ngClass]="labelLineClass(item())">{{ item().label }}</span>
         </div>
-        <i class="fas fa-chevron-down ml-auto mr-2 text-xs" aria-hidden="true"></i>
+        <i class="fas fa-chevron-down ml-auto p-0.5 text-xs" aria-hidden="true"></i>
       </button>
 
       <!-- ========================= Dropdown Menu ========================= -->
@@ -30,9 +34,10 @@
         [ngClass]="{
           'block': isOpen(),
           'hidden': !isOpen(),
-          'absolute left-6 z-300 w-48 mt-1 py-1 bg-white dark:bg-gray-800 rounded-md shadow-md-all shadow-md-all-night': item().childrenOpenWindow,
+          'absolute left-6 w-50 mt-1 py-1 bg-white dark:bg-gray-800 rounded-md shadow-md-all shadow-md-all-night': item().childrenOpenWindow,
           'px-4 mt-1': !item().childrenOpenWindow
         }"
+        class="{{ zIndices.navItemDropdown }}"
         role="menu"
         [attr.aria-label]="item().label + ' submenu'"
       >
@@ -56,18 +61,19 @@
       [routerLinkActive]="item().routerLinkActive ?? ''"
       #rla="routerLinkActive"
       [ngClass]="rla.isActive ? '' : getItemClasses(item())"
-      class="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium md:text-base"
+      class="flex items-center rounded-md px-3 py-2 text-sm font-medium md:text-base"
       (click)="onItemClick()"
       role="menuitem"
     >
       @if (item().icon) {
         <i [ngClass]="[
           item().icon,
-          rla.isActive ? '' : item().iconClass
+          rla.isActive ? '' : item().iconClass ?? '',
+          (item().icon && item().label) ? 'mr-2' : ''
         ]"
         aria-hidden="true"></i>
       }
-      <span class="wrap-break-word">{{ item().label }}</span>
+      <span class="wrap-break-word line-clamp-3" [ngClass]="labelLineClass(item())">{{ item().label }}</span>
     </a>
   }
 }

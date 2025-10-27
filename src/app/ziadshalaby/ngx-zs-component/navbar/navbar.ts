@@ -3,11 +3,12 @@
 // ==============================================
 
 import { CommonModule } from '@angular/common';
-import { Component, computed, input, model, output, signal } from '@angular/core';
+import { Component, computed, inject, input, model, output, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NavItem, NavbarItem } from '../NavItemFolder/nav-item/nav-item';
 import { ButtonVariant, Button } from '../FormCompFolder/button/button';
-import { BaseSize, FormStyle } from '../palette-service/palette-service';
+import { BaseSize, FormStyle } from '../palette-service';
+import { zIndices, ZIndicesType } from '../z-index';
 
 // ==============================================
 // Interfaces & Types
@@ -61,7 +62,8 @@ export interface AuthButtonsType {
   styleUrl: './navbar.css'
 })
 export class Navbar {
-
+  readonly zIndices: ZIndicesType = zIndices;
+  
   // ==============================================
   // Inputs
   // ==============================================

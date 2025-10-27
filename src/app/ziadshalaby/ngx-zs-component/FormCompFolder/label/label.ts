@@ -2,7 +2,7 @@
 // Component Metadata
 // ==============================================
 import { Component, computed, input } from '@angular/core';
-import { BaseSize } from '../../palette-service/palette-service';
+import { BaseSize } from '../../palette-service';
 import { CommonModule } from '@angular/common';
 
 type sizeClassesType = Record<BaseSize, { label: string; hint: string }>;

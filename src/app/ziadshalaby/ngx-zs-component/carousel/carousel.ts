@@ -18,7 +18,7 @@ export type ItemShapeType = 'rect' | 'circle';
 
 import { Component, input, output, model, viewChild, ElementRef, computed, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BaseColors, ColorMapping } from '../palette-service/palette-service';
+import { BaseColors, ColorMapping } from '../palette-service';
 
 @Component({
   selector: 'ZS-carousel',

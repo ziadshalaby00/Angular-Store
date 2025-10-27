@@ -8,8 +8,9 @@ export type LoaderType = 'spinner' | 'pro' | 'double' | 'gear' | 'fan' | 'pulse'
 // Component Definition
 // =================================================================================================
 
-import { Component, computed, input } from '@angular/core';
-import { BaseColors, BaseSize, ColorMapping } from '../palette-service/palette-service';
+import { Component, computed, inject, input } from '@angular/core';
+import { BaseColors, BaseSize, ColorMapping } from '../palette-service';
+import { zIndices, ZIndicesType } from '../z-index';
 
 @Component({
   selector: 'ZS-spinner',
@@ -18,7 +19,8 @@ import { BaseColors, BaseSize, ColorMapping } from '../palette-service/palette-s
   styleUrl: './spinner.css'
 })
 export class Spinner {
-
+  readonly zIndices: ZIndicesType = zIndices;
+  
   // =================================================================================================
   // Inputs
   // =================================================================================================
@@ -37,7 +39,7 @@ export class Spinner {
 
   readonly wrapperClasses = computed<string>(() =>
     this.isFloating()
-      ? 'fixed inset-0 flex items-center justify-center z-[1200] bg-black/50 dark:bg-black/70'
+      ? `fixed inset-0 flex items-center justify-center ${ this.zIndices.spinner } bg-black/50 dark:bg-black/70`
       : 'flex items-center justify-center'
   );
 

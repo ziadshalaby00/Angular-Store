@@ -1,10 +1,8 @@
-// ==============================================
-// Imports
-// ==============================================
-
-import { Component, computed, ElementRef, input, model, output, signal, viewChild } from '@angular/core';
-import { FormPaletteMap, BaseSize, FormStyle } from '../palette-service/palette-service';
+import { Component, computed, effect, ElementRef, HostListener, inject, input, linkedSignal, model, output, signal, untracked, viewChild } from '@angular/core';
+import { FormPaletteMap, BaseSize, FormStyle } from '../palette-service';
 import { Button, ButtonVariant } from '../FormCompFolder/button/button';
+import { CommonModule } from '@angular/common';
+import { zIndices, ZIndicesType } from '../z-index';
 
 
 // ==============================================
@@ -44,12 +42,12 @@ const positionMap: Record<Position, string> = {
 
 @Component({
   selector: 'ZS-modal',
-  imports: [Button],
+  imports: [Button, CommonModule],
   templateUrl: './modal.html',
   styleUrl: './modal.css'
 })
 export class Modal {
-
+  readonly zIndices: ZIndicesType = zIndices;
 
   // ==============================================
   // Model
@@ -99,33 +97,48 @@ export class Modal {
     icon: null,
     disabled: false
   }
-  configMerged = (type: 'confirm' | 'cancel'): BtnTypeDefault => {
-    const def = type === 'confirm' ? this.confirmConfigDefault : this.cancelConfigDefault;
-    const cfg = type === 'confirm' ? this.confirmConfig() : this.cancelConfig();
+  readonly cancelMerged = computed(() => ({
+    ...this.cancelConfigDefault,
+    ...(this.cancelConfig() ?? {})
+  }));
 
-    return {
-      ...def,
-      ...(cfg ?? {})
-    };
-  };
+  readonly confirmMerged = computed(() => ({
+    ...this.confirmConfigDefault,
+    ...(this.confirmConfig() ?? {})
+  }));
+
 
   // ==============================================
   // Outputs
   // ==============================================
 
-  confirmEv = output<void>();
-  cancelEv = output<void>();
-  closedEv = output<void>();
+  readonly confirmEv = output<void>();
+  readonly cancelEv = output<void>();
+  readonly closedEv = output<void>();
 
 
   // ==============================================
   // Computed Signals
   // ==============================================
 
-  palette = computed(() => FormPaletteMap.get(this.modalStyle())!);
-  isOpen = computed(() => this.open());
-  positionClass = computed(() => positionMap[this.position()])
+  readonly palette = computed(() => FormPaletteMap.get(this.modalStyle())!);
+  readonly isOpen = signal<boolean>(false);
+  readonly positionClass = computed(() => positionMap[this.position()])
 
+  private setTimeId?: ReturnType<typeof setTimeout>;
+  constructor() {
+    effect(() => {
+      const state = this.open();
+      if(state) this.isOpen.set(true)
+      
+      untracked(() => {
+        clearTimeout(this.setTimeId);
+        if (!state && this.isOpen()) {
+          this.setTimeId = window.setTimeout(() => this.isOpen.set(false), 250);
+        }
+      })
+    })
+  }
 
   // ==============================================
   // Methods
@@ -140,5 +153,10 @@ export class Modal {
     if (this.closeOnOverlay()) {
       this.close();
     }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    if (this.isOpen()) this.close();
   }
 }

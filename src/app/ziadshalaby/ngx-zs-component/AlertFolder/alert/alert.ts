@@ -12,6 +12,7 @@ import {
   signal
 } from '@angular/core';
 import { AlertService } from '../alert-service/alert-service';
+import { zIndices, ZIndicesType } from '../../z-index';
 
 export interface AlertType {
   id: number | string;
@@ -73,11 +74,11 @@ export const ALERT_CONFIG: Record<
   styleUrl: './alert.css'
 })
 export class Alert {
-
+  
   // ==============================================
   // Dependencies
   // ==============================================
-
+  readonly zIndices: ZIndicesType = zIndices;
   readonly alertService: AlertService = inject(AlertService);
 
   // ==============================================

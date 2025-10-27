@@ -8,15 +8,17 @@ import {
   input, 
   model, 
   output, 
-  effect 
+  effect, 
+  inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { ChangeEventType, Input, ValidatorFn } from '../input/input';
 import { Label } from '../label/label';
-import { FormPaletteEntry, FormPaletteMap, FormStyle } from '../../palette-service/palette-service';
+import { FormPaletteEntry, FormPaletteMap, FormStyle } from '../../palette-service';
 import { InputErrors } from '../input-errors/input-errors';
+import { zIndices, ZIndicesType } from '../../z-index';
 
 
 // =================================================================================================
@@ -38,6 +40,7 @@ export interface DropdownItem<T> {
   styleUrl: './select.css'
 })
 export class Select<T> {
+  readonly zIndices: ZIndicesType = zIndices;
 
   // =================================================================================================
   // Inputs
