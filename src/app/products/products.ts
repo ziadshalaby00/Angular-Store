@@ -5,13 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Category } from '../services/category';
 import { Brand } from '../services/brand';
-import { Carousel } from '../ziadshalaby/ngx-zs-component/carousel/carousel';
-import { Pagination } from '../ziadshalaby/ngx-zs-component/pagination/pagination';
-import { Select } from '../ziadshalaby/ngx-zs-component/FormCompFolder/select/select';
-import { Spinner } from '../ziadshalaby/ngx-zs-component/spinner/spinner';
-import { Input } from '../ziadshalaby/ngx-zs-component/FormCompFolder/input/input';
-import { Button } from '../ziadshalaby/ngx-zs-component/FormCompFolder/button/button';
-import { Card } from '../ziadshalaby/ngx-zs-component/card/card';
+import { Button, Card, Carousel, Input, Pagination, Select, Spinner } from '@ziadshalaby/ngx-zs-component';
 
 @Component({
   selector: 'app-products',

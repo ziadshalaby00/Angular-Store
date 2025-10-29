@@ -1,8 +1,7 @@
 import { Component, computed, inject, model, signal } from '@angular/core';
-import { NavbarItemExport, UserProfile, SiteNameConfigType, AuthButtonsType, Navbar, navItemsType } from '../ziadshalaby/ngx-zs-component/navbar/navbar';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth-service';
-import { AlertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/alert-service/alert-service';
+import { AlertService, Navbar, SiteNameConfigType, AuthButtonsType, navItemsType, UserProfile, NavbarItemExport } from '@ziadshalaby/ngx-zs-component'
 
 @Component({
   selector: 'app-navbar',
@@ -22,7 +21,7 @@ export class NavbarComp {
     siteNameColorClass: 'text-gray-800 hover:text-gray-600 dark:text-gray-100 dark:hover:text-gray-300'
   }
 
-  authButtons:AuthButtonsType = {
+  authButtons: AuthButtonsType = {
     showAuthButtons: true,
     signup: {
       btnStyle: 'teal'

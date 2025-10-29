@@ -1,11 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { Button } from '../ziadshalaby/ngx-zs-component/FormCompFolder/button/button';
-import { ChangeEventType, Input } from '../ziadshalaby/ngx-zs-component/FormCompFolder/input/input';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth-service';
-import { Form } from '../ziadshalaby/ngx-zs-component/form-service/form-service';
-import { Card } from '../ziadshalaby/ngx-zs-component/card/card';
-import { Modal } from '../ziadshalaby/ngx-zs-component/modal/modal';
+import { Button, Input, Modal, Card, Form, ChangeEventType } from '@ziadshalaby/ngx-zs-component'
 
 @Component({
   selector: 'app-login',

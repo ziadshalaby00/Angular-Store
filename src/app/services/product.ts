@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Config } from './config';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { AlertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/alert-service/alert-service';
+import { AlertService } from '@ziadshalaby/ngx-zs-component';
 
 @Injectable({
   providedIn: 'root'

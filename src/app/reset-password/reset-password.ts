@@ -1,10 +1,7 @@
 import { Component, inject, viewChild } from '@angular/core';
-import { ChangeEventType, ValidatorFn, Input } from '../ziadshalaby/ngx-zs-component/FormCompFolder/input/input';
-import { Button } from '../ziadshalaby/ngx-zs-component/FormCompFolder/button/button';
-import { Form } from '../ziadshalaby/ngx-zs-component/form-service/form-service';
 import { AuthService } from '../services/auth-service';
 import { ActivatedRoute } from '@angular/router';
-import { Card } from '../ziadshalaby/ngx-zs-component/card/card';
+import { Button, Card, ChangeEventType, Form, Input, ValidatorFn } from '@ziadshalaby/ngx-zs-component';
 
 @Component({
   selector: 'app-reset-password',

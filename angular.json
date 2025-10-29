@@ -80,6 +80,32 @@
           }
         }
       }
+    },
+    "ngx-zs-component": {
+      "projectType": "library",
+      "root": "projects/ngx-zs-component",
+      "sourceRoot": "projects/ngx-zs-component/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-zs-component/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-zs-component/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "tsConfig": "projects/ngx-zs-component/tsconfig.spec.json"
+          }
+        }
+      }
     }
   }
 }

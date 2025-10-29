@@ -4,10 +4,7 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComp } from "./navbar/navbar";
-import { ScrollToTop } from './ziadshalaby/ngx-zs-component/scroll-to-top/scroll-to-top';
-import { ThemeToggle } from './ziadshalaby/ngx-zs-component/theme-toggle/theme-toggle';
-import { Spinner } from './ziadshalaby/ngx-zs-component/spinner/spinner';
-import { Alert } from './ziadshalaby/ngx-zs-component/AlertFolder/alert/alert';
+import { ThemeToggle, ScrollToTop, Alert, Spinner } from '@ziadshalaby/ngx-zs-component';
 
 @Component({
   selector: 'app-root',

@@ -2,8 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Config } from './config';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { AlertService } from '../ziadshalaby/ngx-zs-component/AlertFolder/alert-service/alert-service';
-import { ExtractorService } from '../ziadshalaby/ngx-zs-component/extractor-service/extractor-service';
+import { AlertService, ExtractorService } from '@ziadshalaby/ngx-zs-component';
 
 declare const google: any;
 export const googleClientId: string = 

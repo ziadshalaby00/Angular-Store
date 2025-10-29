@@ -1,10 +1,7 @@
 import { Component, inject, viewChild } from '@angular/core';
-import { Input, ChangeEventType, ValidatorFn } from '../ziadshalaby/ngx-zs-component/FormCompFolder/input/input';
-import { Button } from '../ziadshalaby/ngx-zs-component/FormCompFolder/button/button';
 import { AuthService } from '../services/auth-service';
 import { Router } from '@angular/router';
-import { Form } from '../ziadshalaby/ngx-zs-component/form-service/form-service';
-import { Card } from '../ziadshalaby/ngx-zs-component/card/card';
+import { Button, Card, Form, ChangeEventType, ValidatorFn, Input } from '@ziadshalaby/ngx-zs-component';
 
 @Component({
   selector: 'app-signup',
