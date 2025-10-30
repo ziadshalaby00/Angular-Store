@@ -14,7 +14,7 @@ import { ThemeToggle, ScrollToTop, Alert, Spinner } from '@ziadshalaby/ngx-zs-co
   styleUrl: './app.css',
 })
 export class App {
-  authService: AuthService = inject(AuthService)
+  authService: AuthService = inject(AuthService);
 
   readonly isMobileMenuOpen = signal<boolean>(false)
 
