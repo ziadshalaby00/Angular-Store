@@ -34,12 +34,6 @@
     },
     {
       "path": "./tsconfig.spec.json"
-    },
-    {
-      "path": "./projects/ngx-zs-component/tsconfig.lib.json"
-    },
-    {
-      "path": "./projects/ngx-zs-component/tsconfig.spec.json"
     }
   ]
 }
