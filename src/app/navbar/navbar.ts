@@ -35,12 +35,12 @@ export class NavbarComp {
 
   navItems: navItemsType = {
     navItems: [
-      { 
-        label: 'Test', 
-        routerLink: '/test', 
-        iconClass: 'fa-solid fa-vial text-lg', 
-        colorClass: `text-green-600 hover:text-green-700 dark:hover:text-green-500`, 
-      },
+      // { 
+      //   label: 'Test', 
+      //   routerLink: '/test', 
+      //   iconClass: 'fa-solid fa-vial text-lg', 
+      //   colorClass: `text-green-600 hover:text-green-700 dark:hover:text-green-500`, 
+      // },
       { label: 'Products', routerLink: '/products', iconClass: 'fas fa-tag text-lg'},
       { label: 'Cart', routerLink: '/cart', iconClass: 'fas fa-shopping-cart text-blue-700 dark:text-blue-500 text-lg'},
       { label: 'About Us', routerLink: '/about'},
