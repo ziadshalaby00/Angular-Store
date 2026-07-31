@@ -1,59 +1,39 @@
-# AngularStore
+# Ziadera Store
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.6.
+A modern, full-featured e-commerce storefront built with **Angular 20** and styled with **Tailwind CSS**. It connects to a REST API to deliver a complete shopping experience with authentication, product discovery, cart management, and user dashboards.
 
-## Development server
+---
 
-To start a local development server, run:
+## Overview
 
-```bash
-ng serve
-```
+Ziadera Store is a single-page e-commerce application designed for performance and usability. It features a responsive UI, dark mode support, real-time product filtering, and secure user authentication—including Google OAuth 2.0 and JWT-based session management.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## Tech Stack
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+| Layer | Technology |
+|-------|------------|
+| **Framework** | Angular 20 (Standalone Components, Zoneless Change Detection) |
+| **Styling** | Tailwind CSS v4 + PostCSS |
+| **UI Kit** | `@ziadshalaby/ngx-zs-component` (custom design system) |
+| **Icons** | Font Awesome 6 |
+| **Auth** | Google Identity Services (OAuth 2.0) + JWT (Access / Refresh) |
+| **HTTP** | Angular `HttpClient` |
+| **Build** | Angular CLI (`@angular/build:application`) |
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Key Features
 
-```bash
-ng generate --help
-```
+- **Product Catalog** — Browse products with pagination, category carousel, brand filters, price range, stock status, and sorting.
+- **Smart Filtering** — Real-time filter updates with clean URL-integrated state.
+- **User Authentication** — Login / Sign-up with username & password or Google One Tap.
+- **Password Recovery** — Secure reset-password flow via email token.
+- **User Dashboard** — Profile, Orders, Addresses, and Reviews.
+- **Responsive Navbar** — Mega-menu navigation, search bar, and user dropdown.
+- **Dark Mode** — Seamless theme toggle across all components.
+- **Reusable UI** — Built on a custom Angular component library (`ngx-zs-component`).
 
-## Building
+---
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
