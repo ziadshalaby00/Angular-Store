@@ -6,7 +6,7 @@ import { AlertService, ExtractorService } from '@ziadshalaby/ngx-zs-component';
 
 declare const google: any;
 export const googleClientId: string = 
-  '376492260397-gh7pa085um18niabf0vn88140l7956gb.apps.googleusercontent.com'
+  '981341511714-hdejio89rghet6t2p1s4362rfrrt9k3u.apps.googleusercontent.com'
 
 export interface RegBody {
   fullname: string,
