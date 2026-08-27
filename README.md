@@ -37,3 +37,10 @@ Ziadera Store is a single-page e-commerce application designed for performance a
 
 ---
 
+## 📄 License
+
+Developed entirely by [Ziad Shalaby](https://github.com/ziadshalaby00).
+
+This project is licensed under the **MIT License**.
+
+---
