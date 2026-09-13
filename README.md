@@ -2,6 +2,11 @@
 
 A modern, full-featured e-commerce storefront built with **Angular 20** and styled with **Tailwind CSS**. It connects to a REST API to deliver a complete shopping experience with authentication, product discovery, cart management, and user dashboards.
 
+<img width="32%" alt="image 1" src="https://github.com/user-attachments/assets/b0492c51-20e7-4776-b902-1e6c09195a84" />
+<img width="32%" alt="image 2" src="https://github.com/user-attachments/assets/4cb7d514-c6d7-4bc6-b211-8d065d96b2ae" />
+<img width="32%" alt="image 3" src="https://github.com/user-attachments/assets/21687970-9009-47ea-9c95-61ec4faa4d29" />
+
+
 ---
 
 ## Overview
