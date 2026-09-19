@@ -1,4 +1,4 @@
-# Ziadera Store
+# Angular Store
 
 A modern, full-featured e-commerce storefront built with **Angular 20** and styled with **Tailwind CSS**. It connects to a REST API to deliver a complete shopping experience with authentication, product discovery, cart management, and user dashboards.
 
