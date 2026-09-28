@@ -1,5 +1,5 @@
 {
-  "name": "Store",
+  "name": "store",
   "compatibility_date": "2026-09-28",
   "assets": {
     "directory": "./dist/Angular-Store/browser",
