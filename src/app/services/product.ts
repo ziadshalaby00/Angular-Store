@@ -69,4 +69,11 @@ export class Product {
     const params = new URL(url).searchParams;
     return parseInt(params.get('page') || '1', 10);
   }
+
+  getProductDetail(id: number) {
+    return this.http.get<any>(
+      `${this.config.apiUrl}/api/products/get-products/${id}/`,
+      { withCredentials: true }
+    );
+  }
 }

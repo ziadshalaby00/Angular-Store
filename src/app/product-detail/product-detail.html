@@ -1,1 +1,262 @@
-<p>product-detail works!</p>
+<div class="p-4 md:p-8 min-h-screen">
+  @if (loading()) {
+    <div class="flex justify-center items-center py-20">
+      <ZS-spinner type="spinner"></ZS-spinner>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="max-w-xl mx-auto text-center p-8 bg-red-50 dark:bg-red-900/20 rounded-xl">
+      <i class="fas fa-exclamation-circle text-red-500 text-4xl mb-3"></i>
+      <p class="text-red-700 dark:text-red-300">{{ error() }}</p>
+    </div>
+  }
+
+  @if (!loading() && !error() && product()) {
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <!-- Image gallery -->
+        <ZS-card cardStyle="secondary" [variant]="{border: false}">
+        <div class="flex flex-col gap-3">
+
+            <div class="relative overflow-hidden rounded-xl">
+            <img
+                [src]="activeImage() || imageUrl"
+                [alt]="product().name"
+                class="w-full h-[420px] object-cover transition-all duration-300"
+            />
+
+            @if (product().discount_percentage > 0) {
+                <div class="absolute top-3 left-3 bg-red-500 text-white text-sm font-bold px-3 py-1.5 rounded-full shadow animate-pulse">
+                -{{ product().discount_percentage }}%
+                </div>
+            }
+            </div>
+
+            <!-- Thumbnails -->
+            @if (subImageUrls.length > 0) {
+            <div class="flex gap-2 overflow-x-auto pb-1">
+                <button
+                type="button"
+                class="shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition"
+                [ngClass]="activeImage() === imageUrl
+                    ? 'border-blue-500 ring-2 ring-blue-300'
+                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-400'"
+                (click)="setActiveImage(imageUrl)">
+                <img [src]="imageUrl" class="w-full h-full object-cover" />
+                </button>
+
+                @for (sub of subImageUrls; track sub) {
+                <button
+                    type="button"
+                    class="shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition"
+                    [ngClass]="activeImage() === sub
+                    ? 'border-blue-500 ring-2 ring-blue-300'
+                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-400'"
+                    (click)="setActiveImage(sub)">
+                    <img [src]="sub" class="w-full h-full object-cover" />
+                </button>
+                }
+            </div>
+            }
+        </div>
+        </ZS-card>
+
+      <!-- Info -->
+      <div class="flex flex-col gap-4">
+        <div class="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide">
+          {{ product().brand?.name }}
+        </div>
+
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+          {{ product().name }}
+        </h1>
+
+        <!-- Rating -->
+        <div class="flex items-center gap-2">
+          <div class="flex text-amber-400">
+            @for (star of [1,2,3,4,5]; track star) {
+              <i class="fas fa-star text-sm"
+                 [ngClass]="{
+                   'text-amber-400': star <= product().average_rating,
+                   'text-gray-300 dark:text-gray-600': star > product().average_rating
+                 }"></i>
+            }
+          </div>
+          <span class="text-sm text-gray-600 dark:text-gray-400">
+            {{ product().average_rating }}/5
+          </span>
+        </div>
+
+        <!-- Price -->
+        <div class="flex items-end gap-3">
+          <span class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+            ${{ product().price_after_discount }}
+          </span>
+          @if (product().discount_percentage > 0) {
+            <span class="text-lg line-through text-gray-400 dark:text-gray-500">
+              ${{ product().price }}
+            </span>
+          }
+        </div>
+
+        <!-- Stock -->
+        <div>
+          @if (product().stock > 0) {
+            <span class="inline-flex items-center gap-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 text-sm px-3 py-1 rounded-full">
+              <i class="fas fa-check-circle"></i> {{ product().stock }} in stock
+            </span>
+          } @else {
+            <span class="inline-flex items-center gap-1 bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 text-sm px-3 py-1 rounded-full">
+              <i class="fas fa-times-circle"></i> Out of stock
+            </span>
+          }
+        </div>
+
+        <!-- Description -->
+        <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+          {{ product().description }}
+        </p>
+
+        <!-- Quantity -->
+        @if (product().stock > 0) {
+          <div class="flex items-center gap-3 mt-2">
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Quantity:</span>
+            <div class="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden">
+              <button
+                type="button"
+                class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                (click)="decrementQty()">
+                <i class="fas fa-minus text-sm"></i>
+              </button>
+              <span class="px-4 py-2 min-w-12 text-center font-medium">
+                {{ quantity() }}
+              </span>
+              <button
+                type="button"
+                class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                (click)="incrementQty()">
+                <i class="fas fa-plus text-sm"></i>
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- Buy Now -->
+        <div class="mt-4">
+          <ZS-button
+            size="lg"
+            btnStyle="primary"
+            [disabled]="product().stock <= 0 || buyLoading()"
+            (clickedEv)="buyNow()"
+            [icon]="buyLoading() ? 'fa fa-spinner fa-spin' : 'fas fa-bolt'">
+            Buy Now
+          </ZS-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="max-w-6xl mx-auto mt-12">
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+        Customer Reviews
+        @if (reviewsCount() > 0) {
+        <span class="text-base font-normal text-gray-500 dark:text-gray-400 ml-2">
+            ({{ reviewsCount() }})
+        </span>
+        }
+    </h2>
+
+    @if (reviewsLoading()) {
+        <div class="flex justify-center py-8">
+        <ZS-spinner type="spinner"></ZS-spinner>
+        </div>
+    }
+
+    @if (!reviewsLoading() && reviews().length === 0) {
+        <div class="p-8 text-center bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+        <i class="fas fa-comment-slash text-4xl text-gray-400 mb-3"></i>
+        <p class="text-gray-600 dark:text-gray-400">No reviews yet. Be the first to review this product!</p>
+        </div>
+    }
+
+    @if (!reviewsLoading() && reviews().length > 0) {
+        <div class="flex flex-col gap-4">
+        @for (review of reviews(); track review.id) {
+            <div class="p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
+            <div class="flex items-start justify-between gap-3">
+                <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                    <i class="fas fa-user text-blue-600 dark:text-blue-300"></i>
+                </div>
+                <div>
+                    <div class="font-semibold text-gray-900 dark:text-gray-100">
+                    {{ review.user?.username || 'Anonymous' }}
+                    </div>
+                    <div class="flex items-center gap-1 mt-0.5">
+                    @for (star of [1,2,3,4,5]; track star) {
+                        <i class="fas fa-star text-xs"
+                        [ngClass]="{
+                            'text-amber-400': star <= review.rating,
+                            'text-gray-300 dark:text-gray-600': star > review.rating
+                        }"></i>
+                    }
+                    <span class="text-xs text-gray-500 dark:text-gray-400 ml-1">
+                        {{ review.rating }}/5
+                    </span>
+                    </div>
+                </div>
+                </div>
+
+                <div class="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                {{ review.created_at | date:'mediumDate' }}
+                </div>
+            </div>
+
+            @if (review.comment) {
+                <p class="mt-3 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                {{ review.comment }}
+                </p>
+            }
+            </div>
+        }
+        </div>
+    }
+    </div>
+  }
+</div>
+
+<!-- Address selection modal -->
+<ZS-modal
+  title="Select Shipping Address"
+  modalStyle="primary"
+  [showFooter]="true"
+  position="center"
+  [(open)]="addressModalOpen"
+  (cancelEv)="addressModalOpen.set(false)"
+  (confirmEv)="confirmAddress()"
+  [confirmConfig]="{ icon: 'fas fa-check' }"
+>
+  <div class="p-2">
+    <p class="text-sm text-gray-700 dark:text-gray-200 mb-3">
+      Choose where we should ship this order.
+    </p>
+
+    <ZS-select
+    label="Address"
+    [items]="addressItems"
+    [preselectedIds]="preselectedAddressIds"
+    (selectedItemsChange)="selectedAddressId.set($event.length ? $event[0].id : null)"
+    placeholder="Select an address..."
+    [inputStyle]="'primary'"
+    [showSearch]="false"
+    ></ZS-select>
+
+    <button
+      type="button"
+      class="mt-3 text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400"
+      (click)="addressModalOpen.set(false); router.navigate(['/addresses'])">
+      + Add a new address
+    </button>
+  </div>
+</ZS-modal>

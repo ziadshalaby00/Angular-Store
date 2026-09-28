@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { Category } from '../services/category';
 import { Brand } from '../services/brand';
 import { Button, Card, Carousel, Input, Pagination, Select, Spinner } from '@ziadshalaby/ngx-zs-component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -23,7 +24,7 @@ export class Products {
     category: signal<number | string>(''),
     brand: signal<number | string | null>(null),
     min_price: signal<string>('10'),
-    max_price: signal<string>('1000'),
+    max_price: signal<string>('10000'),
     stock: signal<string | number | null>(null),
     ordering: signal<string | number | null>(null),
     page: signal<number>(1)
@@ -60,6 +61,12 @@ export class Products {
 
   onCategoryClick(param: any) {
     console.log(param)
+  }
+
+  router: Router = inject(Router);
+
+  goToDetails(id: number) {
+    this.router.navigate(['/product-detail', id]);
   }
 
   get categories() {

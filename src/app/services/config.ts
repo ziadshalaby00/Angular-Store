@@ -6,7 +6,7 @@ import { Injectable, signal } from '@angular/core';
 export class Config {
   private readonly isProd = false;
 
-  private readonly localApiUrl = 'http://127.0.0.1:8000';
+  private readonly localApiUrl = 'http://localhost:8000';
   private readonly prodApiUrl = 'https://api.example.com';
   readonly accessTokenExpire: number = 14.75
 

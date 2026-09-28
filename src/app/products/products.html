@@ -83,7 +83,7 @@
     iName="Price Max"
     label="Price Max"
     type="number"
-    placeholder="1000"
+    placeholder="10000"
     [(value)]="filters.max_price"
     [inputStyle]="'teal'"
     > 
@@ -217,10 +217,10 @@
                 btnStyle="secondary"
                 size="lg"
                 icon="fas fa-eye"
+                (clickedEv)="goToDetails(product.id)"
               >
                 Details
               </ZS-button>
-
               <!-- Add to Cart Button -->
               <ZS-button
                 class="w-full group"
